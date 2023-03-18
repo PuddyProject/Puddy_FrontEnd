@@ -1,0 +1,49 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+}
+
+.bellIcon {
+  color: #bcbcbc;
+  margin-right: 23px;
+}
+.logoImg {
+  width: 64px;
+  margin-left: 17px;
+}
+.header {
+  height: 48px;
+  width: 100vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.navBar {
+  width: 100vw;
+  height: 60px;
+  position: fixed;
+  bottom: 0px;
+  display: flex;
+  border: 2px solid #e5e5e5;
+  justify-content: space-between;
+  align-items: center;
+  :nth-child(2) {
+    border-left: 1px solid #efefef;
+    border-right: 1px solid #efefef;
+  }
+  :nth-child(3) {
+    border-right: 1px solid #efefef;
+  }
+}
+
+.navItem {
+  cursor: pointer;
+  font-size: 10px;
+  width: 25%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
