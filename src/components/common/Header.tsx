@@ -3,8 +3,8 @@ import { BiBell } from 'react-icons/bi';
 export default function Header() {
   return (
     <div className='header'>
-      <img className='logoImg' src={Logo} alt='' />
-      <BiBell className='bellIcon' size='30' />
+      <img className='logo-img' src={Logo} alt='' />
+      <BiBell className='bell-icon' size='30' />
     </div>
   );
 }
