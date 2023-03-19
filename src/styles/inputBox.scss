@@ -10,3 +10,21 @@
     border: 1.5px solid #2a60ff;
   }
 }
+
+.input-title {
+  display: flex;
+  justify-content: space-between;
+  color: #494949;
+  font-weight: 700;
+  font-size: 14px;
+
+  .is-require {
+    color: #2a60ff;
+    font-weight: 700;
+  }
+
+  .vaild-text {
+    font-size: 10px;
+    color: #df4e3a;
+  }
+}
