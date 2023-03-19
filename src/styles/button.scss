@@ -1,0 +1,23 @@
+$SM_SIZE: 100px;
+
+.button {
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 12px;
+  background-color: #2a60ff;
+  color: white;
+  height: 40px;
+  font-weight: 800;
+  width: 250px;
+
+  &.sm {
+    width: $SM_SIZE;
+  }
+
+  &.isOutline {
+    background-color: #ffffff;
+    color: #2a60ff;
+    border: 1px solid #2a60ff;
+  }
+}
