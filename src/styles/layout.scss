@@ -3,12 +3,12 @@
   height: 100vh;
 }
 
-.bellIcon {
+.bell-icon {
   color: #bcbcbc;
   margin-right: 23px;
 }
 
-.logoImg {
+.logo-img {
   width: 64px;
   margin-left: 17px;
 }
@@ -22,7 +22,7 @@
   border-bottom: 1px solid #e5e5e5;
 }
 
-.navBar {
+.nav-bar {
   width: 100vw;
   height: 60px;
   position: fixed;
@@ -42,7 +42,7 @@
   }
 }
 
-.navItem {
+.nav-item {
   cursor: pointer;
   font-size: 10px;
   width: 25%;
@@ -50,4 +50,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+@mixin nav-style($color) {
+  text-decoration-line: none;
+  color: $color;
+}
+
+.nav-selected-link {
+  @include nav-style(#2a60ff);
+}
+
+.nav-link {
+  @include nav-style(#cecece);
 }

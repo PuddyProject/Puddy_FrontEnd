@@ -5,17 +5,17 @@ export default function NavBar() {
   const location = useLocation();
 
   return (
-    <div className='navBar'>
+    <div className='nav-bar'>
       {navString.map((v, i) => {
         return (
           <>
-            <div key={i} className='navItem'>
+            <div key={i} className='nav-item'>
               {location.pathname === v[0] ? (
-                <Link style={{ textDecorationLine: 'none', color: '#2a60ff' }} to={v[0]}>
+                <Link className='nav-selected-link' to={v[0]}>
                   {v[1]}
                 </Link>
               ) : (
-                <Link to={v[0]} style={{ textDecorationLine: 'none', color: '#cecece' }}>
+                <Link className='nav-link' to={v[0]}>
                   {v[1]}
                 </Link>
               )}
