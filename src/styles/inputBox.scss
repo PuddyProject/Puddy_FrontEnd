@@ -1,0 +1,12 @@
+.input-box {
+  border: 1px solid #e5e5e5;
+  width: 150px;
+  height: 40px;
+  padding: 0px 5px;
+  border-radius: 10px;
+
+  &:focus {
+    outline: none;
+    border: 1.5px solid #2a60ff;
+  }
+}
