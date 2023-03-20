@@ -5,7 +5,7 @@ export default function NavBar() {
   const location = useLocation();
 
   return (
-    <div className='nav-bar'>
+    <nav className='nav-bar'>
       {navString.map((v, i) => {
         return (
           <>
@@ -23,6 +23,6 @@ export default function NavBar() {
           </>
         );
       })}
-    </div>
+    </nav>
   );
 }

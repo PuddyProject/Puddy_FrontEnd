@@ -1,5 +1,4 @@
 import React from 'react';
-import '../../styles/button.scss';
 import classnames from 'classnames';
 
 interface ButtonProps {
@@ -28,7 +27,10 @@ export default function Button({
   };
 
   return (
-    <button className={classnames('button', width, { isOutline })} style={buttonStyle}>
+    <button
+      className={classnames('button', width, { isOutline })}
+      style={buttonStyle}
+    >
       {children}
     </button>
   );
