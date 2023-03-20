@@ -1,7 +1,25 @@
-.main-qna-container {
-  display: flex;
-  overflow: scroll;
-  &::-webkit-scrollbar {
-    display: none;
+@use 'abstracts' as *;
+@use 'base';
+@use 'components';
+@use 'layout';
+@use 'pages';
+
+:root {
+  font-size: 81.3%;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  #root {
+    display: grid;
+    grid-template-areas:
+      'header'
+      'main'
+      'footer';
   }
 }

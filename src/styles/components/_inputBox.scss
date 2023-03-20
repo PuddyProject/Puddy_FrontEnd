@@ -1,5 +1,7 @@
+@use '../abstracts' as *;
+
 .input-box {
-  border: 1px solid #e5e5e5;
+  border: 1px solid $color-gray04;
   width: 150px;
   height: 40px;
   padding: 0px 5px;
@@ -7,24 +9,24 @@
 
   &:focus {
     outline: none;
-    border: 1.5px solid #2a60ff;
+    border: 1.5px solid $primary-color;
   }
 }
 
 .input-title {
   display: flex;
   justify-content: space-between;
-  color: #494949;
+  color: $color-gray01;
   font-weight: 700;
   font-size: 14px;
 
   .is-require {
-    color: #2a60ff;
+    color: $primary-color;
     font-weight: 700;
   }
 
   .vaild-text {
     font-size: 10px;
-    color: #df4e3a;
+    color: $warnig-color;
   }
 }
