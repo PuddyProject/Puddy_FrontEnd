@@ -1,3 +1,5 @@
+@use '../abstracts' as *;
+
 $SM_SIZE: 100px;
 
 .button {
@@ -5,7 +7,7 @@ $SM_SIZE: 100px;
   border-radius: 10px;
   cursor: pointer;
   font-size: 12px;
-  background-color: #2a60ff;
+  background-color: $primary-color;
   color: white;
   height: 40px;
   font-weight: 800;
@@ -16,8 +18,8 @@ $SM_SIZE: 100px;
   }
 
   &.isOutline {
-    background-color: #ffffff;
-    color: #2a60ff;
-    border: 1px solid #2a60ff;
+    background-color: $bg-color;
+    color: $primary-color;
+    border: 1px solid $primary-color;
   }
 }

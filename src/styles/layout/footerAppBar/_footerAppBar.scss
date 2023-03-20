@@ -1,0 +1,44 @@
+@use '../../abstracts' as *;
+
+.nav-bar {
+  grid-area: footer;
+  width: 100vw;
+  height: 60px;
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  border-top: 2px solid $color-gray04;
+  background-color: $bg-color;
+  z-index: 1000;
+  justify-content: space-between;
+  align-items: center;
+
+  :nth-child(2) {
+    border-left: 1px solid $color-gray05;
+    border-right: 1px solid $color-gray05;
+  }
+
+  :nth-child(3) {
+    border-right: 1px solid $color-gray05;
+  }
+}
+
+.nav-item {
+  cursor: pointer;
+  font-size: 10px;
+  width: 25%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav-selected-link {
+  color: $primary-color;
+  text-decoration-line: none;
+}
+
+.nav-link {
+  color: $color-gray03;
+  text-decoration-line: none;
+}

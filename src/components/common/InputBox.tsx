@@ -1,5 +1,3 @@
-import '../../styles/inputBox.scss';
-
 interface InputBoxProps {
   width?: string;
   margin?: string;
@@ -8,6 +6,7 @@ interface InputBoxProps {
   type?: string;
   placeholder?: string;
 }
+
 export default function InputBox({
   margin,
   padding,

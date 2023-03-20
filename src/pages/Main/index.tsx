@@ -1,11 +1,11 @@
-import Button from '../components/common/Button';
-import InputBox from '../components/common/InputBox';
-import InputTilte from '../components/common/InputTitle';
-import MainQnaCard from '../components/common/MainQnaCard';
-import '../styles/main.scss';
+import Button from 'components/common/Button';
+import InputBox from 'components/common/InputBox';
+import InputTilte from 'components/common/InputTitle';
+import MainQnaCard from 'components/common/MainQnaCard';
+
 export default function Main() {
   return (
-    <>
+    <div className='main'>
       <Button margin='10px' isOutline>
         텍스트
       </Button>
@@ -26,6 +26,7 @@ export default function Main() {
       </div>
       <InputTilte isRequire={true} width='200px' />
       <InputTilte width='200px' />
-    </>
+      <div style={{ height: '500px' }}></div>
+    </div>
   );
 }
