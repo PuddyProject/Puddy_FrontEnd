@@ -1,5 +1,5 @@
 @mixin font-setting() {
-  font-family: 'nanumSquare', 'Noto Sans KR', 'Roboto', -apple-system, sans-serif;
+  font-family: 'nanumSquare', 'Noto Sans KR', 'Roboto', -apple-system, sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

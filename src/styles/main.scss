@@ -13,14 +13,7 @@
   cursor: context-menu;
 }
 
-button,
-input,
-span,
-h1,
-h2,
-h3,
-h4,
-h5 {
+* {
   @include font-setting;
 }
 
