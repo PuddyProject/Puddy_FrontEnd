@@ -4,8 +4,9 @@
   border: 1px solid $color-gray04;
   width: 150px;
   height: 40px;
-  padding: 0px 5px;
+  padding: 0px 10px;
   border-radius: 10px;
+  transition: all 0.3s;
 
   &:focus {
     outline: none;

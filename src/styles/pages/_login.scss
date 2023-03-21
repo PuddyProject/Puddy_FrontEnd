@@ -1,0 +1,109 @@
+@use '../abstracts' as *;
+
+.login-container {
+  @include center;
+  flex-direction: column;
+
+  .logo {
+    width: 200px;
+    padding-top: 22vh;
+  }
+
+  .inputs {
+    @include center;
+    flex-direction: column;
+    margin-top: 25px;
+    position: relative;
+    padding-top: 20px;
+    gap: 15px;
+  }
+
+  .inputs strong:first-child {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  .find-and-join-container {
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+    color: $color-gray02;
+
+    span:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .join {
+      font-weight: 800;
+    }
+  }
+}
+
+.sns-join-container {
+  @include center;
+  flex-direction: column;
+  gap: 15px;
+
+  .dividing-line {
+    width: 250px;
+    border-bottom: 1px solid $color-gray04;
+    margin-top: 45px;
+    margin-bottom: 35px;
+  }
+
+  h3 {
+    font-size: 1.3rem;
+    color: $color-gray02;
+    font-weight: 600;
+  }
+
+  .sns-logins {
+    @include center;
+    gap: 23px;
+    margin-top: 15px;
+
+    li {
+      @include center;
+      width: 55px;
+      height: 55px;
+      background-color: antiquewhite;
+      border-radius: 100%;
+      cursor: pointer;
+    }
+
+    .kakao {
+      background-color: #f9e000;
+      img {
+        width: 29px;
+      }
+    }
+
+    .naver {
+      background-color: #1ec800;
+
+      img {
+        width: 20px;
+      }
+    }
+
+    .google {
+      background-color: #f8f8f8;
+
+      img {
+        width: 25px;
+      }
+    }
+
+    li > span {
+      clip-path: polygon(0 0, 0 0, 0 0);
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      position: absolute;
+      overflow: hidden;
+    }
+  }
+}

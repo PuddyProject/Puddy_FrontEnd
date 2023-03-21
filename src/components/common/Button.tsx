@@ -8,29 +8,24 @@ interface ButtonProps {
   isOutline?: boolean;
   margin?: string;
   padding?: string;
-  customSize?: string;
 }
 
 export default function Button({
   children,
-  customSize,
+  width,
   isOutline,
   onClick,
-  width,
   margin,
   padding,
 }: ButtonProps) {
   const buttonStyle = {
-    margin: margin,
-    padding: padding,
-    width: customSize,
+    margin,
+    padding,
+    width,
   };
 
   return (
-    <button
-      className={classnames('button', width, { isOutline })}
-      style={buttonStyle}
-    >
+    <button className={classnames('button', width, { isOutline })} style={buttonStyle}>
       {children}
     </button>
   );

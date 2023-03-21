@@ -3,15 +3,14 @@
 $SM_SIZE: 100px;
 
 .button {
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 12px;
-  background-color: $primary-color;
-  color: white;
+  width: 250px;
   height: 40px;
   font-weight: 800;
-  width: 250px;
+  border: none;
+  border-radius: 10px;
+  background-color: $primary-color;
+  color: white;
+  cursor: pointer;
 
   &.sm {
     width: $SM_SIZE;
@@ -21,5 +20,9 @@ $SM_SIZE: 100px;
     background-color: $bg-color;
     color: $primary-color;
     border: 1px solid $primary-color;
+  }
+
+  &:hover {
+    background-color: $secondary-color02;
   }
 }
