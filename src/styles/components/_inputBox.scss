@@ -6,7 +6,10 @@
   height: 40px;
   padding: 0px 5px;
   border-radius: 10px;
-
+  transition: all 0.3s;
+  &::placeholder {
+    color: $icon-color;
+  }
   &:focus {
     outline: none;
     border: 1.5px solid $primary-color;

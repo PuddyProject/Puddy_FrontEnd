@@ -50,7 +50,7 @@
 }
 .image-add-item-plus {
   color: $color-gray02;
-  font-size: 20px;
+  font-size: 25px;
   font-weight: 600;
   margin-bottom: 3px;
 }
@@ -68,7 +68,12 @@
   width: 300px;
   height: 248px;
   border-radius: 10px;
-  border-color: $icon-color;
+  border-color: $color-gray04;
+  transition: all 0.3s;
+
+  &::placeholder {
+    color: $icon-color;
+  }
   &:focus {
     outline: none;
     border: 1.5px solid $primary-color;
