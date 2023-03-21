@@ -17,7 +17,7 @@ export default function NewPost() {
         <InputBox
           margin='10px 0px 20px 0px'
           padding='0px 0px 0px 15px'
-          customSize='300px'
+          width='300px'
           placeholder='제목을 입력해주세요.(50자 이내)'
         />
         <div className='image-container'>
