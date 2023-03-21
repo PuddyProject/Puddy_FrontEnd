@@ -1,3 +1,9 @@
+@mixin font-setting() {
+  font-family: 'nanumSquare', 'Noto Sans KR', 'Roboto', -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 @mixin font-styles($font-size, $font-weight, $color) {
   font-size: $font-size;
   font-weight: $font-weight;
@@ -8,4 +14,25 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+@mixin header-gap() {
+  margin-top: 49px;
+  position: relative;
+  width: 100vw;
+}
+
+@mixin dividing-line($width, $color) {
+  width: $width;
+  border: none;
+  border-bottom: 1px solid $color;
+}
+
+@mixin accessibility-text() {
+  clip-path: polygon(0 0, 0 0, 0 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  position: absolute;
+  overflow: hidden;
 }
