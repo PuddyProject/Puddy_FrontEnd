@@ -1,0 +1,81 @@
+@use '../abstracts' as *;
+
+.qna-newpost-main {
+  margin-top: 40px;
+  padding: 30px;
+  position: relative;
+  width: 100vw;
+}
+
+.category-container {
+  margin-top: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 9px;
+  column-gap: 9px;
+  margin-bottom: 30px;
+}
+.category-item {
+  width: 94px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid $color-gray04;
+  color: $icon-color;
+  border-radius: 10px;
+}
+
+.image-container {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+.image-item {
+  background-color: $color-gray05;
+  width: 65px;
+  height: 68px;
+  border: 1px solid $color-gray04;
+  border-radius: 10px;
+}
+.image-add-item {
+  width: 65px;
+  height: 68px;
+  border: 1px solid $color-gray04;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.image-add-item-plus {
+  color: $color-gray02;
+  font-size: 25px;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.image-add-item-text {
+  color: $color-gray02;
+  font-size: 8px;
+  font-weight: 700;
+}
+
+.text-body {
+  margin-top: 10px;
+  padding: 10px 0px 0px 15px;
+  resize: none;
+  width: 300px;
+  height: 248px;
+  border-radius: 10px;
+  border-color: $color-gray04;
+  transition: all 0.3s;
+
+  &::placeholder {
+    color: $icon-color;
+  }
+  &:focus {
+    outline: none;
+    border: 1.5px solid $primary-color;
+  }
+}
