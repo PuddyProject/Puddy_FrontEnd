@@ -1,15 +1,22 @@
 import { Route, Routes } from 'react-router-dom';
 import Layout from 'layouts';
 import LayoutWithoutHeader from 'layouts/LayoutWithoutHeader';
-import { Qna, Main, Login, Community } from 'pages';
+import LayoutWithoutNav from 'layouts/LayoutWithoutNav';
+
+import { Qna, Main, Login, Community, NewPost } from 'pages';
 
 export default function Router() {
   return (
     <Routes>
       <Route path='/' element={<Layout />}>
-        <Route index path='/' element={<Main />} />
+        <Route path='/' element={<Main />} />
         <Route path='/qna' element={<Qna />} />
+
         <Route path='/community' element={<Community />} />
+      </Route>
+
+      <Route path='/' element={<LayoutWithoutNav />}>
+        <Route path='/qna/newpost' element={<NewPost />} />
       </Route>
 
       <Route path='/' element={<LayoutWithoutHeader />}>
