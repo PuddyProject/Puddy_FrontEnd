@@ -30,7 +30,7 @@ export default function NewPost() {
           <div className='image-item'></div>
         </div>
         <InputTilte isRequire={true}> 내용 </InputTilte>
-        <textarea className='text-body' placeholder='내용을 입력해주세요.(2,000자 이내)'></textarea>
+        <textarea className='text-body' placeholder='내용을 입력해주세요.(500자 이내)'></textarea>
       </div>
       <BottomButton>등록하기</BottomButton>
     </div>
