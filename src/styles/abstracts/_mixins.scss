@@ -3,3 +3,9 @@
   font-weight: $font-weight;
   color: $color;
 }
+
+@mixin center() {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
