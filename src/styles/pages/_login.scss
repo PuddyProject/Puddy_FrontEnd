@@ -1,7 +1,7 @@
 @use '../abstracts' as *;
 
 .login-container {
-  @include center();
+  @include center;
   flex-direction: column;
 
   .logo {
@@ -10,7 +10,7 @@
   }
 
   .inputs {
-    @include center();
+    @include center;
     flex-direction: column;
     margin-top: 25px;
     position: relative;
