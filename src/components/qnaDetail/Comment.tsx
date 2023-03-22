@@ -22,7 +22,11 @@ export default function Comment({ isExport = false, isWriteUser = false }: Comme
 
         <div className='user-roll-container'>
           <span className='user-roll'>{isExport ? '전문가 답변' : '사용자 답변'}</span>
-          {isWriteUser && <span className='user-roll'>수정하기 | 삭제하기</span>}
+          {isWriteUser && (
+            <span className='user-roll'>
+              <span>수정하기</span> | <span>삭제하기</span>
+            </span>
+          )}
         </div>
       </div>
       <div className='comment-card-body'>
