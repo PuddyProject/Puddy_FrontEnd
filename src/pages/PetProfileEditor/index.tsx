@@ -39,7 +39,8 @@ export default function PetProfileEditor() {
   const onChangeImage = ({ target }: ChangeEvent<HTMLInputElement>) => {
     const files = target.files;
     const isValidImageExtensions = checkExtensions(files!);
-    if (!isValidImageExtensions) return window.alert('올바른 확장자가 아닙니다.');
+    if (!isValidImageExtensions)
+      return window.alert('.jpg, .jpeg, .png, .gif 확장자만 업로드 할 수 있어요.');
 
     const url = URL.createObjectURL(files![0]);
     setProfileImg(url);
