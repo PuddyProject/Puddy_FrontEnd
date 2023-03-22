@@ -5,6 +5,8 @@ const cn = classnames;
 
 interface ButtonProps {
   onClick?: () => void;
+  fontWeight?: string;
+  fontSize?: string;
   children: React.ReactNode;
   width?: string;
   height?: string;
@@ -15,6 +17,8 @@ interface ButtonProps {
 
 export default function Button({
   children,
+  fontWeight,
+  fontSize,
   width,
   height,
   outline,
@@ -23,6 +27,8 @@ export default function Button({
   padding,
 }: ButtonProps) {
   const buttonStyle = {
+    fontWeight,
+    fontSize,
     margin,
     padding,
     width,
