@@ -27,26 +27,28 @@ export default function Login() {
           <Button>로그인</Button>
         </div>
         <div className='find-and-join-container'>
-          <span>아이디/비밀번호 찾기</span>
+          <span tabIndex={0}>아이디/비밀번호 찾기</span>
           <span className='vertical-bar'>|</span>
-          <span className='join'>회원가입</span>
+          <span className='join' tabIndex={0}>
+            회원가입
+          </span>
         </div>
       </form>
 
       <div className='sns-join-container'>
-        <p className='dividing-line'></p>
+        <hr className='dividing-line' />
         <h3>SNS 계정으로 간편하게 시작하기</h3>
         <ul className='sns-logins'>
-          <li className='social-login kakao' role='button'>
-            <span>카카오</span>
+          <li className='social-login kakao' role='button' tabIndex={0}>
+            <span>카카오 로그인</span>
             <img src={Kakao} alt='카카오' />
           </li>
-          <li className='social-login naver' role='button'>
-            <span>네이버</span>
+          <li className='social-login naver' role='button' tabIndex={0}>
+            <span>네이버 로그인</span>
             <img src={Naver} alt='네이버' />
           </li>
-          <li className='social-login google' role='button'>
-            <span>구글</span>
+          <li className='social-login google' role='button' tabIndex={0}>
+            <span>구글 로그인</span>
             <img src={Google} alt='구글' />
           </li>
         </ul>

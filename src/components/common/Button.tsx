@@ -1,11 +1,14 @@
 import React from 'react';
 import classnames from 'classnames';
 
+const cn = classnames;
+
 interface ButtonProps {
   onClick?: () => void;
   children: React.ReactNode;
   width?: string;
-  isOutline?: boolean;
+  height?: string;
+  outline?: boolean;
   margin?: string;
   padding?: string;
 }
@@ -13,7 +16,8 @@ interface ButtonProps {
 export default function Button({
   children,
   width,
-  isOutline,
+  height,
+  outline,
   onClick,
   margin,
   padding,
@@ -22,10 +26,11 @@ export default function Button({
     margin,
     padding,
     width,
+    height,
   };
 
   return (
-    <button className={classnames('button', width, { isOutline })} style={buttonStyle}>
+    <button className={cn('button', width, height, { outline })} style={buttonStyle}>
       {children}
     </button>
   );

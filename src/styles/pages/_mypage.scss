@@ -1,0 +1,80 @@
+@use '../abstracts' as *;
+
+.container {
+  @include header-gap;
+  @include center;
+  flex-direction: column;
+
+  .profile {
+    @include header-gap;
+    @include center;
+    max-width: 250px;
+    flex-direction: column;
+    gap: 15px;
+
+    .profile-image {
+      width: 100px;
+      height: 100px;
+      border-radius: 100%;
+      object-fit: cover;
+    }
+
+    .nickname {
+      margin-top: 5px;
+      margin-bottom: 5px;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+  }
+
+  .setting {
+    position: absolute;
+    right: 25%;
+    bottom: 85px;
+  }
+
+  .dividing-line {
+    @include dividing-line(250px, $color-gray04);
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+
+  .setting-menus {
+    width: 100%;
+    margin: 0 auto;
+    color: $color-gray01;
+
+    ul {
+      @include center;
+      flex-direction: column;
+      max-width: 250px;
+      margin: 0 auto;
+      align-items: flex-start;
+      gap: 15px;
+    }
+
+    .menu-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-top: 10px;
+    }
+
+    .menu-content {
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+  }
+}
+
+// TODO: after 요소 사용 안할 예정 -> 버튼으로 추가하기
+// .question-mark-icon::after {
+//   content: '❔';
+//   font-size: 1rem;
+//   display: inline-block;
+//   padding: 3px;
+//   width: 10px;
+//   height: 10px;
+//   background-color: gray;
+//   border-radius: 100%;
+//   margin-left: 5px;
+// }

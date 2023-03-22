@@ -5,10 +5,10 @@ import MainQnaCard from 'components/common/MainQnaCard';
 export default function Main() {
   return (
     <div className='main'>
-      <Button margin='10px' customSize='160px'>
+      <Button margin='10px' width='160px'>
         Q&A 질문하기
       </Button>
-      <Button margin='10px' isOutline customSize='160px'>
+      <Button margin='10px' outline width='160px'>
         내 펫 등록하기
       </Button>
 

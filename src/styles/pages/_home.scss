@@ -2,9 +2,7 @@
 
 .main {
   padding: 10px;
-  margin-top: 49px;
-  position: relative;
-  width: 100vw;
+  @include header-gap;
 }
 
 .main-qna-container {
