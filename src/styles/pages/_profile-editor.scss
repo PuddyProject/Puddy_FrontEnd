@@ -1,0 +1,59 @@
+@use '../abstracts' as *;
+
+.profile-editor-container {
+  @include header-gap;
+  @include center;
+  flex-direction: column;
+  margin-bottom: 10rem;
+}
+
+.profile-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 100%;
+  object-fit: cover;
+  margin-bottom: 25px;
+}
+
+.image-uploader {
+  @include center;
+  flex-direction: column;
+  width: 100px;
+  height: 100px;
+  border-radius: 100%;
+  margin-bottom: 25px;
+  border: 1px solid $color-gray04;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+
+  .image-uploader-text {
+    display: block;
+    margin-top: 8px;
+    font-size: 11px;
+  }
+}
+
+.uploader-input {
+  display: none;
+}
+
+.pet-info-inputs {
+  @include center;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+
+  input {
+    margin-bottom: 5px;
+  }
+
+  & .check-box-container {
+    margin-top: -5px;
+  }
+}
+
+.gender-buttons {
+  @include center;
+  gap: 10px;
+}
