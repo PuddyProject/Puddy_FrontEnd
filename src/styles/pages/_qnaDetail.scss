@@ -1,0 +1,144 @@
+@use '../abstracts' as *;
+
+.qna-detail-container {
+  padding: 0px 35px;
+  width: 100vw;
+  margin-bottom: 80px;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.title-category {
+  color: $primary-color;
+}
+
+.title-text {
+  margin-top: 30px;
+  color: $color-gray01;
+}
+
+.post-info {
+  margin: 25px 0px 15px 0px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.post-date {
+  font-size: 10px;
+  font-weight: 400;
+  color: $color-gray02;
+}
+
+.qna-divide-line {
+  border-top: 1px solid $color-gray04;
+}
+
+.post-user {
+  font-size: 12px;
+  font-weight: 700;
+  color: $color-gray04;
+}
+
+.body-text {
+  color: #000000;
+  font-weight: 300;
+  margin-top: 20px;
+  font-size: 14px;
+  line-height: 23px;
+}
+
+.tag-container {
+  margin-top: 15px;
+  min-width: 320px;
+  width: 100%;
+  display: flex;
+  overflow: scroll;
+  gap: 10px;
+  margin-bottom: 30px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.tag-item {
+  border-radius: 10px;
+  white-space: nowrap;
+  border: 1px solid $icon-color;
+  padding: 5px 15px;
+}
+
+.comment-title-conainer {
+  margin-top: 20px;
+  margin-bottom: 25px;
+
+  .comment-title {
+    font-size: 20px;
+    font-weight: 700;
+
+    span {
+      color: $primary-color;
+    }
+  }
+
+  .comment-sub-title {
+    line-height: 30px;
+    color: $icon-color;
+    font-size: 12px;
+  }
+}
+.comment-card {
+  box-shadow: 0px 0px 10px rgba(169, 169, 169, 0.2);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 15px;
+
+  &.isExport {
+    border: 1px solid $primary-color;
+  }
+
+  .comment-card-user-info {
+    .user {
+      color: $color-gray01;
+      font-weight: 700;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .user-export {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: $primary-color;
+      font-weight: 700;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .user-roll-container {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+
+      .user-roll {
+        color: $icon-color;
+        font-size: 12px;
+      }
+    }
+  }
+
+  .comment-button {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+.comment-card-body {
+  color: #000000;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 23px;
+}
