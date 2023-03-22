@@ -38,7 +38,7 @@ export default function Comment({ isExport = false, isWriteUser = false }: Comme
         나중에는 제가 발로차는 느낌이 들어서 제가 애를 학대하는
       </div>
       <div className='comment-button'>
-        <Button width='110px' height='25px' fontWeight='700' fontSize='12px'>
+        <Button width='110px' height='25px' fontWeight='600' fontSize='12px'>
           이 답변 채택하기
         </Button>
       </div>

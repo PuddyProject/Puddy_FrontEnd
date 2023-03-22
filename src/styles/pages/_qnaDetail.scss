@@ -13,15 +13,17 @@
 
 .title-category {
   color: $primary-color;
+  font-weight: 600;
 }
 
 .title-text {
   margin-top: 30px;
   color: $color-gray01;
+  line-height: 21px;
 }
 
 .post-info {
-  margin: 25px 0px 15px 0px;
+  margin: 40px 0px 15px 0px;
   display: flex;
   justify-content: space-between;
 }
@@ -33,7 +35,7 @@
 }
 
 .qna-divide-line {
-  border-top: 1px solid $color-gray04;
+  @include dividing-line(290px, $color-gray04);
 }
 
 .post-user {
@@ -57,7 +59,7 @@
   display: flex;
   overflow: scroll;
   gap: 10px;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
 
   &::-webkit-scrollbar {
     display: none;
@@ -72,7 +74,7 @@
 }
 
 .comment-title-conainer {
-  margin-top: 20px;
+  margin-top: 40px;
   margin-bottom: 25px;
 
   .comment-title {
@@ -95,7 +97,7 @@
   box-shadow: 0px 0px 10px rgba(169, 169, 169, 0.2);
   border-radius: 10px;
   padding: 20px;
-  margin-bottom: 15px;
+  margin-bottom: 30px;
 
   &.isExport {
     border: 1px solid $primary-color;
