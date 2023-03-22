@@ -1,6 +1,6 @@
 import InputBox from 'components/common/InputBox';
 import InputTilte from 'components/common/InputTitle';
-import BottomButton from 'components/common/BottomButton';
+import FooterButton from 'components/common/FooterButton';
 export default function NewPost() {
   return (
     <div>
@@ -32,7 +32,7 @@ export default function NewPost() {
         <InputTilte isRequire={true}> 내용 </InputTilte>
         <textarea className='text-body' placeholder='내용을 입력해주세요.(500자 이내)'></textarea>
       </div>
-      <BottomButton>등록하기</BottomButton>
+      <FooterButton>등록하기</FooterButton>
     </div>
   );
 }
