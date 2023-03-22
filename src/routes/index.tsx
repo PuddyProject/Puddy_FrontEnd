@@ -3,7 +3,7 @@ import Layout from 'layouts';
 import LayoutWithoutHeader from 'layouts/LayoutWithoutHeader';
 import LayoutWithoutNav from 'layouts/LayoutWithoutNav';
 
-import { Qna, Main, Login, Community, NewPost, MyPage } from 'pages';
+import { Qna, Main, Login, Community, NewPost, MyPage, QnaDetail } from 'pages';
 
 export default function Router() {
   return (
@@ -17,6 +17,7 @@ export default function Router() {
 
       <Route path='/' element={<LayoutWithoutNav />}>
         <Route path='/qna/newpost' element={<NewPost />} />
+        <Route path='/qna/detail' element={<QnaDetail />} />
       </Route>
 
       <Route path='/' element={<LayoutWithoutHeader />}>
