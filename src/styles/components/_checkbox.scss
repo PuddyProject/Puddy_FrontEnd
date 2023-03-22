@@ -1,0 +1,39 @@
+@use '../abstracts' as *;
+
+.check-box-container {
+  @include center;
+  vertical-align: middle;
+  padding-top: 5px;
+  margin-left: 5px;
+  margin-bottom: 10px;
+
+  & label {
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+
+  & input[type='checkbox'] {
+    width: 16px;
+    height: 16px;
+    border: 2px solid $color-gray04;
+    margin: 0;
+    margin-right: 5px;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+    transition: all 0.2s;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+
+    &:checked::after {
+      content: '✔';
+      color: $primary-color;
+      text-align: center;
+      border: none;
+      position: absolute;
+      top: -4px;
+      left: 1px;
+    }
+  }
+}
