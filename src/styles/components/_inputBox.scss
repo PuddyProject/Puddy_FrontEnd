@@ -9,7 +9,7 @@
   transition: all 0.3s;
 
   &::placeholder {
-    color: $icon-color;
+    color: $color-gray03;
   }
 
   &:focus {
@@ -28,10 +28,17 @@
   .is-required {
     color: $primary-color;
     font-weight: 700;
+    margin-left: 3px;
   }
 
   .vaild-text {
     font-size: 10px;
     color: $warnig-color;
+  }
+}
+
+.ph-align-right {
+  &::placeholder {
+    text-align: right;
   }
 }
