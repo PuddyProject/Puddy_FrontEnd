@@ -1,0 +1,53 @@
+@use '../abstracts' as *;
+
+.qna-container {
+  @include header-gap;
+  display: flex;
+  flex-direction: column;
+  padding: 0px 20px;
+
+  .qna-title {
+    @include font-styles(18px, 700, $color-gray01);
+  }
+
+  .qna-sub-title {
+    @include font-styles(13px, 300, $color-gray01);
+    padding-left: 10px;
+    margin-top: 8px;
+
+    span {
+      @include font-styles(13px, 700, $color-gray01);
+    }
+  }
+
+  .qna-card {
+    border-radius: 10px;
+    width: 100%;
+    margin: 10px 5px;
+    background-color: $bg-color;
+    padding: 15px;
+    filter: drop-shadow(0px 0px 10px $shadow-color);
+
+    .body {
+      @include font-styles(14px, 300, $color-gray01);
+      margin-top: 10px;
+      margin-bottom: 15px;
+    }
+
+    .bottom-section {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .answer-text {
+      @include font-styles(12px, 800, $primary-color);
+    }
+
+    .writer-text {
+      @include font-styles(12px, 300, $color-gray01);
+    }
+    .title-category {
+      color: $primary-color;
+    }
+  }
+}
