@@ -1,5 +1,17 @@
+@use '../abstracts' as *;
+
 * {
   box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+
+  &:link,
+  &:visited,
+  &:hover {
+    color: $color-gray01;
+  }
 }
 
 html,

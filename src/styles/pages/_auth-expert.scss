@@ -1,0 +1,33 @@
+@use '../abstracts' as *;
+
+.auth-expert-container {
+  @include header-gap;
+  @include center;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.auth-expert-title {
+  font-size: 1.4rem;
+  line-height: 1.8rem;
+  text-align: center;
+  margin-top: 80px;
+  margin-bottom: 30px;
+
+  & strong:first-child {
+    color: $primary-color;
+    font-weight: 600;
+  }
+
+  & strong:last-child {
+    font-weight: 600;
+  }
+}
+
+.auth-expert-allowed {
+  font-size: 1.1rem;
+  word-spacing: -2px;
+  line-height: 1.6rem;
+  color: $color-gray02;
+  text-align: right;
+}

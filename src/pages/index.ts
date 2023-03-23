@@ -6,3 +6,4 @@ export { default as NewPost } from './QnaNewPost';
 export { default as MyPage } from './MyPage';
 export { default as Community } from './Community';
 export { default as PetProfileEditor } from './PetProfileEditor';
+export { default as AuthExpert } from './AuthExpert';

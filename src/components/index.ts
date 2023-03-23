@@ -6,3 +6,4 @@ export { default as Message } from './common/Message';
 export { default as TextArea } from './common/TextArea';
 export { default as Checkbox } from './common/Checkbox';
 export { default as RadioButton } from './common/RadioButton';
+export { default as FileInput } from './common/FileInput';

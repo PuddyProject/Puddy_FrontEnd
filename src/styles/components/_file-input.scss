@@ -1,0 +1,27 @@
+@use '../abstracts' as *;
+
+.file-input-label {
+  @include center;
+  justify-content: flex-start;
+  width: 250px;
+  font-size: 1.2rem;
+  padding-left: 15px;
+  color: $color-gray02;
+  cursor: pointer;
+
+  span {
+    width: 250px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+}
+
+.input-file {
+  position: absolute;
+  width: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+}
