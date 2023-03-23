@@ -6,6 +6,7 @@ export enum Tier {
 export interface MypageListItem {
   tier: Tier;
   title: string;
+  url?: string;
   icon?: boolean;
 }
 
@@ -17,10 +18,12 @@ export const myPageList: Array<MypageListItem> = [
   {
     tier: Tier.CONTENT_NAME,
     title: '내가 쓴 게시글/댓글',
+    url: '/mypage/posts',
   },
   {
     tier: Tier.CONTENT_NAME,
     title: '즐겨찾기',
+    url: '/mypage/bookmarks',
   },
   {
     tier: Tier.TITLE,
@@ -29,6 +32,7 @@ export const myPageList: Array<MypageListItem> = [
   {
     tier: Tier.CONTENT_NAME,
     title: '전문가 인증하기',
+    url: '/mypage/experts',
     icon: true,
   },
   {
@@ -38,9 +42,11 @@ export const myPageList: Array<MypageListItem> = [
   {
     tier: Tier.CONTENT_NAME,
     title: '계정',
+    url: '/mypage/account',
   },
   {
     tier: Tier.CONTENT_NAME,
     title: '알림',
+    url: '/mypage/alarm',
   },
 ];

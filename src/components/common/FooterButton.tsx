@@ -1,10 +1,10 @@
 interface FooterButtonProps {
-  children?: string;
-  onClick?: () => void;
+  children?: React.ReactNode;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 export default function FooterButton({ children, onClick }: FooterButtonProps) {
   return (
-    <button className='footer-button' onClick={onClick}>
+    <button onClick={onClick} className='footer-button'>
       {children}
     </button>
   );
