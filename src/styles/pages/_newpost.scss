@@ -24,6 +24,11 @@
   border: 1px solid $color-gray04;
   color: $icon-color;
   border-radius: 10px;
+
+  &.select {
+    color: $primary-color;
+    border: 1px solid $primary-color;
+  }
 }
 
 .image-container {
@@ -33,20 +38,13 @@
 }
 
 .image-item {
-  background-color: $color-gray05;
-  width: 65px;
-  height: 68px;
-  border: 1px solid $color-gray04;
-  border-radius: 10px;
+  @include qna-image-box($color-gray04);
+  object-fit: cover;
 }
 
-.image-add-item {
-  width: 65px;
-  height: 68px;
-  border: 1px solid $color-gray04;
-  border-radius: 10px;
+.image-item-add-button {
+  @include qna-image-box($bg-color);
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -56,6 +54,7 @@
   font-size: 25px;
   font-weight: 600;
   margin-bottom: 3px;
+  text-align: center;
 }
 
 .image-add-item-text {
