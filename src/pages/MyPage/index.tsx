@@ -1,6 +1,7 @@
 import { FiSettings as SettingIcon } from 'react-icons/fi';
 import { Button } from 'components';
 import { Tier, myPageList, MypageListItem } from 'constants/myPageList';
+import { Link } from 'react-router-dom';
 
 const TEMP_IMAGE_URL =
   'https://blog.kakaocdn.net/dn/GHYFr/btrsSwcSDQV/UQZxkayGyAXrPACyf0MaV1/img.jpg';
@@ -22,13 +23,13 @@ const MenuItems = (list: Array<MypageListItem>) => {
         {isTitle ? (
           <h2 className='menu-title'>{item.title}</h2>
         ) : (
-          <>
+          <Link to={item.url ? item.url : ''}>
             <p className='menu-content' tabIndex={0} role='button'>
               {item.title}
             </p>
             {/* // TODO: '?' 아이콘 추가 후 클릭 시 모달 띄우기
             {item.icon && <button className='qu estion-mark-icon'>전문가가 무엇인가요?</button>} */}
-          </>
+          </Link>
         )}
       </li>
     );
