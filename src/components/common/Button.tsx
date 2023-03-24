@@ -4,7 +4,7 @@ import classnames from 'classnames';
 const cn = classnames;
 
 interface ButtonProps {
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent) => void;
   fontWeight?: string;
   fontSize?: string;
   children: React.ReactNode;
@@ -13,6 +13,7 @@ interface ButtonProps {
   outline?: boolean;
   margin?: string;
   padding?: string;
+  secondStyle?: boolean;
 }
 
 export default function Button({
@@ -25,6 +26,7 @@ export default function Button({
   onClick,
   margin,
   padding,
+  secondStyle,
 }: ButtonProps) {
   const buttonStyle = {
     fontWeight,
@@ -33,10 +35,15 @@ export default function Button({
     padding,
     width,
     height,
+    secondStyle,
   };
 
   return (
-    <button className={cn('button', width, height, { outline })} style={buttonStyle}>
+    <button
+      onClick={onClick}
+      className={cn('button', width, height, { outline, secondStyle })}
+      style={buttonStyle}
+    >
       {children}
     </button>
   );
