@@ -14,6 +14,7 @@ interface ButtonProps {
   margin?: string;
   padding?: string;
   secondStyle?: boolean;
+  deactivationStyle?: boolean;
 }
 
 export default function Button({
@@ -27,6 +28,7 @@ export default function Button({
   margin,
   padding,
   secondStyle,
+  deactivationStyle,
 }: ButtonProps) {
   const buttonStyle = {
     fontWeight,
@@ -36,12 +38,13 @@ export default function Button({
     width,
     height,
     secondStyle,
+    deactivationStyle,
   };
 
   return (
     <button
       onClick={onClick}
-      className={cn('button', width, height, { outline, secondStyle })}
+      className={cn('button', width, height, { outline, secondStyle, deactivationStyle })}
       style={buttonStyle}
     >
       {children}
