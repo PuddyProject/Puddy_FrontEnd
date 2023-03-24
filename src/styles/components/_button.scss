@@ -37,4 +37,9 @@ $SM_SIZE: 100px;
     color: $color-gray02;
     border: 1px solid $color-gray02;
   }
+
+  &.deactivationStyle {
+    color: $color-gray04;
+    border: 1px solid $color-gray04;
+  }
 }
