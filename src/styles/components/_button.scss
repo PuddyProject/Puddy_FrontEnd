@@ -32,4 +32,9 @@ $SM_SIZE: 100px;
       box-shadow: 2px 2px 10px $color-gray05;
     }
   }
+
+  &.secondStyle {
+    color: $color-gray02;
+    border: 1px solid $color-gray02;
+  }
 }
