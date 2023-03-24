@@ -10,26 +10,24 @@ export default function Signup() {
         <strong className='bold'>회원가입 후 이용</strong>하실 수 있어요. 😊
       </h2>
       <div className='signup-datas'>
-        {/* <div className='user-id'> */}
         <InputTitle isRequire>아이디</InputTitle>
         <div className='duplicate-check-container'>
-          <InputBox width='100%' placeholder='아이디를 입력해주세요.' />
+          <InputBox required width='100%' placeholder='아이디를 입력해주세요.' />
           <Button>중복 확인</Button>
-          {/* </div> */}
         </div>
 
         <InputTitle isRequire>비밀번호</InputTitle>
-        <InputBox width='100%' type='password' placeholder='비밀번호를 입력해주세요.' />
+        <InputBox required width='100%' type='password' placeholder='비밀번호를 입력해주세요.' />
 
         <InputTitle isRequire>비밀번호 확인</InputTitle>
-        <InputBox width='100%' type='password' placeholder='비밀번호를 입력해주세요.' />
+        <InputBox required width='100%' type='password' placeholder='비밀번호를 입력해주세요.' />
 
         <InputTitle isRequire>이름</InputTitle>
-        <InputBox width='100%' placeholder='이름을 입력해주세요.' />
+        <InputBox required width='100%' placeholder='이름을 입력해주세요.' />
 
         <InputTitle isRequire>이메일</InputTitle>
         <div className='duplicate-check-container'>
-          <InputBox width='100%' type='email' placeholder='이메일을 입력해주세요.' />
+          <InputBox required width='100%' type='email' placeholder='이메일을 입력해주세요.' />
           <Button>중복 확인</Button>
         </div>
 
