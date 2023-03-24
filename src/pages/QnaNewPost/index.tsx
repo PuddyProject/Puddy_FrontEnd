@@ -1,14 +1,18 @@
 import InputBox from 'components/common/InputBox';
 import InputTilte from 'components/common/InputTitle';
 import FooterButton from 'components/common/FooterButton';
-import { useEffect, useState, FormEvent } from 'react';
+import { useState, FormEvent } from 'react';
 import { categoryItem } from 'constants/qnaNewPost';
+import checkExtensions from 'utils/checkExtensions';
 import axios from 'axios';
+import checkFileSize from 'utils/checkFileSize';
+
 interface PostInfo {
   title: string;
   content: string;
   category: string;
 }
+
 export default function NewPost() {
   const [postInfo, setPostInfo] = useState<PostInfo>({
     content: '',
@@ -37,10 +41,21 @@ export default function NewPost() {
 
   const onFileChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (filePreview.length >= 3) {
-      alert('최대 파일 갯수는 3개 입니다.');
+      alert('최대 업로드 가능한 파일 개수는 3개입니다.');
       return;
     }
+
     const files = e.target.files as FileList;
+    const isValidImageExtensions = checkExtensions(files!);
+    const isRightSize = checkFileSize(files!);
+    if (!isValidImageExtensions) {
+      alert('.jpg, .jpeg, .png, .gif 확장자만 업로드 할 수 있어요.');
+      return;
+    }
+    if (!isRightSize) {
+      alert('최대 10MB까지 업로드할 수 있어요.');
+      return;
+    }
     // eslint-disable-next-line semi-spacing
     for (let i = 0; i < files.length; i++) {
       setImgFile((prev) => [...prev, files[i]]);
@@ -48,7 +63,7 @@ export default function NewPost() {
     }
   };
 
-  const onSendDate = () => {
+  const onSendData = () => {
     const formData = new FormData();
     formData.append('requiest', new Blob([JSON.stringify(postInfo)], { type: 'application/json' }));
     formData.append('imgFile', imgFile[0]);
@@ -60,11 +75,11 @@ export default function NewPost() {
         <InputTilte isRequire={true}>카테고리 </InputTilte>
         <div className='category-container'>
           {categoryItem.map((category) => {
-            const isSlected = category === postInfo.category;
+            const isSelected = category === postInfo.category;
 
             return (
               <div
-                className={`category-item ${isSlected ? 'select' : ''}`}
+                className={`category-item ${isSelected ? 'select' : ''}`}
                 id='category'
                 onClick={onClickHandler}
               >
@@ -115,7 +130,7 @@ export default function NewPost() {
           defaultValue={postInfo.content}
         ></textarea>
       </div>
-      <FooterButton onClick={onSendDate}>등록하기</FooterButton>
+      <FooterButton onClick={onSendData}>등록하기</FooterButton>
     </div>
   );
 }
