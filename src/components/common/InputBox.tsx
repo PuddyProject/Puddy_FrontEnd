@@ -9,6 +9,8 @@ interface InputBoxProps {
   placeholderAlignRight?: boolean;
   value?: string;
   id?: string;
+  min?: string;
+  max?: string;
 }
 
 export default function InputBox({
@@ -19,6 +21,8 @@ export default function InputBox({
   placeholderAlignRight,
   value,
   id,
+  max,
+  min,
   required = false,
   type = 'text',
   placeholder = '텍스트를 입력하세요.',
@@ -32,7 +36,8 @@ export default function InputBox({
 
   return (
     <input
-      min={0}
+      min={min}
+      max={max}
       ref={inputRef}
       required={required}
       className={`input-box ${placeholderAlignRight ? 'ph-align-right' : ''}`}
