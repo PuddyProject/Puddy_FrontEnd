@@ -83,10 +83,10 @@ export default function PetProfileEditor() {
           <InputTitle isRequire>성별</InputTitle>
           <div className='gender-buttons'>
             <RadioButton required name='gender' value='여아'>
-              여아
+              암컷
             </RadioButton>
             <RadioButton required name='gender' value='여아'>
-              남아
+              수컷
             </RadioButton>
           </div>
           <Checkbox text={'중성화 수술을 했어요.'} />
