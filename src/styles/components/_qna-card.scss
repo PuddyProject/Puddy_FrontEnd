@@ -19,7 +19,6 @@
 
   .body {
     @include font-styles(14px, 400, $color-gray01);
-
     margin-top: 10px;
     margin-bottom: 30px;
     text-overflow: ellipsis;
