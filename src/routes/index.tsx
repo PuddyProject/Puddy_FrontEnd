@@ -13,10 +13,11 @@ import {
   QnaDetail,
   AuthExpert,
   Signup,
+  PetProfile,
   PetProfileEditor,
+  ExpertProfile,
   ExpertProfileEditor,
 } from 'pages';
-import ExpertProfile from 'pages/ExpertProfile';
 
 export default function Router() {
   return (
@@ -41,6 +42,7 @@ export default function Router() {
 
         {/* 프로필 보기 */}
         <Route path='/experts/:id' element={<ExpertProfile />} />
+        <Route path='/mypage/pets' element={<PetProfile />} />
       </Route>
 
       <Route path='/' element={<LayoutWithoutHeader />}>
