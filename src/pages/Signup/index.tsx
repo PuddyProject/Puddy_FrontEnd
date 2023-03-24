@@ -1,5 +1,4 @@
-import { Button, Checkbox, InputBox, InputTitle } from 'components';
-import FooterButton from 'components/common/FooterButton';
+import { Button, Checkbox, InputBox, InputTitle, FooterButton } from 'components';
 
 export default function Signup() {
   return (

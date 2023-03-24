@@ -1,9 +1,10 @@
-import Logo from 'assets/Logo.svg';
+import React, { useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+
 import { Button, InputBox, Message } from 'components/index';
 import { Google, Naver, Kakao } from 'assets/login/symbols';
 
-import React, { useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import Logo from 'assets/Logo.svg';
 
 export default function Login() {
   const inputRef = useRef<HTMLInputElement>(null);

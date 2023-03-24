@@ -1,7 +1,9 @@
 import { FiSettings as SettingIcon } from 'react-icons/fi';
-import { Button } from 'components';
-import { Tier, myPageList, MypageListItem } from 'constants/myPageList';
 import { Link } from 'react-router-dom';
+
+import { Button } from 'components';
+
+import { Tier, myPageList, MypageListItem } from 'constants/myPageList';
 
 const TEMP_IMAGE_URL =
   'https://blog.kakaocdn.net/dn/GHYFr/btrsSwcSDQV/UQZxkayGyAXrPACyf0MaV1/img.jpg';
