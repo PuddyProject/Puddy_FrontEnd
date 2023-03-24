@@ -9,7 +9,6 @@ interface InputBoxProps {
   placeholderAlignRight?: boolean;
   value?: string;
   id?: string;
-  onChange?: (e: any) => void;
 }
 
 export default function InputBox({
@@ -19,7 +18,6 @@ export default function InputBox({
   padding,
   placeholderAlignRight,
   value,
-  onChange,
   id,
   required = false,
   type = 'text',
@@ -43,7 +41,6 @@ export default function InputBox({
       id={id}
       placeholder={placeholder}
       defaultValue={value}
-      onChange={onChange}
     ></input>
   );
 }
