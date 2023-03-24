@@ -8,3 +8,4 @@ export { default as Checkbox } from './common/Checkbox';
 export { default as RadioButton } from './common/RadioButton';
 export { default as QnaCard } from './common/QnaCard';
 export { default as FileInput } from './common/FileInput';
+export { default as FooterButton } from './common/FooterButton';
