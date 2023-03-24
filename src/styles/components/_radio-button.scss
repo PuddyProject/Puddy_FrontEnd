@@ -27,12 +27,13 @@
     -webkit-appearance: none;
 
     &:checked + .label-text {
-      color: white;
+      color: $primary-color;
+      font-weight: 600;
     }
 
     &:checked {
-      background-color: $secondary-color02;
       border: none;
+      border: 1px solid $primary-color;
       border-radius: 10px;
     }
   }
@@ -41,4 +42,19 @@
     margin: 0;
     cursor: pointer;
   }
+}
+
+.read-only {
+  &:checked + .label-text {
+    color: white;
+  }
+
+  &:checked {
+    background-color: white;
+    border: none;
+    border-radius: 10px;
+  }
+}
+
+.read-only .checked {
 }
