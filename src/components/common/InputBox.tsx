@@ -11,6 +11,7 @@ interface InputBoxProps {
   id?: string;
   min?: string;
   max?: string;
+  readonly?: boolean;
 }
 
 export default function InputBox({
@@ -23,6 +24,7 @@ export default function InputBox({
   id,
   max,
   min,
+  readonly,
   required = false,
   type = 'text',
   placeholder = '텍스트를 입력하세요.',
@@ -36,6 +38,7 @@ export default function InputBox({
 
   return (
     <input
+      readOnly={readonly}
       min={min}
       max={max}
       ref={inputRef}
