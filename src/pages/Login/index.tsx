@@ -3,6 +3,7 @@ import { Button, InputBox, Message } from 'components/index';
 import { Google, Naver, Kakao } from 'assets/login/symbols';
 
 import React, { useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Login() {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -30,7 +31,7 @@ export default function Login() {
           <span tabIndex={0}>아이디/비밀번호 찾기</span>
           <span className='vertical-bar'>|</span>
           <span className='join' tabIndex={0}>
-            회원가입
+            <Link to='/auth/signup'>회원가입</Link>
           </span>
         </div>
       </form>
