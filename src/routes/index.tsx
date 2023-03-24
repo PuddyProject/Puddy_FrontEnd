@@ -16,6 +16,7 @@ import {
   PetProfileEditor,
   ExpertProfileEditor,
 } from 'pages';
+import ExpertProfile from 'pages/ExpertProfile';
 
 export default function Router() {
   return (
@@ -34,8 +35,12 @@ export default function Router() {
 
         <Route path='/mypage/experts' element={<AuthExpert />} />
 
+        {/* 프로필 작성 */}
         <Route path='/profile/pets' element={<PetProfileEditor />} />
         <Route path='/profile/experts' element={<ExpertProfileEditor />} />
+
+        {/* 프로필 보기 */}
+        <Route path='/experts/:id' element={<ExpertProfile />} />
       </Route>
 
       <Route path='/' element={<LayoutWithoutHeader />}>
