@@ -5,6 +5,11 @@
   display: flex;
   flex-direction: column;
   padding: 0px 20px;
+  margin-bottom: 60px;
+
+  .qna-title-section {
+    margin-bottom: 15px;
+  }
 
   .qna-title {
     @include font-styles(18px, 700, $color-gray01);
@@ -32,6 +37,7 @@
       @include font-styles(14px, 300, $color-gray01);
       margin-top: 10px;
       margin-bottom: 15px;
+      line-height: 20px;
     }
 
     .bottom-section {
