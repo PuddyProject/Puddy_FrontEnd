@@ -3,13 +3,21 @@ interface RadioButtonProps {
   value: string;
   children: React.ReactNode;
   required?: boolean;
+  readonly?: boolean;
 }
 
-export default function RadioButton({ name, value, children, required }: RadioButtonProps) {
+export default function RadioButton({
+  name,
+  value,
+  children,
+  required,
+  readonly,
+}: RadioButtonProps) {
   return (
     <div className='radio-button-container'>
-      <label>
+      <label className={`${readonly && 'read-only'}`}>
         <input
+          readOnly={readonly}
           required={required}
           className='radio-button'
           name={name}
