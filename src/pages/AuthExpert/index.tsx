@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { FileInput } from 'components';
 import FooterButton from 'components/common/FooterButton';
+import checkFileSize from 'utils/checkFileSize';
 
 export default function AuthExpert() {
   const [fileUploaderText, setFileUploaderText] = useState('파일 첨부');
@@ -12,17 +13,6 @@ export default function AuthExpert() {
       const extension = file.name.split('.').pop();
       if (ALLOWED_FILE_EXTENSIONS.includes(extension!)) return true;
       return false;
-    }
-
-    return true;
-  };
-
-  const checkFileSize = (files: FileList) => {
-    const MAX_FILE_SIZE = 10 * 1024 * 1024;
-
-    for (const file of [...files]) {
-      const size = file.size;
-      if (size > MAX_FILE_SIZE) return false;
     }
 
     return true;

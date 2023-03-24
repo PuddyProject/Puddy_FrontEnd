@@ -1,7 +1,7 @@
 import { Checkbox, InputBox, InputTitle, RadioButton, TextArea } from 'components';
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { HiPlus as PlusIcon } from 'react-icons/hi';
-
+import checkExtensions from 'utils/checkExtensions';
 interface Profile {
   imgFile?: File;
   name: string;
@@ -19,16 +19,6 @@ export default function PetProfileEditor() {
 
   const [profileImg, setProfileImg] = useState('');
   const [petProfile, setPetProfile] = useState<Profile>();
-
-  const checkExtensions = (files: FileList) => {
-    const ALLOWED_FILE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif'];
-
-    for (const file of [...files]) {
-      const extensions = file.name.split('.').pop();
-      if (extensions && !ALLOWED_FILE_EXTENSIONS.includes(extensions)) return false;
-      return true;
-    }
-  };
 
   const onKeyDown = () => (e: React.KeyboardEvent<HTMLLabelElement>) => {
     const isEnter = e.key === 'Enter';
