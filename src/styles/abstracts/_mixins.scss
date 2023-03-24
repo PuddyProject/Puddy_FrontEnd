@@ -36,11 +36,3 @@
   position: absolute;
   overflow: hidden;
 }
-
-@mixin qna-image-box($background-color) {
-  background-color: $background-color;
-  width: 65px;
-  height: 68px;
-  border: 1px solid #e5e5e5;
-  border-radius: 10px;
-}

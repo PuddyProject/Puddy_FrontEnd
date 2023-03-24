@@ -1,5 +1,13 @@
 @use '../abstracts' as *;
 
+@mixin qna-image-box($background-color) {
+  background-color: $background-color;
+  width: 65px;
+  height: 68px;
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+}
+
 .qna-newpost-main {
   padding: 15px 30px 30px 30px;
   position: relative;
