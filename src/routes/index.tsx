@@ -3,8 +3,19 @@ import Layout from 'layouts';
 import LayoutWithoutHeader from 'layouts/LayoutWithoutHeader';
 import LayoutWithoutNav from 'layouts/LayoutWithoutNav';
 
-import { Qna, Main, Login, Community, NewPost, MyPage, QnaDetail, AuthExpert, Signup } from 'pages';
-import PetProfileEditor from 'pages/PetProfileEditor';
+import {
+  Qna,
+  Main,
+  Login,
+  Community,
+  NewPost,
+  MyPage,
+  QnaDetail,
+  AuthExpert,
+  Signup,
+  PetProfileEditor,
+  ExpertProfileEditor,
+} from 'pages';
 
 export default function Router() {
   return (
@@ -15,14 +26,16 @@ export default function Router() {
         <Route path='/community' element={<Community />} />
 
         <Route path='/mypage' element={<MyPage />} />
-
-        <Route path='/pets/profiles' element={<PetProfileEditor />} />
       </Route>
 
       <Route path='/' element={<LayoutWithoutNav />}>
         <Route path='/qna/newpost' element={<NewPost />} />
         <Route path='/qna/detail' element={<QnaDetail />} />
+
         <Route path='/mypage/experts' element={<AuthExpert />} />
+
+        <Route path='/profile/pets' element={<PetProfileEditor />} />
+        <Route path='/profile/experts' element={<ExpertProfileEditor />} />
       </Route>
 
       <Route path='/' element={<LayoutWithoutHeader />}>
