@@ -1,0 +1,39 @@
+.carousel-container {
+  display: flex;
+  margin-top: 15px;
+  width: 90vw;
+  gap: 5px;
+
+  div:nth-child(1) {
+    width: 320px;
+  }
+
+  .carousel-item {
+    flex-shrink: 0;
+    width: 94%;
+    height: 150px;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.carousel-div {
+  overflow: hidden;
+}
+
+.circle-container {
+  height: 30px;
+  display: flex;
+  gap: 5px;
+  margin-top: 15px;
+  justify-content: center;
+
+  .circle-item {
+    width: 5px;
+    height: 5px;
+    border-radius: 10px;
+  }
+}
