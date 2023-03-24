@@ -74,11 +74,12 @@ export default function NewPost() {
       <div className='qna-newpost-main' onChange={onChangeHandler}>
         <InputTilte isRequire={true}>카테고리 </InputTilte>
         <div className='category-container'>
-          {categoryItem.map((category) => {
+          {categoryItem.map((category, i) => {
             const isSelected = category === postInfo.category;
 
             return (
               <div
+                key={i}
                 className={`category-item ${isSelected ? 'select' : ''}`}
                 id='category'
                 onClick={onClickHandler}
@@ -116,9 +117,9 @@ export default function NewPost() {
             .fill(0)
             .map((_, i) => {
               return filePreview[i] !== undefined ? (
-                <img className='image-item' src={filePreview[i]} alt='error' />
+                <img key={i} className='image-item' src={filePreview[i]} alt='error' />
               ) : (
-                <div className='image-item' />
+                <div key={i} className='image-item' />
               );
             })}
         </div>
