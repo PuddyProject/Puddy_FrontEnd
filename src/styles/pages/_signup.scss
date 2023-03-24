@@ -1,0 +1,65 @@
+@use '../abstracts' as *;
+
+.signup-container {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 340px;
+  padding: 25px;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+
+  input:not([type='checkbox']) {
+    margin-bottom: 10px;
+  }
+}
+
+.signup-title {
+  font-size: 1.7rem;
+  line-height: 2.3rem;
+  text-align: left;
+  margin-bottom: 10px;
+
+  .bold {
+    font-weight: 800;
+  }
+}
+
+.signup-datas {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  .duplicate-check-container {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+
+    & :first-child {
+      flex-basis: 100%;
+    }
+
+    & :last-child {
+      flex-basis: 50%;
+    }
+  }
+}
+
+.notification {
+  .check-box-container {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: start;
+    margin: 0;
+
+    label {
+      font-size: 14px;
+      font-weight: 600;
+      margin-right: 10px;
+    }
+  }
+}
+
+.notification-message {
+  font-size: 0.9rem;
+}

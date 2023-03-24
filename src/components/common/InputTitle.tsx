@@ -1,5 +1,6 @@
 interface InputBoxProps {
   children: string;
+  id?: string;
   width?: string;
   vaildText?: string;
   isVaildText?: boolean;
@@ -8,6 +9,7 @@ interface InputBoxProps {
 
 export default function InputTilte({
   children,
+  id,
   width,
   vaildText,
   isVaildText = false,
@@ -17,7 +19,9 @@ export default function InputTilte({
   return (
     <div className='input-title' style={titleStyle}>
       <span>
-        <span className='title-text'>{children}</span>
+        <span id={id} className='title-text'>
+          {children}
+        </span>
         {isRequire && <span className='is-required'>*</span>}
       </span>
       {isVaildText && <span className='vaild-text'>{vaildText}</span>}
