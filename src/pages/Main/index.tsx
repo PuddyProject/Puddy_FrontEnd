@@ -10,12 +10,6 @@ export default function Main() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [transX, setTransX] = useState(0);
 
-  const inrange = (v: number, min: number, max: number) => {
-    if (v < min) return min;
-    if (v > max) return max;
-    return v;
-  };
-
   return (
     <div className='main'>
       <div className='carousel-div'>
@@ -27,11 +21,12 @@ export default function Main() {
           }}
           {...dragEvent({
             onDragChange: (deltaX) => {
-              setTransX(inrange(deltaX, -308, 308));
+              setTransX(deltaX);
             },
             onDragEnd: (deltaX) => {
-              if (deltaX < -100) setCurrentIndex(inrange(currentIndex + 1, 0, MAX_INDEX));
-              if (deltaX > 100) setCurrentIndex(inrange(currentIndex - 1, 0, MAX_INDEX));
+              if (deltaX < -100)
+                setCurrentIndex(currentIndex === MAX_INDEX ? MAX_INDEX : currentIndex + 1);
+              if (deltaX > 100) setCurrentIndex(currentIndex === 0 ? 0 : currentIndex - 1);
               setTransX(0);
             },
           })}
