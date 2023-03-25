@@ -1,9 +1,22 @@
+import CustomHeader from 'components/common/CustomHeader';
 import FooterButton from 'components/common/FooterButton';
 import Comment from 'components/qnaDetail/Comment';
 
+import { useNavigate } from 'react-router-dom';
+
 export default function QnaDetail() {
+  const nav = useNavigate();
+
   return (
     <div>
+      <CustomHeader
+        left={'<'}
+        center='Q&A'
+        onClickLeft={() => {
+          nav(-1);
+        }}
+        right='bell'
+      />
       <div className='qna-detail-container'>
         <section className='title'>
           <div className='title-text'>
