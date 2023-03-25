@@ -1,7 +1,10 @@
-import { Checkbox, InputBox, InputTitle, RadioButton, TextArea } from 'components';
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { HiPlus as PlusIcon } from 'react-icons/hi';
+
+import { Checkbox, InputBox, InputTitle, RadioButton, TextArea, FooterButton } from 'components';
+
 import checkExtensions from 'utils/checkExtensions';
+
 interface Profile {
   imgFile?: File;
   name: string;
@@ -68,15 +71,22 @@ export default function PetProfileEditor() {
           <InputBox required width='250px' placeholder='품종을 입력해주세요.' />
 
           <InputTitle isRequire>나이</InputTitle>
-          <InputBox required type='number' width='250px' placeholder='나이를 입력해주세요.' />
+          <InputBox
+            min='0'
+            max='100'
+            required
+            type='number'
+            width='250px'
+            placeholder='나이를 입력해주세요.'
+          />
 
           <InputTitle isRequire>성별</InputTitle>
           <div className='gender-buttons'>
             <RadioButton required name='gender' value='여아'>
-              여아
+              암컷
             </RadioButton>
             <RadioButton required name='gender' value='여아'>
-              남아
+              수컷
             </RadioButton>
           </div>
           <Checkbox text={'중성화 수술을 했어요.'} />
@@ -88,6 +98,7 @@ export default function PetProfileEditor() {
           <TextArea placeholder='먹는 사료, 영양제, 간식, 건강상태 등' />
         </div>
       </form>
+      <FooterButton>등록하기</FooterButton>
     </>
   );
 }

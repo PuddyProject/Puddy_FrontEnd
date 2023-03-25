@@ -1,0 +1,66 @@
+@use '../abstracts' as *;
+
+/* 전문가 프로필 상단: 이름, 아이콘 */
+.profile.expert {
+  gap: 0;
+  margin-top: 0;
+}
+
+.expert + .dividing-line {
+  width: 100%;
+}
+
+.profile-expert_header {
+  @include center;
+  gap: 3px;
+  margin: 0 auto;
+  margin-top: 30px;
+
+  .profile-expert_name {
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
+
+  svg {
+    font-size: 1.6rem;
+    cursor: pointer;
+  }
+
+  .outline-star {
+    color: $icon-color;
+  }
+}
+
+.profile-expert_education {
+  font-size: 1.4rem;
+  color: $color-gray02;
+  margin-top: 7px;
+}
+
+/* 전문가 프로필 하단: 경력사항 등*/
+
+.profile-expert-contents-container {
+  margin-bottom: 5rem;
+
+  h5 {
+    color: $primary-color;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .content {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+  }
+}
+
+.profile-expert_content {
+  margin-top: 0.5rem;
+}
+
+.produce {
+  line-height: 1.7rem;
+  max-width: 260px;
+  word-break: keep-all;
+}

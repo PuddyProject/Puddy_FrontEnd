@@ -3,8 +3,21 @@ import Layout from 'layouts';
 import LayoutWithoutHeader from 'layouts/LayoutWithoutHeader';
 import LayoutWithoutNav from 'layouts/LayoutWithoutNav';
 
-import { Qna, Main, Login, Community, NewPost, MyPage, QnaDetail, AuthExpert, Signup } from 'pages';
-import PetProfileEditor from 'pages/PetProfileEditor';
+import {
+  Qna,
+  Main,
+  Login,
+  Community,
+  NewPost,
+  MyPage,
+  QnaDetail,
+  AuthExpert,
+  Signup,
+  PetProfile,
+  PetProfileEditor,
+  ExpertProfile,
+  ExpertProfileEditor,
+} from 'pages';
 
 export default function Router() {
   return (
@@ -15,14 +28,21 @@ export default function Router() {
         <Route path='/community' element={<Community />} />
 
         <Route path='/mypage' element={<MyPage />} />
-
-        <Route path='/pets/profiles' element={<PetProfileEditor />} />
       </Route>
 
       <Route path='/' element={<LayoutWithoutNav />}>
         <Route path='/qna/newpost' element={<NewPost />} />
         <Route path='/qna/detail' element={<QnaDetail />} />
+
         <Route path='/mypage/experts' element={<AuthExpert />} />
+
+        {/* 프로필 작성 */}
+        <Route path='/profile/pets' element={<PetProfileEditor />} />
+        <Route path='/profile/experts' element={<ExpertProfileEditor />} />
+
+        {/* 프로필 보기 */}
+        <Route path='/experts/:id' element={<ExpertProfile />} />
+        <Route path='/mypage/pets' element={<PetProfile />} />
       </Route>
 
       <Route path='/' element={<LayoutWithoutHeader />}>

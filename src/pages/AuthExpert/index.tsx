@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { FileInput } from 'components';
-import FooterButton from 'components/common/FooterButton';
+import { FileInput, FooterButton } from 'components';
+
 import checkFileSize from 'utils/checkFileSize';
 
 export default function AuthExpert() {

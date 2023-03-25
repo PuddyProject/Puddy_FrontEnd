@@ -1,0 +1,15 @@
+@use '../abstracts' as *;
+
+.expert-profile-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 100px;
+  margin-top: 30px;
+}
+
+.career-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

@@ -1,0 +1,62 @@
+@use '../abstracts' as *;
+
+.pet-profile-container {
+  margin-bottom: 100px;
+
+  input,
+  textarea {
+    cursor: auto;
+
+    &::placeholder {
+      color: $color-gray02;
+    }
+
+    &:focus {
+      border: 2px solid $color-gray04;
+    }
+  }
+
+  .check-box-container {
+    & label {
+      cursor: auto;
+    }
+
+    & input[type='checkbox'] {
+      cursor: auto;
+
+      &::after {
+        content: '';
+        color: $primary-color;
+        text-align: center;
+        border: none;
+        position: absolute;
+        top: -4px;
+        left: 1px;
+      }
+
+      &:checked::after {
+        content: '';
+        color: $primary-color;
+        text-align: center;
+        border: none;
+        position: absolute;
+        top: -4px;
+        left: 1px;
+      }
+
+      &:checked:focus {
+        border: 2px solid $color-gray04;
+      }
+    }
+  }
+}
+
+.gender-buttons {
+  button {
+    font-size: 12px;
+
+    &.outline:hover {
+      box-shadow: none;
+    }
+  }
+}

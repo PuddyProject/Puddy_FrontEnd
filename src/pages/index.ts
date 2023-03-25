@@ -8,3 +8,6 @@ export { default as Community } from './Community';
 export { default as PetProfileEditor } from './PetProfileEditor';
 export { default as AuthExpert } from './AuthExpert';
 export { default as Signup } from './Signup';
+export { default as ExpertProfileEditor } from './ExpertProfileEditor';
+export { default as ExpertProfile } from './ExpertProfile';
+export { default as PetProfile } from './PetProfile';
