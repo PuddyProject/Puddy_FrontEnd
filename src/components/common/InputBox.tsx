@@ -12,9 +12,11 @@ interface InputBoxProps {
   min?: string;
   max?: string;
   readonly?: boolean;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function InputBox({
+  onChange,
   inputRef,
   width,
   margin,
@@ -38,6 +40,7 @@ export default function InputBox({
 
   return (
     <input
+      onChange={onChange}
       readOnly={readonly}
       min={min}
       max={max}
