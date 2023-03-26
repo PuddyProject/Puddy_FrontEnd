@@ -18,7 +18,7 @@ export default function Login() {
       <form className='login-container'>
         <img src={Logo} className='logo' alt='puddy_logo' />
         <div className='inputs'>
-          <Message isWarning={true} message='아이디 또는 비밀번호가 일치하지 않아요.' />
+          <Message isWarning>아이디 또는 비밀번호가 일치하지 않아요.</Message>
           <InputBox
             inputRef={inputRef}
             required
