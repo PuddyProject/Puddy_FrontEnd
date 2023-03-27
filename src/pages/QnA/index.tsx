@@ -1,6 +1,7 @@
 import { QnaCard } from 'components';
 import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { Link } from 'react-router-dom';
 
 export default function Qna() {
   const [QnaList, setQnaList] = useState<JSX.Element[]>(Array(6).fill(<QnaCard />));
@@ -18,7 +19,7 @@ export default function Qna() {
         </div>
       </div>
       {QnaList.map((qnaItem) => {
-        return qnaItem;
+        return <Link to='detail'>{qnaItem}</Link>;
       })}
       <div ref={lastCardRef}></div>
     </div>
