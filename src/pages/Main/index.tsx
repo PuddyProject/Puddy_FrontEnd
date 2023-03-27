@@ -43,6 +43,7 @@ export default function Main() {
           .map((v, i) => {
             return (
               <div
+                key={i}
                 className='circle-item'
                 style={{
                   backgroundColor: currentIndex === i ? '#A9A9A9' : '#D9D9D9',
