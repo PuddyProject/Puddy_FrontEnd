@@ -40,3 +40,18 @@
   position: absolute;
   overflow: hidden;
 }
+
+@mixin ellipsis-text() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin multiline-ellipsis-text() {
+  display: -webkit-box;
+  word-wrap: break-word;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
