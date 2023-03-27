@@ -5,11 +5,12 @@ import { Link } from 'react-router-dom';
 
 export default function Qna() {
   const [QnaList, setQnaList] = useState<JSX.Element[]>(Array(6).fill(<QnaCard />));
-
   const [lastCardRef, inView] = useInView();
+
   useEffect(() => {
     setQnaList((prev) => [...prev, ...Array(6).fill(<QnaCard />)]);
   }, [inView]);
+
   return (
     <div className='qna-container'>
       <div className='qna-title-section'>
