@@ -8,6 +8,7 @@
   flex-direction: column;
   align-items: center;
   gap: 10px;
+  @include footer-gap;
 
   input:not([type='checkbox']) {
     margin-bottom: 10px;
