@@ -31,8 +31,8 @@ export default function Main() {
             },
           })}
         >
-          {COLOR.map((url, i) => (
-            <div key={i} style={{ backgroundColor: url }} className='carousel-item'></div>
+          {COLOR.map((color, i) => (
+            <div key={i} style={{ backgroundColor: color }} className='carousel-item'></div>
           ))}
         </div>
       </div>
@@ -40,7 +40,7 @@ export default function Main() {
       <div className='circle-container'>
         {Array(5)
           .fill(0)
-          .map((v, i) => {
+          .map((_, i) => {
             return (
               <div
                 key={i}
