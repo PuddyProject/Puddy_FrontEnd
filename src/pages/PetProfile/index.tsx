@@ -1,12 +1,4 @@
-import {
-  Button,
-  Checkbox,
-  FooterButton,
-  InputBox,
-  InputTitle,
-  RadioButton,
-  TextArea,
-} from 'components';
+import { Button, Checkbox, FooterButton, InputBox, InputTitle, TextArea } from 'components';
 
 const TEMP_IMAGE_URL =
   'https://blog.kakaocdn.net/dn/GHYFr/btrsSwcSDQV/UQZxkayGyAXrPACyf0MaV1/img.jpg';
