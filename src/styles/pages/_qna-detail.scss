@@ -4,44 +4,44 @@
   padding: 0px 35px;
   width: 100vw;
   margin-bottom: 80px;
-}
 
-.title {
-  font-size: 14px;
-  font-weight: 700;
-}
+  .title {
+    font-size: 14px;
+    font-weight: 700;
+  }
 
-.title-category {
-  color: $primary-color;
-  font-weight: 600;
-}
+  .title-category {
+    color: $primary-color;
+    font-weight: 600;
+  }
 
-.title-text {
-  margin-top: 30px;
-  color: $color-gray01;
-  line-height: 21px;
-}
+  .title-text {
+    margin-top: 30px;
+    color: $color-gray01;
+    line-height: 21px;
+  }
 
-.post-info {
-  margin: 40px 0px 15px 0px;
-  display: flex;
-  justify-content: space-between;
-}
+  .post-info {
+    margin: 40px 0px 15px 0px;
+    display: flex;
+    justify-content: space-between;
+  }
 
-.post-date {
-  font-size: 10px;
-  font-weight: 400;
-  color: $color-gray02;
+  .post-date {
+    font-size: 10px;
+    font-weight: 400;
+    color: $color-gray02;
+  }
+
+  .post-user {
+    font-size: 12px;
+    font-weight: 700;
+    color: $color-gray04;
+  }
 }
 
 .qna-divide-line {
   @include dividing-line(290px, $color-gray04);
-}
-
-.post-user {
-  font-size: 12px;
-  font-weight: 700;
-  color: $color-gray04;
 }
 
 .body-text {
@@ -74,8 +74,7 @@
 }
 
 .comment-title-conainer {
-  margin-top: 40px;
-  margin-bottom: 25px;
+  margin-top: 30px;
 
   .comment-title {
     font-size: 20px;
@@ -98,6 +97,7 @@
   border-radius: 10px;
   padding: 20px;
   margin-bottom: 30px;
+  margin-top: 20px;
 
   &.isExport {
     border: 1px solid $primary-color;
