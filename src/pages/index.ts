@@ -12,3 +12,4 @@ export { default as ExpertProfileEditor } from './ExpertProfileEditor';
 export { default as ExpertProfile } from './ExpertProfile';
 export { default as PetProfile } from './PetProfile';
 export { default as MyActivityInfo } from './MyActivityInfo';
+export { default as MyProfile } from './MyProfile';
