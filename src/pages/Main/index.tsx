@@ -54,10 +54,8 @@ export default function Main() {
       </div>
 
       <div className='button-container'>
-        <Button margin='10px' width='160px'>
-          Q&A 질문하기
-        </Button>
-        <Button margin='10px' outline width='160px'>
+        <Button width='160px'>Q&A 질문하기</Button>
+        <Button outline width='160px'>
           내 펫 등록하기
         </Button>
       </div>

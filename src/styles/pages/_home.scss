@@ -8,11 +8,12 @@
 
 .button-container {
   display: flex;
+  justify-content: space-around;
 }
 
 .qna-title {
-  font-weight: 800;
-  font-size: 18px;
+  font-weight: 700;
+  font-size: 16px;
   color: $color-gray01;
   padding-left: 10px;
   margin-top: 30px;
