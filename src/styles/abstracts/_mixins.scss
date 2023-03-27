@@ -22,6 +22,10 @@
   width: 100vw;
 }
 
+@mixin footer-gap() {
+  margin-bottom: 100px;
+}
+
 @mixin dividing-line($width, $color) {
   width: $width;
   border: none;
