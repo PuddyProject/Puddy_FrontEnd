@@ -18,6 +18,7 @@ import {
   ExpertProfile,
   ExpertProfileEditor,
   MyActivityInfo,
+  MyProfile,
 } from 'pages';
 
 export default function Router() {
@@ -44,6 +45,7 @@ export default function Router() {
         <Route path='/profile/experts' element={<ExpertProfileEditor />} />
 
         {/* 프로필 보기 */}
+        <Route path='/mypage/profile' element={<MyProfile />} />
         <Route path='/experts/:id' element={<ExpertProfile />} />
         <Route path='/mypage/pets' element={<PetProfile />} />
       </Route>
