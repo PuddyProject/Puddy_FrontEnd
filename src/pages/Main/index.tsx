@@ -1,4 +1,5 @@
 import Button from 'components/common/Button';
+import ExpertContainer from 'components/main/ExpertContainer';
 import QnaContainer from 'components/main/QnaContainer';
 import { useState } from 'react';
 import dragEvent from 'utils/dragEvent';
@@ -59,10 +60,9 @@ export default function Main() {
           내 펫 등록하기
         </Button>
       </div>
-      <div>
-        <QnaContainer title={'인기 Q&A'} />
-        <QnaContainer title={'최근 Q&A'} />
-      </div>
+      <QnaContainer title={'인기 Q&A'} />
+      <QnaContainer title={'최근 Q&A'} />
+      <ExpertContainer />
     </div>
   );
 }
