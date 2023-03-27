@@ -1,5 +1,5 @@
-import MainQnaCard from 'components/common/MainQnaCard';
-import { Link } from 'react-router-dom';
+import MainQnaCard from 'components/main/MainQnaCard';
+import PlusButton from 'components/common/PlusButton';
 
 interface QnaContainerProps {
   title: string;
@@ -15,12 +15,7 @@ export default function QnaContainer({ title }: QnaContainerProps) {
           .map((_, i) => {
             return <MainQnaCard key={i} />;
           })}
-        <div className='plus-button'>
-          <Link className='main-link' to='/qna'>
-            <div className='plus-button-circle'>&gt;</div>
-            <div>더보기</div>
-          </Link>
-        </div>
+        <PlusButton />
       </div>
     </>
   );
