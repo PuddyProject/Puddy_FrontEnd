@@ -1,0 +1,42 @@
+@use '../abstracts' as *;
+
+.tab-titles {
+  @include center;
+  width: 100vw;
+  max-width: 800px;
+  justify-content: space-around;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: $color-gray03;
+  margin: 0 auto;
+
+  & li {
+    margin-top: 2.5rem;
+    margin-bottom: 3rem;
+    position: relative;
+    transition: all 0.2s;
+  }
+
+  & li:hover {
+    color: $primary-color;
+    cursor: pointer;
+  }
+}
+
+.my-posts {
+  width: 90vw;
+  margin: 0 auto;
+}
+
+.active {
+  color: $primary-color;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -0.5rem;
+    width: 100%;
+    border-bottom: 2px solid $primary-color;
+  }
+}
