@@ -6,18 +6,16 @@ export default function NavBar() {
 
   return (
     <nav className='nav-bar'>
-      {navString.map((v, i) => {
+      {navString.map((nav, i) => {
         return (
           <div key={i} className='nav-item'>
-            {location.pathname === v[0] ? (
-              <Link key={i} className='nav-selected-link' to={v[0]}>
-                {v[1]}
-              </Link>
-            ) : (
-              <Link key={i} className='nav-link' to={v[0]}>
-                {v[1]}
-              </Link>
-            )}
+            <Link
+              key={i}
+              className={location.pathname === nav[0] ? 'nav-selected-link' : 'nav-link'}
+              to={nav[0]}
+            >
+              {nav[1]}
+            </Link>
           </div>
         );
       })}
