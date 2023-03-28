@@ -5,8 +5,10 @@ import { useState, FormEvent } from 'react';
 import { categoryItem } from 'constants/qnaNewPost';
 import checkExtensions from 'utils/checkExtensions';
 import checkFileSize from 'utils/checkFileSize';
-
 import { IoMdRemoveCircleOutline } from 'react-icons/io';
+import CustomHeader from 'components/common/CustomHeader';
+import { useNavigate } from 'react-router-dom';
+
 interface PostInfo {
   title: string;
   content: string;
@@ -21,6 +23,8 @@ export default function NewPost() {
   });
   const [filePreview, setFilePreview] = useState<string[]>([]);
   const [imgFile, setImgFile] = useState<File[]>([]);
+  const nav = useNavigate();
+
   const onChangeHandler = (e: FormEvent<HTMLElement>) => {
     if ((e.target as HTMLInputElement).id === 'imgFile') {
       return;
@@ -75,6 +79,13 @@ export default function NewPost() {
 
   return (
     <div>
+      <CustomHeader
+        left={'<'}
+        center='Q&A 등록'
+        onClickLeft={() => {
+          nav(-1);
+        }}
+      />
       <div className='qna-newpost-container' onChange={onChangeHandler}>
         <InputTilte isRequire={true}>카테고리 </InputTilte>
         <div className='category-container'>

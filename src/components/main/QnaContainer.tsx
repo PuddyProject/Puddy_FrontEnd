@@ -1,11 +1,12 @@
 import MainQnaCard from 'components/main/MainQnaCard';
 import PlusButton from 'components/common/PlusButton';
-
+import { useNavigate } from 'react-router-dom';
 interface QnaContainerProps {
   title: string;
 }
 
 export default function QnaContainer({ title }: QnaContainerProps) {
+  const nav = useNavigate();
   return (
     <>
       <div className='qna-title'>{title}</div>
@@ -15,7 +16,11 @@ export default function QnaContainer({ title }: QnaContainerProps) {
           .map((_, i) => {
             return <MainQnaCard key={i} />;
           })}
-        <PlusButton />
+        <PlusButton
+          onClick={() => {
+            nav('qna');
+          }}
+        />
       </div>
     </>
   );

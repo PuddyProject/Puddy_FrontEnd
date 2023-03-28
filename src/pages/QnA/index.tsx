@@ -1,11 +1,13 @@
 import { QnaCard } from 'components';
+import WriteButton from 'components/common/WriteButton';
 import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Qna() {
   const [QnaList, setQnaList] = useState<JSX.Element[]>(Array(6).fill(<QnaCard />));
   const [lastCardRef, inView] = useInView();
+  const nav = useNavigate();
 
   useEffect(() => {
     setQnaList((prev) => [...prev, ...Array(6).fill(<QnaCard />)]);
@@ -23,6 +25,11 @@ export default function Qna() {
         return <Link to='detail'>{qnaItem}</Link>;
       })}
       <div ref={lastCardRef}></div>
+      <WriteButton
+        onClick={() => {
+          nav('newpost');
+        }}
+      />
     </div>
   );
 }
