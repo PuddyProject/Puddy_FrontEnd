@@ -17,6 +17,8 @@ import {
   PetProfileEditor,
   ExpertProfile,
   ExpertProfileEditor,
+  MyActivityInfo,
+  MyProfileEditor,
 } from 'pages';
 
 export default function Router() {
@@ -33,13 +35,16 @@ export default function Router() {
       <Route path='/' element={<LayoutWithoutNav />}>
         <Route path='/qna/newpost' element={<NewPost />} />
 
+        {/* 마이페이지 메뉴 */}
         <Route path='/mypage/experts' element={<AuthExpert />} />
+        <Route path='/mypage/posts' element={<MyActivityInfo />} />
 
         {/* 프로필 작성 */}
         <Route path='/profile/pets' element={<PetProfileEditor />} />
         <Route path='/profile/experts' element={<ExpertProfileEditor />} />
 
         {/* 프로필 보기 */}
+        <Route path='/mypage/profile' element={<MyProfileEditor />} />
         <Route path='/experts/:id' element={<ExpertProfile />} />
         <Route path='/mypage/pets' element={<PetProfile />} />
       </Route>

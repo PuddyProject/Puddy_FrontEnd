@@ -7,7 +7,7 @@ const TEMP_IMAGE_URL =
 export default function ExpertProfile() {
   return (
     <>
-      <div className='container'>
+      <div className='expert-profile-container'>
         <section className='profile expert'>
           <img className='profile-image' src={TEMP_IMAGE_URL} alt='프로필 이미지' />
           <div className='profile-expert_header'>

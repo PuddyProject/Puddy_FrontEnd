@@ -1,12 +1,4 @@
-import {
-  Button,
-  Checkbox,
-  FooterButton,
-  InputBox,
-  InputTitle,
-  RadioButton,
-  TextArea,
-} from 'components';
+import { Button, Checkbox, FooterButton, InputBox, InputTitle, TextArea } from 'components';
 
 const TEMP_IMAGE_URL =
   'https://blog.kakaocdn.net/dn/GHYFr/btrsSwcSDQV/UQZxkayGyAXrPACyf0MaV1/img.jpg';
@@ -29,10 +21,10 @@ export default function PetProfile() {
           <InputTitle>성별</InputTitle>
           <div className='gender-buttons'>
             {/* //TODO: 선택한 성별 하나만 컬러 변경 */}
-            <Button width='120px' outline>
+            <Button disabled width='120px' outline>
               암컷
             </Button>
-            <Button width='120px' outline deactivationStyle>
+            <Button disabled width='120px' outline deactivationStyle>
               수컷
             </Button>
           </div>

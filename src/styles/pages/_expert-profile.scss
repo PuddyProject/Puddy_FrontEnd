@@ -1,5 +1,14 @@
 @use '../abstracts' as *;
 
+.expert-profile-container {
+  margin: 0 auto;
+  @include header-gap;
+  @include footer-gap;
+  @include center;
+  width: 250px;
+  align-items: flex-start;
+}
+
 /* 전문가 프로필 상단: 이름, 아이콘 */
 .profile.expert {
   gap: 0;

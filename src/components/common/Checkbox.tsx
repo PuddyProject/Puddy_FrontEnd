@@ -1,15 +1,36 @@
+import { useState } from 'react';
+
 interface CheckboxProps {
   text?: string;
+  isChecked?: boolean;
   checked?: boolean;
   required?: boolean;
   readonly?: boolean;
+  requestOnChange?: (isChecked: boolean) => void;
 }
 
-export default function Checkbox({ text, required, checked, readonly }: CheckboxProps) {
+export default function Checkbox({
+  requestOnChange,
+  text,
+  required,
+  checked,
+  readonly,
+}: CheckboxProps) {
+  const [isChecked, setIsChecked] = useState(checked);
+
+  const onChange = () => {
+    if (requestOnChange) {
+      requestOnChange(!isChecked);
+    }
+
+    setIsChecked((prev) => !prev);
+  };
+
   return (
     <div className='check-box-container'>
       <input
-        checked={checked}
+        onChange={onChange}
+        checked={isChecked}
         readOnly={readonly}
         required={required}
         type='checkbox'

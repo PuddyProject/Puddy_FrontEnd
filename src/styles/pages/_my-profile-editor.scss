@@ -1,0 +1,33 @@
+@use '../abstracts' as *;
+
+.profile-container {
+  @include center;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+
+  .nickname {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .nickname strong {
+    font-size: 1.2rem;
+  }
+}
+
+.nickname-duplicate-check-container {
+  display: flex;
+  width: 100%;
+  gap: 15px;
+  max-width: 300px;
+
+  input {
+    flex-basis: 100%;
+  }
+
+  button {
+    flex-basis: 50%;
+  }
+}

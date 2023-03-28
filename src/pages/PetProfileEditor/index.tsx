@@ -1,7 +1,15 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { HiPlus as PlusIcon } from 'react-icons/hi';
+import { IoMdClose as CloseIcon } from 'react-icons/io';
 
-import { Checkbox, InputBox, InputTitle, RadioButton, TextArea, FooterButton } from 'components';
+import {
+  Checkbox,
+  InputBox,
+  InputTitle,
+  RadioButton,
+  TextArea,
+  FooterButton,
+  ImageUploader,
+} from 'components';
 
 import checkExtensions from 'utils/checkExtensions';
 
@@ -18,16 +26,10 @@ interface Profile {
 
 export default function PetProfileEditor() {
   const inputRef = useRef<HTMLInputElement>(null);
-  const labelRef = useRef<HTMLLabelElement>(null);
 
   const [profileImg, setProfileImg] = useState('');
+  const [showImgDeleteText, setShowImgDeleteText] = useState(false);
   const [petProfile, setPetProfile] = useState<Profile>();
-
-  const onKeyDown = () => (e: React.KeyboardEvent<HTMLLabelElement>) => {
-    const isEnter = e.key === 'Enter';
-    if (!isEnter) return;
-    if (labelRef.current) labelRef.current.click();
-  };
 
   const onChangeImage = ({ target }: ChangeEvent<HTMLInputElement>) => {
     const files = target.files;
@@ -39,6 +41,10 @@ export default function PetProfileEditor() {
     setProfileImg(url);
   };
 
+  const onClickDeleteImg = () => {
+    setProfileImg('');
+  };
+
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
@@ -47,22 +53,23 @@ export default function PetProfileEditor() {
     <>
       <form className='profile-editor-container' action='POST'>
         {profileImg ? (
-          <img className='profile-img' src={profileImg} alt='프로필 사진' />
+          <div
+            onMouseEnter={() => setShowImgDeleteText(true)}
+            onMouseLeave={() => setShowImgDeleteText(false)}
+            className='img-container'
+          >
+            <img className='profile-img' src={profileImg} alt='프로필 사진' />
+            {showImgDeleteText && (
+              <div onClick={onClickDeleteImg} className='delete-container'>
+                <CloseIcon className='delete-icon' />
+                <span className='delete-text'>삭제하기</span>
+              </div>
+            )}
+            {/* //TODO: 삭제하기 버튼 누르면 이미지 삭제 */}
+          </div>
         ) : (
-          <label ref={labelRef} tabIndex={0} htmlFor='image-file-uploader' onKeyDown={onKeyDown()}>
-            <div className='image-uploader'>
-              <PlusIcon />
-              <span className='image-uploader-text'>이미지 등록</span>
-            </div>
-          </label>
+          <ImageUploader onChangeImage={onChangeImage} />
         )}
-        <input
-          accept='image/*'
-          onChange={onChangeImage}
-          className='uploader-input'
-          type='file'
-          id='image-file-uploader'
-        />
         <div className='pet-info-inputs'>
           <InputTitle isRequire>이름</InputTitle>
           <InputBox required width='250px' inputRef={inputRef} placeholder='이름을 입력해주세요.' />

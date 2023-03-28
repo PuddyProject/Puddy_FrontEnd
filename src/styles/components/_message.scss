@@ -1,5 +1,17 @@
 @use '../abstracts' as *;
 
+.message {
+  font-size: 1.3rem;
+}
+
+.align-right {
+  text-align: right;
+}
+
 .warning-message {
   color: $warnig-color;
+}
+
+.correct-message {
+  color: $correct-color;
 }
