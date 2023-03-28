@@ -1,9 +1,9 @@
 @use '../abstracts' as *;
 
-.main {
+.main-container {
   padding: 10px;
   @include header-gap;
-  margin-bottom: 58px;
+  @include footer-gap;
 }
 
 .button-container {

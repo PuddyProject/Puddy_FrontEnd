@@ -1,9 +1,9 @@
 @use '../abstracts' as *;
 
 .qna-detail-container {
+  @include footer-gap;
   padding: 0px 35px;
   width: 100vw;
-  margin-bottom: 80px;
 
   .title {
     font-size: 14px;
