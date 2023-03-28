@@ -20,7 +20,7 @@
     @include font-styles(13px, 300, $color-gray01);
     padding-left: 10px;
     margin-top: 8px;
-
+    margin-bottom: 10px;
     span {
       @include font-styles(13px, 700, $color-gray01);
     }
@@ -37,6 +37,7 @@
 
   .title {
     @include ellipsis-text;
+    @include font-styles(14px, 700, $color-gray01);
     line-height: 2rem;
     width: auto;
   }
