@@ -53,6 +53,14 @@ export default function QnaDetail() {
         <hr className='qna-divide-line' />
         <section className='comment'>
           <div className='comment-title-conainer'>
+            <div className='comment-selected-comment'>
+              <span className='comment-title'>
+                <span>채택된 답변 🐾</span>
+              </span>
+              <br />
+              <span className='comment-sub-title'>작성자가 채택한 답변이에요.</span>
+              <Comment isExport={true} />
+            </div>
             <span className='comment-title'>
               작성된 <span>답변 🐾</span>
             </span>

@@ -8,11 +8,12 @@
 
 .button-container {
   display: flex;
+  justify-content: space-around;
 }
 
 .qna-title {
-  font-weight: 800;
-  font-size: 18px;
+  font-weight: 700;
+  font-size: 16px;
   color: $color-gray01;
   padding-left: 10px;
   margin-top: 30px;
@@ -23,37 +24,84 @@
   overflow: scroll;
   align-items: center;
 
-  .plus-button {
-    font-size: 10px;
-    padding: 50px 20px;
-
-    .plus-button-circle {
-      background-color: #efefef;
-      width: 20px;
-      height: 20px;
-      border-radius: 20px;
-      text-decoration-line: none;
-    }
-
-    .main-link {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-decoration-line: none;
-    }
-
-    div {
-      font-weight: 400;
-      color: $color-gray01;
-      font-size: 10px;
-      padding-top: 5px;
-      text-align: center;
-      text-decoration: underline;
-      width: 40px;
-    }
+  &::-webkit-scrollbar {
+    display: none;
   }
+}
+
+.plus-button {
+  font-size: 10px;
+
+  .plus-button-circle {
+    background-color: #efefef;
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    text-decoration-line: none;
+  }
+
+  .main-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration-line: none;
+  }
+
+  div {
+    font-weight: 400;
+    color: $color-gray01;
+    font-size: 10px;
+    padding-top: 5px;
+    text-align: center;
+    text-decoration: underline;
+    width: 40px;
+  }
+}
+
+.main-expert-container {
+  display: flex;
+  overflow: scroll;
+  align-items: center;
 
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  .main-expert-card {
+    min-width: 220px;
+    height: 80px;
+    display: flex;
+    border: 1px solid $color-gray03;
+    border-radius: 10px;
+    align-items: center;
+    margin-top: 15px;
+    margin-left: 5px;
+
+    .main-expert-card-img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50px;
+      background-color: $color-gray03;
+      margin: 15px;
+    }
+
+    .main-expert-card-description {
+      display: flex;
+      flex-direction: column;
+
+      .description-title {
+        color: $color-gray01;
+        font-weight: 800;
+        font-size: 12px;
+        line-height: 20px;
+      }
+
+      .description-sub {
+        color: $color-gray01;
+        font-weight: 400;
+        font-size: 10px;
+        line-height: 15px;
+      }
+    }
   }
 }

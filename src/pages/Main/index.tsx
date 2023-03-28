@@ -1,4 +1,5 @@
 import Button from 'components/common/Button';
+import ExpertContainer from 'components/main/ExpertContainer';
 import QnaContainer from 'components/main/QnaContainer';
 import { useState } from 'react';
 import dragEvent from 'utils/dragEvent';
@@ -31,8 +32,8 @@ export default function Main() {
             },
           })}
         >
-          {COLOR.map((url, i) => (
-            <div key={i} style={{ backgroundColor: url }} className='carousel-item'></div>
+          {COLOR.map((color, i) => (
+            <div key={i} style={{ backgroundColor: color }} className='carousel-item'></div>
           ))}
         </div>
       </div>
@@ -40,9 +41,10 @@ export default function Main() {
       <div className='circle-container'>
         {Array(5)
           .fill(0)
-          .map((v, i) => {
+          .map((_, i) => {
             return (
               <div
+                key={i}
                 className='circle-item'
                 style={{
                   backgroundColor: currentIndex === i ? '#A9A9A9' : '#D9D9D9',
@@ -53,17 +55,14 @@ export default function Main() {
       </div>
 
       <div className='button-container'>
-        <Button margin='10px' width='160px'>
-          Q&A 질문하기
-        </Button>
-        <Button margin='10px' outline width='160px'>
+        <Button width='160px'>Q&A 질문하기</Button>
+        <Button outline width='160px'>
           내 펫 등록하기
         </Button>
       </div>
-      <div>
-        <QnaContainer title={'인기 Q&A'} />
-        <QnaContainer title={'최근 Q&A'} />
-      </div>
+      <QnaContainer title={'인기 Q&A'} />
+      <QnaContainer title={'최근 Q&A'} />
+      <ExpertContainer />
     </div>
   );
 }
