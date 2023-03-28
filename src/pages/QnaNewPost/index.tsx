@@ -4,9 +4,9 @@ import FooterButton from 'components/common/FooterButton';
 import { useState, FormEvent } from 'react';
 import { categoryItem } from 'constants/qnaNewPost';
 import checkExtensions from 'utils/checkExtensions';
-import axios from 'axios';
 import checkFileSize from 'utils/checkFileSize';
 
+import { IoMdRemoveCircleOutline } from 'react-icons/io';
 interface PostInfo {
   title: string;
   content: string;
@@ -63,6 +63,10 @@ export default function NewPost() {
     }
   };
 
+  const onClickRemoveHandler = (index: number) => {
+    setImgFile((prev) => [...prev.filter((_, i) => i !== index)]);
+    setFilePreview((prev) => [...prev.filter((_, i) => i !== index)]);
+  };
   const onSendData = () => {
     const formData = new FormData();
     formData.append('requiest', new Blob([JSON.stringify(postInfo)], { type: 'application/json' }));
@@ -71,7 +75,7 @@ export default function NewPost() {
 
   return (
     <div>
-      <div className='qna-newpost-main' onChange={onChangeHandler}>
+      <div className='qna-newpost-container' onChange={onChangeHandler}>
         <InputTilte isRequire={true}>카테고리 </InputTilte>
         <div className='category-container'>
           {categoryItem.map((category, i) => {
@@ -117,7 +121,14 @@ export default function NewPost() {
             .fill(0)
             .map((_, i) => {
               return filePreview[i] !== undefined ? (
-                <img key={i} className='image-item' src={filePreview[i]} alt='error' />
+                <div className='image-item'>
+                  <img key={i} className='image-item' src={filePreview[i]} alt='error' />
+                  <IoMdRemoveCircleOutline
+                    size='25px'
+                    className='remove-image'
+                    onClick={() => onClickRemoveHandler(i)}
+                  />
+                </div>
               ) : (
                 <div key={i} className='image-item' />
               );
