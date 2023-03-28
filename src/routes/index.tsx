@@ -34,7 +34,6 @@ export default function Router() {
 
       <Route path='/' element={<LayoutWithoutNav />}>
         <Route path='/qna/newpost' element={<NewPost />} />
-        <Route path='/qna/detail' element={<QnaDetail />} />
 
         {/* 마이페이지 메뉴 */}
         <Route path='/mypage/experts' element={<AuthExpert />} />
@@ -53,6 +52,7 @@ export default function Router() {
       <Route path='/' element={<LayoutWithoutHeader />}>
         <Route path='/auth/login' element={<Login />} />
         <Route path='/auth/Signup' element={<Signup />} />
+        <Route path='/qna/detail' element={<QnaDetail />} />
       </Route>
     </Routes>
   );

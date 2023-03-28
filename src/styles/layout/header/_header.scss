@@ -13,3 +13,9 @@ header {
   top: 0;
   z-index: 100;
 }
+
+.custom-header {
+  div {
+    min-width: 33%;
+  }
+}

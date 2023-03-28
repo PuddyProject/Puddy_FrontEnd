@@ -1,9 +1,22 @@
+import CustomHeader from 'components/common/CustomHeader';
 import FooterButton from 'components/common/FooterButton';
 import Comment from 'components/qnaDetail/Comment';
 
+import { useNavigate } from 'react-router-dom';
+
 export default function QnaDetail() {
+  const nav = useNavigate();
+
   return (
     <div>
+      <CustomHeader
+        left={'<'}
+        center='Q&A'
+        onClickLeft={() => {
+          nav(-1);
+        }}
+        right='bell'
+      />
       <div className='qna-detail-container'>
         <section className='title'>
           <div className='title-text'>
@@ -40,6 +53,14 @@ export default function QnaDetail() {
         <hr className='qna-divide-line' />
         <section className='comment'>
           <div className='comment-title-conainer'>
+            <div className='comment-selected-comment'>
+              <span className='comment-title'>
+                <span>채택된 답변 🐾</span>
+              </span>
+              <br />
+              <span className='comment-sub-title'>작성자가 채택한 답변이에요.</span>
+              <Comment isExport={true} />
+            </div>
             <span className='comment-title'>
               작성된 <span>답변 🐾</span>
             </span>
