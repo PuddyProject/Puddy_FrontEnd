@@ -62,12 +62,13 @@
   display: flex;
   overflow: scroll;
   align-items: center;
-
+  gap: 6px;
   &::-webkit-scrollbar {
     display: none;
   }
 
   .main-expert-card {
+    margin-left: 5px;
     min-width: 220px;
     height: 80px;
     display: flex;
@@ -75,7 +76,6 @@
     border-radius: 10px;
     align-items: center;
     margin-top: 15px;
-    margin-left: 5px;
 
     .main-expert-card-img {
       width: 50px;
