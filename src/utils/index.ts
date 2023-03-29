@@ -6,5 +6,5 @@ export { default as checkExtensions } from './checkExtensions';
 export { get, post } from './axiosHelper';
 
 /** VALIDATE */
-export { isValidId, isValidPw, isValidName } from './validate/checkSignup';
+export { isValidId, isValidPw, isValidName, isValidEmail } from './validate/checkSignup';
 export { isValidNickname } from './validate/checkNickname';
