@@ -1,13 +1,14 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 import { Button, Checkbox, InputBox, InputTitle, FooterButton, Message } from 'components';
+import InputField from 'components/signup/InputField';
 
 import { isValidId, isValidName, isValidPw } from 'utils';
 import { isValidEmail } from 'utils/validate/checkSignup';
 
-type FieldName = 'account' | 'password' | 'reEnterPassword' | 'userName' | 'email';
+export type FieldName = 'account' | 'password' | 'reEnterPassword' | 'userName' | 'email';
 
-interface MemberShip {
+export interface MemberShip {
   account: string;
   password: string;
   reEnterPassword: string;
@@ -111,6 +112,10 @@ export default function Signup() {
     // 중복 아이디가 아닌 경우 '사용가능한 아이디입니다'
   };
 
+  const onSubmitRegister = () => {
+    // 회원가입 버튼 누르면 동작
+  };
+
   /**
    * 예외처리 목록 (id)
    * 1. 빈 값일 때
@@ -175,89 +180,63 @@ export default function Signup() {
         <strong className='bold'>회원가입 후 이용</strong>하실 수 있어요. 😊
       </h2>
       <div className='signup-datas'>
-        <div className='title-message'>
-          <InputTitle isRequire>아이디</InputTitle>
-          <Message isWarning alignRight>
-            {registrationMembership.account === ''
-              ? initWarningMessage.account
-              : warningMessage.account}
-          </Message>
-        </div>
-        <div className='duplicate-check-container'>
-          <InputBox
-            onChange={onChangeInput('account')}
-            inputRef={inputRef}
-            required
-            width='100%'
-            placeholder='아이디를 입력해주세요.'
-          />
-          <Button onClick={onClickCheckDuplicate('email')}>중복 확인</Button>
-        </div>
+        <InputField
+          className='duplicate-check-container'
+          onChange={onChangeInput}
+          placeholder='아이디를 입력해주세요.'
+          target='account'
+          title='아이디'
+          registrationMembership={registrationMembership}
+          initWarningMessage={initWarningMessage}
+          warningMessage={warningMessage}
+        >
+          <Button onClick={onClickCheckDuplicate('account')}>중복 확인</Button>
+        </InputField>
 
-        <div className='title-message'>
-          <InputTitle isRequire>비밀번호</InputTitle>
-          <Message isWarning alignRight>
-            {registrationMembership.password === ''
-              ? initWarningMessage.password
-              : warningMessage.password}
-          </Message>
-        </div>
-        <InputBox
-          onChange={onChangeInput('password')}
-          required
-          width='100%'
-          type='password'
+        <InputField
+          onChange={onChangeInput}
           placeholder='비밀번호를 입력해주세요.'
-        />
-
-        <div className='title-message'>
-          <InputTitle isRequire>비밀번호 확인</InputTitle>
-          <Message isWarning alignRight>
-            {registrationMembership.reEnterPassword === ''
-              ? initWarningMessage.reEnterPassword
-              : warningMessage.reEnterPassword}
-          </Message>
-        </div>
-        <InputBox
-          onChange={onChangeInput('reEnterPassword')}
-          required
-          width='100%'
           type='password'
+          target='password'
+          title='비밀번호'
+          registrationMembership={registrationMembership}
+          initWarningMessage={initWarningMessage}
+          warningMessage={warningMessage}
+        />
+
+        <InputField
+          onChange={onChangeInput}
           placeholder='비밀번호를 다시 입력해주세요.'
+          type='password'
+          target='reEnterPassword'
+          title='비밀번호 확인'
+          registrationMembership={registrationMembership}
+          initWarningMessage={initWarningMessage}
+          warningMessage={warningMessage}
         />
 
-        <div className='title-message'>
-          <InputTitle isRequire>이름</InputTitle>
-          <Message isWarning alignRight>
-            {registrationMembership.userName === ''
-              ? initWarningMessage.userName
-              : warningMessage.userName}
-          </Message>
-        </div>
-        <InputBox
-          onChange={onChangeInput('userName')}
-          required
-          width='100%'
+        <InputField
+          onChange={onChangeInput}
           placeholder='이름을 입력해주세요.'
+          target='userName'
+          title='이름'
+          registrationMembership={registrationMembership}
+          initWarningMessage={initWarningMessage}
+          warningMessage={warningMessage}
         />
 
-        <div className='title-message'>
-          <InputTitle isRequire>이메일</InputTitle>
-          <Message isWarning alignRight>
-            {registrationMembership.email === '' ? initWarningMessage.email : warningMessage.email}
-          </Message>
-        </div>
-
-        <div className='duplicate-check-container'>
-          <InputBox
-            onChange={onChangeInput('email')}
-            required
-            width='100%'
-            type='email'
-            placeholder='이메일을 입력해주세요.'
-          />
-          <Button>중복 확인</Button>
-        </div>
+        <InputField
+          className='duplicate-check-container'
+          onChange={onChangeInput}
+          placeholder='이메일을 입력해주세요.'
+          target='email'
+          title='이메일'
+          registrationMembership={registrationMembership}
+          initWarningMessage={initWarningMessage}
+          warningMessage={warningMessage}
+        >
+          <Button onClick={onClickCheckDuplicate('account')}>중복 확인</Button>
+        </InputField>
 
         <div className='notification'>
           <Checkbox
@@ -266,11 +245,12 @@ export default function Signup() {
             text='알림 수신 여부 동의'
           />
         </div>
+
         <span className='notification-message'>
           수신에 동의하면 퍼디의 다양한 소식을 받아보실 수 있어요.
         </span>
       </div>
-      <FooterButton>회원가입</FooterButton>
+      <FooterButton onClick={onSubmitRegister}>회원가입</FooterButton>
     </div>
   );
 }
