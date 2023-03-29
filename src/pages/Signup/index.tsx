@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
-import { Button, Checkbox, InputBox, InputTitle, FooterButton, Message } from 'components';
+import { Button, Checkbox, FooterButton } from 'components';
 import InputField from 'components/signup/InputField';
 
 import { isValidId, isValidName, isValidPw } from 'utils';
@@ -235,7 +235,7 @@ export default function Signup() {
           initWarningMessage={initWarningMessage}
           warningMessage={warningMessage}
         >
-          <Button onClick={onClickCheckDuplicate('account')}>중복 확인</Button>
+          <Button onClick={onClickCheckDuplicate('email')}>중복 확인</Button>
         </InputField>
 
         <div className='notification'>
