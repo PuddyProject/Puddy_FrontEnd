@@ -3,6 +3,7 @@ export { default as Login } from './Login/';
 export { default as Qna } from './QnA';
 export { default as QnaDetail } from './QnaDetail';
 export { default as NewPost } from './QnaNewPost';
+export { default as QnaAnswer } from './QnaAnswer';
 export { default as MyPage } from './MyPage';
 export { default as Community } from './Community';
 export { default as PetProfileEditor } from './PetProfileEditor';
