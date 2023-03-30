@@ -1,5 +1,5 @@
 import { InputBox, InputTitle, Message } from 'components';
-import { FieldName, MemberShip } from 'pages/Signup';
+import { FieldName, Membership } from 'pages/Signup';
 
 interface InputFieldProps {
   className?: string;
@@ -7,9 +7,9 @@ interface InputFieldProps {
   placeholder: string;
   target: FieldName;
   title: string;
-  registrationMembership: MemberShip;
-  initWarningMessage: MemberShip;
-  warningMessage: MemberShip;
+  registrationMembership: Membership;
+  initWarningMessage: Membership;
+  warningMessage: Membership;
   children?: React.ReactNode;
   onChange: (target: FieldName) => (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
