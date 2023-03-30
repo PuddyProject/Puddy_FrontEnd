@@ -6,9 +6,12 @@ import InputField from 'components/signup/InputField';
 import { isValidId, isValidName, isValidPw } from 'utils';
 import { isValidEmail } from 'utils/validate/checkSignup';
 
+/**
+ * 타입 선언
+ */
 export type FieldName = 'account' | 'password' | 'reEnterPassword' | 'userName' | 'email';
 
-export interface MemberShip {
+export interface Membership {
   account: string;
   password: string;
   reEnterPassword: string;
@@ -17,7 +20,19 @@ export interface MemberShip {
   isNotificated?: boolean;
 }
 
-const initMembershipValues: MemberShip = {
+export interface ValidChecker {
+  account: boolean;
+  password: boolean;
+  reEnterPassword: boolean;
+  userName: boolean;
+  email: boolean;
+}
+
+/**
+ * 초기화 변수 정의
+ */
+
+const initMembershipValues: Membership = {
   account: '',
   password: '',
   reEnterPassword: '',
@@ -26,7 +41,7 @@ const initMembershipValues: MemberShip = {
   isNotificated: true,
 };
 
-const initWarningMessage: MemberShip = {
+const initWarningMessage: Membership = {
   account: '아이디를 입력해주세요.',
   password: '비밀번호를 입력해주세요.',
   reEnterPassword: '비밀번호를 다시 입력해주세요.',
@@ -34,6 +49,9 @@ const initWarningMessage: MemberShip = {
   email: '이메일을 입력해주세요.',
 };
 
+/**
+ * 유효성 검사 함수
+ */
 const validateAccount = (value: string) => {
   if (isValidId(value)) return '중복확인을 해주세요.';
   return '영문으로 시작하며 4~10글자 영문/숫자여야 해요.';
@@ -59,9 +77,15 @@ const validateEmail = (value: string) => {
   return '올바른 이메일 형식을 입력해주세요.';
 };
 
+/**
+ * Signup 페이지
+ */
 export default function Signup() {
   const [registrationMembership, setRegistrationMembership] = useState(initMembershipValues);
   const [warningMessage, setWarningMessage] = useState(initWarningMessage);
+  const [inputsToShake, setInputsToShake] = useState<FieldName[]>([]);
+
+  const [isMounted, setIsMounted] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -111,10 +135,52 @@ export default function Signup() {
     // 중복확인 버튼을 눌렀을 때 중복 아이디인 경우 '이미 존재하는 아이디입니다.'
     // 중복 아이디가 아닌 경우 '사용가능한 아이디입니다'
   };
+  /**
+   * ✨ 회원가입 버튼 클릭 후 동작
+   * 입력한 인풋이 유효하지 않으면 shake 효과 적용 후 리턴
+   * 유효하면 서버로 POST 요청합니다.
+   */
 
   const onSubmitRegister = () => {
-    // 회원가입 버튼 누르면 동작
+    // 유효하지 않으면 shake 효과 추가 후 return
+    // 유효하면 POST
+
+    setInputsToShake(() => []);
   };
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    //TODO: 리팩토링
+    if (isMounted) {
+      if (!isValidId(registrationMembership.account)) {
+        if (inputsToShake.includes('account')) return;
+        return setInputsToShake((prev) => [...prev, 'account']);
+      }
+
+      if (!isValidPw(registrationMembership.password)) {
+        if (inputsToShake.includes('password')) return;
+        return setInputsToShake((prev) => [...prev, 'password']);
+      }
+
+      if (!(registrationMembership.password === registrationMembership.reEnterPassword)) {
+        if (inputsToShake.includes('reEnterPassword')) return;
+        return setInputsToShake((prev) => [...prev, 'reEnterPassword']);
+      }
+
+      if (!isValidName(registrationMembership.userName)) {
+        if (inputsToShake.includes('userName')) return;
+        return setInputsToShake((prev) => [...prev, 'userName']);
+      }
+
+      if (!isValidPw(registrationMembership.email)) {
+        if (inputsToShake.includes('email')) return;
+        return setInputsToShake((prev) => [...prev, 'email']);
+      }
+    }
+  }, [inputsToShake]);
 
   /**
    * 예외처리 목록 (id)
@@ -155,6 +221,7 @@ export default function Signup() {
    * :
    */
 
+  // !디버깅
   console.log(registrationMembership);
 
   useEffect(() => {
@@ -181,7 +248,9 @@ export default function Signup() {
       </h2>
       <div className='signup-datas'>
         <InputField
-          className='duplicate-check-container'
+          className={`duplicate-check-container ${
+            inputsToShake.includes('account') ? 'shake' : ''
+          }`}
           onChange={onChangeInput}
           placeholder='아이디를 입력해주세요.'
           target='account'
@@ -195,6 +264,7 @@ export default function Signup() {
 
         <InputField
           onChange={onChangeInput}
+          className={`${inputsToShake.includes('password') ? 'shake' : ''}`}
           placeholder='비밀번호를 입력해주세요.'
           type='password'
           target='password'
@@ -206,6 +276,7 @@ export default function Signup() {
 
         <InputField
           onChange={onChangeInput}
+          className={`${inputsToShake.includes('reEnterPassword') ? 'shake' : ''}`}
           placeholder='비밀번호를 다시 입력해주세요.'
           type='password'
           target='reEnterPassword'
@@ -217,6 +288,7 @@ export default function Signup() {
 
         <InputField
           onChange={onChangeInput}
+          className={`${inputsToShake.includes('userName') ? 'shake' : ''}`}
           placeholder='이름을 입력해주세요.'
           target='userName'
           title='이름'
@@ -226,7 +298,7 @@ export default function Signup() {
         />
 
         <InputField
-          className='duplicate-check-container'
+          className={`duplicate-check-container ${inputsToShake.includes('email') ? 'shake' : ''}`}
           onChange={onChangeInput}
           placeholder='이메일을 입력해주세요.'
           target='email'
