@@ -4,13 +4,14 @@ import LayoutWithoutHeader from 'layouts/LayoutWithoutHeader';
 import LayoutWithoutNav from 'layouts/LayoutWithoutNav';
 
 import {
-  Qna,
   Main,
   Login,
   Community,
   NewPost,
   MyPage,
+  Qna,
   QnaDetail,
+  QnaAnswer,
   AuthExpert,
   Signup,
   PetProfile,
@@ -33,8 +34,6 @@ export default function Router() {
       </Route>
 
       <Route path='/' element={<LayoutWithoutNav />}>
-        <Route path='/qna/newpost' element={<NewPost />} />
-
         {/* 마이페이지 메뉴 */}
         <Route path='/mypage/experts' element={<AuthExpert />} />
         <Route path='/mypage/posts' element={<MyActivityInfo />} />
@@ -52,7 +51,10 @@ export default function Router() {
       <Route path='/' element={<LayoutWithoutHeader />}>
         <Route path='/auth/login' element={<Login />} />
         <Route path='/auth/Signup' element={<Signup />} />
+
         <Route path='/qna/detail' element={<QnaDetail />} />
+        <Route path='/qna/detail/write/answer' element={<QnaAnswer />} />
+        <Route path='/qna/newpost' element={<NewPost />} />
       </Route>
     </Routes>
   );

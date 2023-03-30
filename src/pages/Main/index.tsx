@@ -12,7 +12,7 @@ export default function Main() {
   const [transX, setTransX] = useState(0);
 
   return (
-    <div className='main'>
+    <div className='main-container'>
       <div className='carousel-div'>
         <div
           className='carousel-container'

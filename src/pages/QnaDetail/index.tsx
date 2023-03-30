@@ -72,7 +72,13 @@ export default function QnaDetail() {
           <Comment isExport={true} isWriteUser={true} />
         </section>
       </div>
-      <FooterButton>답글 입력하기</FooterButton>
+      <FooterButton
+        onClick={() => {
+          nav('write/answer', { state: 1 });
+        }}
+      >
+        답글 입력하기
+      </FooterButton>
     </div>
   );
 }

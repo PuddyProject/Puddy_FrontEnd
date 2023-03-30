@@ -1,12 +1,19 @@
-import { Link } from 'react-router-dom';
+interface PlusButtonPros {
+  padding?: string;
+  onClick?: () => void;
+}
 
-export default function PlusButton() {
+export default function PlusButton({ padding, onClick }: PlusButtonPros) {
+  const plusButtonStyle = {
+    padding,
+  };
+
   return (
-    <div className='plus-button'>
-      <Link className='main-link' to='/qna'>
+    <div className='plus-button' style={plusButtonStyle} onClick={onClick}>
+      <div className='main-link'>
         <div className='plus-button-circle'>&gt;</div>
         <div>더보기</div>
-      </Link>
+      </div>
     </div>
   );
 }

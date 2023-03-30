@@ -8,7 +8,7 @@
   border-radius: 10px;
 }
 
-.qna-newpost-main {
+.qna-newpost-container {
   padding: 15px 30px 30px 30px;
   position: relative;
   width: 100vw;
@@ -48,6 +48,13 @@
 .image-item {
   @include qna-image-box($color-gray04);
   object-fit: cover;
+  min-width: 65px;
+  height: 68px;
+}
+
+.image-item-add-button {
+  min-width: 65px;
+  height: 68px;
 }
 
 .image-item-add-button {
@@ -55,6 +62,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.image-add-item {
+  display: none;
 }
 
 .image-add-item-plus {
@@ -89,4 +100,12 @@
     outline: none;
     border: 1.5px solid $primary-color;
   }
+}
+
+.remove-image {
+  position: relative;
+  z-index: 10000;
+  top: -70px;
+  left: 40px;
+  color: white;
 }
