@@ -1,140 +1,22 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { Button, Checkbox, FooterButton } from 'components';
 import InputField from 'components/signup/InputField';
 
 import { isValidId, isValidName, isValidPw, post } from 'utils';
-import { isValidEmail } from 'utils/validate/checkSignup';
-import { useNavigate } from 'react-router-dom';
+import {
+  isValidEmail,
+  validateAccount,
+  validateEmail,
+  validatePassword,
+  validateReEnterPassword,
+  validateusername,
+} from 'utils/validate/checkSignup';
+import { initMembershipValues, initWarningMessage } from 'utils/initialValues/signup';
 
-/**
- * 타입 선언
- */
-export type FieldName = 'account' | 'password' | 'reEnterPassword' | 'username' | 'email';
-
-export interface Membership {
-  account: string;
-  password: string;
-  reEnterPassword: string;
-  username: string;
-  email: string;
-  isNotificated?: boolean;
-}
-
-export interface ValidChecker {
-  account: boolean;
-  password: boolean;
-  reEnterPassword: boolean;
-  username: boolean;
-  email: boolean;
-}
-
-interface SigunupFormRefs {
-  account: React.RefObject<HTMLInputElement>;
-  password: React.RefObject<HTMLInputElement>;
-  reEnterPassword: React.RefObject<HTMLInputElement>;
-  username: React.RefObject<HTMLInputElement>;
-  email: React.RefObject<HTMLInputElement>;
-}
-
-interface Error {
-  response?: {
-    data: any;
-    status: number;
-    resultCode?: string;
-  };
-}
-
-/**
- * 초기화 변수 정의
- */
-
-const initMembershipValues = {
-  account: '',
-  password: '',
-  reEnterPassword: '',
-  username: '',
-  email: '',
-  isNotificated: true,
-};
-
-const initWarningMessage: Membership = {
-  account: '아이디를 입력해주세요.',
-  password: '비밀번호를 입력해주세요.',
-  reEnterPassword: '비밀번호를 다시 입력해주세요.',
-  username: '이름을 입력해주세요.',
-  email: '이메일을 입력해주세요.',
-};
-
-/**
- * 유효성 검사 함수
- */
-const validateAccount = (value: string) => {
-  if (isValidId(value)) {
-    return {
-      state: true,
-      msg: '중복 확인을 해주세요.',
-    };
-  }
-
-  return {
-    state: false,
-    msg: '영문으로 시작하며 4~10글자 영문/숫자여야 해요.',
-  };
-};
-
-const validatePassword = (value: string) => {
-  if (isValidPw(value)) {
-    return {
-      state: true,
-      msg: '',
-    };
-  }
-
-  return { state: false, msg: '6글자 이상 영어, 숫자, 특수문자를 포함해주세요.' };
-};
-
-const validateReEnterPassword = (password: string, reEnterPassword: string) => {
-  if (password === reEnterPassword) {
-    return {
-      state: true,
-      msg: '',
-    };
-  }
-
-  return {
-    state: false,
-    msg: '비밀번호가 일치하지 않아요.',
-  };
-};
-
-const validateusername = (value: string) => {
-  if (isValidName(value)) {
-    return {
-      state: true,
-      msg: '',
-    };
-  }
-
-  return {
-    state: false,
-    msg: '2~4글자 한글만 입력할 수 있어요.',
-  };
-};
-
-const validateEmail = (value: string) => {
-  if (isValidEmail(value)) {
-    return {
-      state: true,
-      msg: '중복 확인을 해주세요.',
-    };
-  }
-
-  return {
-    state: false,
-    msg: '올바른 이메일 형식을 입력해주세요.',
-  };
-};
+import { ApiError } from 'types/errorsTypes';
+import { FieldName, SigunupFormRefs, ValidChecker } from 'types/signupTypes';
 
 /**
  * Signup 페이지
@@ -261,7 +143,7 @@ export default function Signup() {
         });
       }
     } catch (err: unknown) {
-      const Error = err as Error;
+      const Error = err as ApiError;
       if (Error.response?.status === 400) {
         console.error('이미 존재하는 아이디 또는 이메일입니다.');
 
@@ -298,8 +180,8 @@ export default function Signup() {
           navigate('/');
         }
       } catch (err: unknown) {
-        const Error = err as Error;
-        console.error(Error.response?.status);
+        const error = err as ApiError;
+        console.error(error.response?.status);
       }
     } else setInputsToShake(() => []);
   };
