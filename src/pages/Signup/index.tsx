@@ -1,96 +1,77 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { Button, Checkbox, FooterButton } from 'components';
 import InputField from 'components/signup/InputField';
 
-import { isValidId, isValidName, isValidPw } from 'utils';
-import { isValidEmail } from 'utils/validate/checkSignup';
+import { isValidId, isValidName, isValidPw, post } from 'utils';
+import {
+  isValidEmail,
+  validateAccount,
+  validateEmail,
+  validatePassword,
+  validateReEnterPassword,
+  validateusername,
+} from 'utils/validate/checkSignup';
+import { initMembershipValues, initWarningMessage } from 'utils/initialValues/signup';
 
-/**
- * 타입 선언
- */
-export type FieldName = 'account' | 'password' | 'reEnterPassword' | 'userName' | 'email';
-
-export interface Membership {
-  account: string;
-  password: string;
-  reEnterPassword: string;
-  userName: string;
-  email: string;
-  isNotificated?: boolean;
-}
-
-export interface ValidChecker {
-  account: boolean;
-  password: boolean;
-  reEnterPassword: boolean;
-  userName: boolean;
-  email: boolean;
-}
-
-/**
- * 초기화 변수 정의
- */
-
-const initMembershipValues: Membership = {
-  account: '',
-  password: '',
-  reEnterPassword: '',
-  userName: '',
-  email: '',
-  isNotificated: true,
-};
-
-const initWarningMessage: Membership = {
-  account: '아이디를 입력해주세요.',
-  password: '비밀번호를 입력해주세요.',
-  reEnterPassword: '비밀번호를 다시 입력해주세요.',
-  userName: '이름을 입력해주세요.',
-  email: '이메일을 입력해주세요.',
-};
-
-/**
- * 유효성 검사 함수
- */
-const validateAccount = (value: string) => {
-  if (isValidId(value)) return '중복확인을 해주세요.';
-  return '영문으로 시작하며 4~10글자 영문/숫자여야 해요.';
-};
-
-const validatePassword = (value: string) => {
-  if (isValidPw(value)) return '';
-  return '6글자 이상 영어, 숫자, 특수문자를 포함해주세요.';
-};
-
-const validateReEnterPassword = (password: string, reEnterPassword: string) => {
-  if (password === reEnterPassword) return '';
-  return '비밀번호가 일치하지 않아요.';
-};
-
-const validateUserName = (value: string) => {
-  if (isValidName(value)) return '';
-  return '2~4글자 한글만 입력할 수 있어요.';
-};
-
-const validateEmail = (value: string) => {
-  if (isValidEmail(value)) return '';
-  return '올바른 이메일 형식을 입력해주세요.';
-};
+import { ApiError } from 'types/errorsTypes';
+import { FieldName, SigunupFormRefs, ValidChecker } from 'types/signupTypes';
 
 /**
  * Signup 페이지
  */
 export default function Signup() {
+  const navigate = useNavigate();
+
   const [registrationMembership, setRegistrationMembership] = useState(initMembershipValues);
+  const [isCorrectFormData, setIsCorrectFormData] = useState<ValidChecker>({
+    account: false,
+    email: false,
+    password: false,
+    reEnterPassword: false,
+    username: false,
+  });
   const [warningMessage, setWarningMessage] = useState(initWarningMessage);
+  const [showCorrectMessage, setShowCorrectMessage] = useState({
+    account: false,
+    email: false,
+  });
+  const [disabledDuplicationButton, setDisabledDuplicationButton] = useState({
+    account: true,
+    email: true,
+  });
   const [inputsToShake, setInputsToShake] = useState<FieldName[]>([]);
 
   const [isMounted, setIsMounted] = useState(false);
 
-  const inputRef = useRef<HTMLInputElement>(null);
+  const formRefs = useRef<SigunupFormRefs>({
+    account: useRef(null),
+    username: useRef(null),
+    email: useRef(null),
+    password: useRef(null),
+    reEnterPassword: useRef(null),
+  });
 
+  /**
+   * 인풋 박스 change 이벤트
+   */
   const onChangeInput = (target: FieldName) => (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+
+    setIsCorrectFormData((prev) => {
+      // 인풋 값 변경 시 해당 인풋이 제대로 작성되지 않을 수 있으므로 false로 변경합니다.
+      // 비밀번호의 경우 확인 인풋도 false가 되어야 하므로 분기처리하였습니다.
+      if (target === 'password') {
+        return {
+          ...prev,
+          [target]: false,
+          reEnterPassword: false,
+        };
+      }
+
+      return { ...prev, [target]: false };
+    });
 
     setRegistrationMembership((prev) => {
       return { ...prev, [target]: value };
@@ -98,26 +79,34 @@ export default function Signup() {
 
     setWarningMessage((prev) => {
       if (target === 'account') {
-        return { ...prev, [target]: validateAccount(value) };
+        setShowCorrectMessage((prev) => {
+          return { ...prev, account: false };
+        });
+
+        return { ...prev, [target]: validateAccount(value).msg };
       }
 
       if (target === 'password') {
-        return { ...prev, [target]: validatePassword(value) };
+        return { ...prev, [target]: validatePassword(value).msg };
       }
 
       if (target === 'reEnterPassword') {
         const password = registrationMembership.password;
         const reEnterPassword = value;
 
-        return { ...prev, [target]: validateReEnterPassword(password, reEnterPassword) };
+        return { ...prev, [target]: validateReEnterPassword(password, reEnterPassword).msg };
       }
 
-      if (target === 'userName') {
-        return { ...prev, [target]: validateUserName(value) };
+      if (target === 'username') {
+        return { ...prev, [target]: validateusername(value).msg };
       }
 
       if (target === 'email') {
-        return { ...prev, [target]: validateEmail(value) };
+        setShowCorrectMessage((prev) => {
+          return { ...prev, email: false };
+        });
+
+        return { ...prev, [target]: validateEmail(value).msg };
       }
 
       return { ...prev, [target]: '' };
@@ -130,22 +119,71 @@ export default function Signup() {
     });
   };
 
-  const onClickCheckDuplicate = (target: string) => async (e: React.MouseEvent) => {
-    //TODO: API 문서 답변 오면 수정할 부분
-    // 중복확인 버튼을 눌렀을 때 중복 아이디인 경우 '이미 존재하는 아이디입니다.'
-    // 중복 아이디가 아닌 경우 '사용가능한 아이디입니다'
-  };
   /**
+   * * 아이디/이메일 중복 체크
+   */
+  const onClickCheckDuplicate = (target: 'account' | 'email') => async (e: React.MouseEvent) => {
+    const body = {
+      [target]: registrationMembership[target],
+    };
+
+    if (!registrationMembership[target]) return;
+    try {
+      const res = await post({
+        endpoint: `users/duplicate-${target}`,
+        body,
+      });
+
+      if (res.status === 200) {
+        setIsCorrectFormData((prev) => {
+          return { ...prev, [target]: true };
+        });
+        setShowCorrectMessage((prev) => {
+          return { ...prev, [target]: true };
+        });
+      }
+    } catch (err: unknown) {
+      const Error = err as ApiError;
+      if (Error.response?.status === 400) {
+        console.error('이미 존재하는 아이디 또는 이메일입니다.');
+
+        setWarningMessage((prev) => {
+          return {
+            ...prev,
+            [target]: `이미 존재하는 ${target === 'account' ? '아이디' : '이메일이'}에요.`,
+          };
+        });
+      }
+    }
+  };
+
+  /**
+   * * 회원가입 POST 요청
    * ✨ 회원가입 버튼 클릭 후 동작
    * 입력한 인풋이 유효하지 않으면 shake 효과 적용 후 리턴
    * 유효하면 서버로 POST 요청합니다.
    */
 
-  const onSubmitRegister = () => {
+  const onSubmitRegister = async () => {
     // 유효하지 않으면 shake 효과 추가 후 return
-    // 유효하면 POST
+    const isCorrectInputValues = Object.entries(isCorrectFormData).every(([_, value]) => value);
 
-    setInputsToShake(() => []);
+    if (isCorrectInputValues) {
+      // 유효하면 POST
+      try {
+        const res = await post({
+          endpoint: 'users/join',
+          body: registrationMembership,
+        });
+        if (res.status === 201) {
+          window.alert('퍼디 회원이 되신 것을 환영해요!'); // *임시 메시지
+          navigate('/');
+        }
+      } catch (err: unknown) {
+        const error = err as ApiError;
+        console.error(error.response?.status);
+      }
+    } else setInputsToShake(() => []);
   };
 
   useEffect(() => {
@@ -155,77 +193,95 @@ export default function Signup() {
   useEffect(() => {
     //TODO: 리팩토링
     if (isMounted) {
-      if (!isValidId(registrationMembership.account)) {
+      if (!isValidId(registrationMembership.account) || !isCorrectFormData.account) {
         if (inputsToShake.includes('account')) return;
+        formRefs.current.account.current?.focus();
         return setInputsToShake((prev) => [...prev, 'account']);
       }
 
-      if (!isValidPw(registrationMembership.password)) {
+      if (!isValidPw(registrationMembership.password) || !isCorrectFormData.password) {
         if (inputsToShake.includes('password')) return;
+        formRefs.current.password.current?.focus();
         return setInputsToShake((prev) => [...prev, 'password']);
       }
 
-      if (!(registrationMembership.password === registrationMembership.reEnterPassword)) {
+      if (
+        !(registrationMembership.password === registrationMembership.reEnterPassword) ||
+        !isCorrectFormData.reEnterPassword
+      ) {
         if (inputsToShake.includes('reEnterPassword')) return;
+        formRefs.current.reEnterPassword.current?.focus();
         return setInputsToShake((prev) => [...prev, 'reEnterPassword']);
       }
 
-      if (!isValidName(registrationMembership.userName)) {
-        if (inputsToShake.includes('userName')) return;
-        return setInputsToShake((prev) => [...prev, 'userName']);
+      if (!isValidName(registrationMembership.username) || !isCorrectFormData.username) {
+        if (inputsToShake.includes('username')) return;
+        formRefs.current.username.current?.focus();
+        return setInputsToShake((prev) => [...prev, 'username']);
       }
 
-      if (!isValidPw(registrationMembership.email)) {
+      if (!isValidPw(registrationMembership.email) || !isCorrectFormData.email) {
         if (inputsToShake.includes('email')) return;
+        formRefs.current.email.current?.focus();
         return setInputsToShake((prev) => [...prev, 'email']);
       }
     }
   }, [inputsToShake]);
 
   /**
-   * 예외처리 목록 (id)
-   * 1. 빈 값일 때
-   * ✅ : 아이디를 입력해주세요.
-   * 2. 아이디가 영문자로 시작하지 않을 때
-   * 3. 4~10자가 아닐 때
-   * 4. 영문/숫자가 포함되어 있지 않을 때
-   * ✅: 영문자로 시작하는 4~10자 영문/숫자를 입력해주세요.
-   * TODO: 5. 중복확인 버튼을 누르지 않았을 때
-   *
-   * (password)
-   * 1. 빈 값일 때
-   * ✅: 비밀번호를 입력해주세요.
-   * 2. 6글자 이하일 때
-   * 3. 영어, 숫자, 특수문자가 포함되지 않았을 때
-   * ✅: 6글자 이상 영어, 숫자, 특수문자를 포함해주세요.
-   *
-   * (re-password)
-   * 1. 빈 값일 때
-   * ✅: 비밀번호를 다시 입력해주세요.
-   * 2. password와 일치하지 않을 때
-   * ✅: 비밀번호와 일치하지 않아요.
-   *
-   * (name)
-   * 1. 빈 값일 때
-   * ✅ : 이름을 입력해주세요.
-   * 2. 한글이 아닐 때
-   * ✅: 한글만 입력할 수 있어요.
-   *
-   * (email)
-   * 1. 빈 값일 때
-   * ✅: 이메일을 입력해주세요.
-   * 2. a@b.c 와 같은 형태가 아닐 때
-   * 3. 영문, 숫자, '@', '.'를 제외한 다른 문자가 있을 때
-   * ✅ : 이메일 형식이 올바르지 않아요.
-   * TODO: 4. 중복확인 안했을 때
-   * :
+   * 아이디/이메일이 유효하면 중복 확인 버튼을 활성화합니다.
    */
+  useEffect(() => {
+    if (isValidId(registrationMembership.account)) {
+      setDisabledDuplicationButton((prev) => {
+        return { ...prev, account: false };
+      });
+    } else {
+      setDisabledDuplicationButton((prev) => {
+        return { ...prev, account: true };
+      });
+    }
 
-  // !디버깅
-  console.log(registrationMembership);
+    if (isValidEmail(registrationMembership.email)) {
+      setDisabledDuplicationButton((prev) => {
+        return { ...prev, email: false };
+      });
+    } else {
+      setDisabledDuplicationButton((prev) => {
+        return { ...prev, email: true };
+      });
+    }
+  }, [registrationMembership.account, registrationMembership.email]);
 
   useEffect(() => {
-    if (inputRef.current) inputRef.current.focus();
+    // 사용자가 중간에 인풋 값을 바꾸는 경우 유효한지 확인 후
+    // 유효할 경우 isCorrectFormData 값을 true로 갱신합니다.
+
+    if (registrationMembership.password === registrationMembership.reEnterPassword) {
+      setIsCorrectFormData((prev) => {
+        return { ...prev, reEnterPassword: true };
+      });
+    }
+
+    if (isValidPw(registrationMembership.password)) {
+      setIsCorrectFormData((prev) => {
+        return { ...prev, password: true };
+      });
+    }
+
+    if (isValidName(registrationMembership.username)) {
+      setIsCorrectFormData((prev) => {
+        return { ...prev, username: true };
+      });
+    }
+  }, [
+    registrationMembership.password,
+    registrationMembership.reEnterPassword,
+    registrationMembership.username,
+  ]);
+
+  useEffect(() => {
+    if (formRefs.current) formRefs.current.account.current?.focus();
   }, []);
 
   useEffect(() => {
@@ -233,10 +289,11 @@ export default function Signup() {
       setWarningMessage((prev) => {
         return { ...prev, reEnterPassword: '비밀번호가 일치하지 않아요.' };
       });
-    } else
+    } else {
       setWarningMessage((prev) => {
         return { ...prev, reEnterPassword: '' };
       });
+    }
   }, [registrationMembership.password]);
 
   return (
@@ -248,6 +305,7 @@ export default function Signup() {
       </h2>
       <div className='signup-datas'>
         <InputField
+          inputRef={formRefs.current.account}
           className={`duplicate-check-container ${
             inputsToShake.includes('account') ? 'shake' : ''
           }`}
@@ -258,11 +316,18 @@ export default function Signup() {
           registrationMembership={registrationMembership}
           initWarningMessage={initWarningMessage}
           warningMessage={warningMessage}
+          showCorrectMessage={showCorrectMessage}
         >
-          <Button onClick={onClickCheckDuplicate('account')}>중복 확인</Button>
+          <Button
+            disabled={disabledDuplicationButton.account}
+            onClick={onClickCheckDuplicate('account')}
+          >
+            중복 확인
+          </Button>
         </InputField>
 
         <InputField
+          inputRef={formRefs.current.password}
           onChange={onChangeInput}
           className={`${inputsToShake.includes('password') ? 'shake' : ''}`}
           placeholder='비밀번호를 입력해주세요.'
@@ -275,6 +340,7 @@ export default function Signup() {
         />
 
         <InputField
+          inputRef={formRefs.current.reEnterPassword}
           onChange={onChangeInput}
           className={`${inputsToShake.includes('reEnterPassword') ? 'shake' : ''}`}
           placeholder='비밀번호를 다시 입력해주세요.'
@@ -287,10 +353,11 @@ export default function Signup() {
         />
 
         <InputField
+          inputRef={formRefs.current.username}
           onChange={onChangeInput}
-          className={`${inputsToShake.includes('userName') ? 'shake' : ''}`}
+          className={`${inputsToShake.includes('username') ? 'shake' : ''}`}
           placeholder='이름을 입력해주세요.'
-          target='userName'
+          target='username'
           title='이름'
           registrationMembership={registrationMembership}
           initWarningMessage={initWarningMessage}
@@ -298,6 +365,7 @@ export default function Signup() {
         />
 
         <InputField
+          inputRef={formRefs.current.email}
           className={`duplicate-check-container ${inputsToShake.includes('email') ? 'shake' : ''}`}
           onChange={onChangeInput}
           placeholder='이메일을 입력해주세요.'
@@ -306,8 +374,14 @@ export default function Signup() {
           registrationMembership={registrationMembership}
           initWarningMessage={initWarningMessage}
           warningMessage={warningMessage}
+          showCorrectMessage={showCorrectMessage}
         >
-          <Button onClick={onClickCheckDuplicate('email')}>중복 확인</Button>
+          <Button
+            disabled={disabledDuplicationButton.email}
+            onClick={onClickCheckDuplicate('email')}
+          >
+            중복 확인
+          </Button>
         </InputField>
 
         <div className='notification'>

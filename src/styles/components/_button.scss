@@ -15,16 +15,17 @@ $SM_SIZE: 100px;
   transition: all 0.2s;
   cursor: pointer;
 
+  &:hover {
+    background-color: $secondary-color02;
+  }
+
   &:disabled {
     cursor: auto;
+    background-color: $color-gray03;
   }
 
   &.sm {
     width: $SM_SIZE;
-  }
-
-  &:hover {
-    background-color: $secondary-color02;
   }
 
   &.outline {
