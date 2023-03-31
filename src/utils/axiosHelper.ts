@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-const BACKEND_PORT_NUMBER = '8082';
-const SERVER_URL = `http://${window.location.hostname}:${BACKEND_PORT_NUMBER}/`;
+const SERVER_URL = `${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/`;
 
 interface GET {
   endpoint: string;
@@ -11,7 +10,7 @@ interface GET {
 
 interface POST {
   endpoint: string;
-  data?: Object;
+  body?: Object;
 }
 
 export async function get({ endpoint, params = '', queryString = '' }: GET) {
@@ -27,8 +26,8 @@ export async function get({ endpoint, params = '', queryString = '' }: GET) {
   );
 }
 
-export async function post({ endpoint, data }: POST) {
-  const bodyData = JSON.stringify(data);
+export async function post({ endpoint, body }: POST) {
+  const bodyData = JSON.stringify(body);
   console.log(`%cPOST 요청:${SERVER_URL}${endpoint}`, 'color: #296aba;');
   console.log(`%cPOST 요청 데이터: ${bodyData}`, 'color: #296aba;');
 
