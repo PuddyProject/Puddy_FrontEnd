@@ -10,7 +10,7 @@ export default function Message({ isWarning, alignRight, children }: MessageProp
   return (
     <strong
       className={`message ${isWarning ? 'warning-message' : 'correct-message'} ${
-        alignRight && 'align-right'
+        alignRight ? 'align-right' : ''
       }`}
     >
       {children}
