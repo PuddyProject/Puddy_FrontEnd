@@ -1,5 +1,6 @@
 import { InputBox, InputTitle, Message } from 'components';
-import { FieldName, Membership } from 'pages/Signup';
+
+import { FieldName, Membership } from 'types/signupTypes';
 
 interface InputFieldProps {
   inputRef?: React.RefObject<HTMLInputElement>;
