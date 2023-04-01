@@ -1,13 +1,58 @@
-import React, { useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useRef, useEffect, useState, ChangeEvent, FormEvent } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { Button, InputBox, Message } from 'components/index';
-import { Google, Naver, Kakao } from 'assets/login/symbols';
 
+import { ApiError } from 'types/errorsTypes';
+
+import { Google, Naver, Kakao } from 'assets/login/symbols';
 import Logo from 'assets/Logo.svg';
 
+import { post } from 'utils';
+
 export default function Login() {
+  const navigate = useNavigate();
+
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const [showWarningMessage, setShowWarningMessage] = useState(false);
+  const [loginInputValues, setLoginInputValues] = useState({
+    account: '',
+    password: '',
+  });
+
+  const onChangeLoginForm =
+    (target: 'account' | 'password') => (e: ChangeEvent<HTMLInputElement>) => {
+      setLoginInputValues((prev) => {
+        return {
+          ...prev,
+          [target]: e.target.value,
+        };
+      });
+    };
+
+  const onSubmitForm = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      const payload = {
+        endpoint: 'users/login',
+        body: loginInputValues,
+      };
+      const res = await post(payload);
+
+      if (res.status === 200) {
+        sessionStorage.setItem('userToken', res.data.data.accessToken);
+        alert('로그인 성공!');
+        navigate('/');
+      }
+    } catch (err: unknown) {
+      const error = err as ApiError;
+      if (error.response && error.response?.status >= 400) {
+        setShowWarningMessage(true);
+      }
+    }
+  };
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -15,17 +60,26 @@ export default function Login() {
 
   return (
     <>
-      <form className='login-container'>
+      <form className='login-container' onSubmit={onSubmitForm}>
         <img src={Logo} className='logo' alt='puddy_logo' />
         <div className='inputs'>
-          <Message isWarning>아이디 또는 비밀번호가 일치하지 않아요.</Message>
+          {showWarningMessage && (
+            <Message isWarning>아이디 또는 비밀번호가 일치하지 않아요.</Message>
+          )}
           <InputBox
+            onChange={onChangeLoginForm('account')}
             inputRef={inputRef}
             required
             width='250px'
             placeholder='아이디를 입력해주세요.'
           />
-          <InputBox required width='250px' type='password' placeholder='비밀번호를 입력해주세요.' />
+          <InputBox
+            onChange={onChangeLoginForm('password')}
+            required
+            width='250px'
+            type='password'
+            placeholder='비밀번호를 입력해주세요.'
+          />
           <Button>로그인</Button>
         </div>
         <div className='find-and-join-container'>
