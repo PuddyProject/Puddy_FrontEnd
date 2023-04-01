@@ -1,4 +1,4 @@
-import { navString } from '../../constants/navItem';
+import { navItems } from '../../constants/navItem';
 import { Link, useLocation } from 'react-router-dom';
 
 export default function NavBar() {
@@ -6,15 +6,15 @@ export default function NavBar() {
 
   return (
     <nav className='nav-bar'>
-      {navString.map((nav, i) => {
+      {navItems.map(({ path, title, memberOnly }, i) => {
         return (
           <div key={i} className='nav-item'>
             <Link
               key={i}
-              className={location.pathname === nav[0] ? 'nav-selected-link' : 'nav-link'}
-              to={nav[0]}
+              className={location.pathname === path ? 'nav-selected-link' : 'nav-link'}
+              to={memberOnly ? '/auth/login' : path}
             >
-              {nav[1]}
+              {title}
             </Link>
           </div>
         );
