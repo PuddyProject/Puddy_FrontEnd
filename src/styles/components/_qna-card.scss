@@ -33,7 +33,11 @@
     justify-content: space-between;
 
     .answer-text {
-      @include font-styles(10px, 800, $primary-color);
+      @include font-styles(10px, 800, $color-gray01);
+
+      .solved {
+        @include font-styles(10px, 800, $primary-color);
+      }
     }
 
     .writer-text {
