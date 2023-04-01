@@ -13,6 +13,11 @@ interface POST {
   body?: Object;
 }
 
+interface PATCH {
+  endpoint: string;
+  body?: object | File;
+}
+
 export async function get({ endpoint, params = '' }: GET) {
   console.log(`%cGET 요청 ${SERVER_URL}${endpoint}${params}`, 'color: #a25cd1;');
 
@@ -39,6 +44,14 @@ export async function postImg({ endpoint, body }: POST) {
   return axios.post(`${SERVER_URL}${endpoint}`, body, {
     headers: {
       'Content-Type': 'multipart/form-data',
+      Authorization: sessionStorage.getItem('userToken'),
+    },
+  });
+}
+
+export async function patch({ endpoint, body }: PATCH) {
+  return axios.patch(`${SERVER_URL}${endpoint}`, body, {
+    headers: {
       Authorization: sessionStorage.getItem('userToken'),
     },
   });

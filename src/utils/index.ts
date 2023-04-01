@@ -3,7 +3,7 @@ export { default as checkFileSize } from './checkFileSize';
 export { default as checkExtensions } from './checkExtensions';
 
 /** AXIOS */
-export { get, post, postImg } from './axiosHelper';
+export { get, post, postImg, patch } from './axiosHelper';
 
 /** VALIDATE */
 export { isValidId, isValidPw, isValidName, isValidEmail } from './validate/checkSignup';
