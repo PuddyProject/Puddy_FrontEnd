@@ -1,7 +1,7 @@
 import { FiSettings as SettingIcon } from 'react-icons/fi';
 import { AiOutlineQuestionCircle as QuestionIcon } from 'react-icons/ai';
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { Button } from 'components';
 
@@ -15,8 +15,21 @@ const TEMP_IMAGE_URL =
 export default function MyPage() {
   const [showModal, setShowModal] = useState(false);
 
+  const navigate = useNavigate();
+
   const onClickQuestionIcon = () => {
     setShowModal(true);
+  };
+
+  const onClickSetting = () => {
+    navigate('/mypage/profile');
+  };
+
+  const onClickMyPetInfo = () => {
+    //TODO: 펫 등록 여부를 확인할 필요가 있을듯함.
+    // 펫 등록된 유저:  /mypage/pets
+    // 미등록 유저 : /profile/pets
+    navigate('/mypage');
   };
 
   return (
@@ -24,11 +37,11 @@ export default function MyPage() {
       <div className='container'>
         <section className='profile'>
           <img className='profile-image' src={TEMP_IMAGE_URL} alt='프로필 이미지' />
-          <div className='setting'>
+          <div className='setting' onClick={onClickSetting}>
             <ProfileSettingButton />
           </div>
           <h3 className='nickname'>닉네임</h3>
-          <Button outline width='200px' height='35px'>
+          <Button onClick={onClickMyPetInfo} outline width='200px' height='35px'>
             내 펫 정보
           </Button>
         </section>
