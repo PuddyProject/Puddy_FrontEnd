@@ -10,7 +10,12 @@ interface GET {
 
 interface POST {
   endpoint: string;
-  body?: Object;
+  body?: object;
+}
+
+interface PATCH {
+  endpoint: string;
+  body?: object | File;
 }
 
 export async function get({ endpoint, params = '', queryString = '' }: GET) {
@@ -34,6 +39,14 @@ export async function post({ endpoint, body }: POST) {
   return axios.post(`${SERVER_URL}${endpoint}`, bodyData, {
     headers: {
       'Content-Type': 'application/json',
+      Authorization: sessionStorage.getItem('userToken'),
+    },
+  });
+}
+
+export async function patch({ endpoint, body }: PATCH) {
+  return axios.patch(`${SERVER_URL}${endpoint}`, body, {
+    headers: {
       Authorization: sessionStorage.getItem('userToken'),
     },
   });
