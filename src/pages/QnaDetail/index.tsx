@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 
 import { useLocation, useNavigate } from 'react-router-dom';
 import { get } from 'utils';
+import { AnswerInfo } from 'types/commentTypes';
 
 interface PostDataInfo {
   category: string;
@@ -18,29 +19,36 @@ interface PostDataInfo {
   viewCount: number;
 }
 
-interface AnswerInfo {
-  id: number;
-  content: string;
-  nickname: string;
-  selected: boolean;
-  userRole: string;
-}
-
 export default function QnaDetail() {
   const nav = useNavigate();
   const location = useLocation();
   const postId = location.pathname.split('/')[3];
-  const [answerList, setAnswerList] = useState<AnswerInfo>();
+  const [answerList, setAnswerList] = useState<AnswerInfo[]>([]);
   const [postDataInfo, setPostDataInfo] = useState<PostDataInfo>();
+
   const getDetailData = async () => {
     const res = await get({ endpoint: 'questions', params: `/${postId}` });
     console.log(res);
     setPostDataInfo(res.data.data);
+    setAnswerList(res.data.data.answerList);
   };
 
   useEffect(() => {
     getDetailData();
   }, []);
+
+  const AnsewerList = (answer: AnswerInfo) => {
+    let isExport = answer.userRole === 'ROLE_USER' ? false : true;
+    return (
+      <Comment
+        key={answer.id}
+        isExport={isExport}
+        answerData={answer}
+        isSolved={postDataInfo?.isSolved}
+        postWriterName={postDataInfo?.nickname}
+      />
+    );
+  };
 
   return (
     <>
@@ -90,18 +98,32 @@ export default function QnaDetail() {
                     </span>
                     <br />
                     <span className='comment-sub-title'>작성자가 채택한 답변이에요.</span>
-                    <Comment isExport={true} />
+                    {answerList
+                      .filter((answer) => answer.selected === true)
+                      .map((answer) => {
+                        return AnsewerList(answer);
+                      })}
                   </div>
                 )}
-                <span className='comment-title'>
-                  작성된 <span>답변 🐾</span>
-                </span>
-                <br />
-                <span className='comment-sub-title'>원하는 답변이 달렸다면 채택을 해보세요.</span>
+                {answerList.length === 0 ? (
+                  <div className='comment-zero'>아직 답글이 없습니다</div>
+                ) : (
+                  <>
+                    <span className='comment-title'>
+                      작성된 <span>답변 🐾</span>
+                    </span>
+                    <br />
+                    <span className='comment-sub-title'>
+                      원하는 답변이 달렸다면 채택을 해보세요.
+                    </span>
+                  </>
+                )}
               </div>
-              <Comment />
-              <Comment isExport={true} />
-              <Comment isExport={true} isWriteUser={true} />
+              {answerList
+                .filter((answer) => answer.selected === false)
+                .map((answer) => {
+                  return AnsewerList(answer);
+                })}
             </section>
           </div>
           <FooterButton
