@@ -58,7 +58,7 @@
   .answer-text {
     @include font-styles(12px, 800, $color-gray01);
 
-    .solved {
+    &.solved {
       @include font-styles(12px, 800, $primary-color);
     }
   }
