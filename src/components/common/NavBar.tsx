@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 export default function NavBar() {
   const location = useLocation();
+  const isLoggedIn = sessionStorage.getItem('userToken');
 
   return (
     <nav className='nav-bar'>
@@ -12,7 +13,7 @@ export default function NavBar() {
             <Link
               key={i}
               className={location.pathname === path ? 'nav-selected-link' : 'nav-link'}
-              to={memberOnly ? '/auth/login' : path}
+              to={memberOnly && !isLoggedIn ? '/auth/login' : path}
             >
               {title}
             </Link>
