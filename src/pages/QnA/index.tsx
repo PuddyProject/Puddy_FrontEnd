@@ -1,4 +1,3 @@
-import axios, { AxiosInstance } from 'axios';
 import { QnaCard } from 'components';
 import WriteButton from 'components/common/WriteButton';
 import { useEffect, useState } from 'react';
