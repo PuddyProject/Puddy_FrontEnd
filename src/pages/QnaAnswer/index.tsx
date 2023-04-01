@@ -1,11 +1,34 @@
 import { FooterButton } from 'components';
 import CustomHeader from 'components/common/CustomHeader';
 import InputTilte from 'components/common/InputTitle';
-import { useNavigate } from 'react-router-dom';
+import { useRef, useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { post } from 'utils';
 
 export default function QnaAnswer() {
   const nav = useNavigate();
+  const location = useLocation();
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  const [answer, setAnaswer] = useState('');
+  useEffect(() => {
+    textAreaRef.current?.focus();
+  }, []);
+  async function sendData() {
+    const res = await post({
+      endpoint: `questions/${location.state}/answers/write`,
+      body: {
+        content: answer,
+        postCategory: '2',
+      },
+    });
 
+    if (res.data.resultCode === 'SUCCESS') {
+      alert('답글 작성 완료');
+      nav(-1);
+    } else {
+      alert('답글 작성 실패. 잠시 후 다시 시도해주세요');
+    }
+  }
   return (
     <>
       <CustomHeader
@@ -19,9 +42,17 @@ export default function QnaAnswer() {
         <InputTilte isRequire={true} margin='50px 0px 10px 0px'>
           답글 내용
         </InputTilte>
-        <textarea className='text-body' placeholder='답글을 입력해주세요.(최대 500자)' />
+        <textarea
+          className='text-body'
+          defaultValue={answer}
+          placeholder='답글을 입력해주세요.(최대 500자)'
+          ref={textAreaRef}
+          onChange={(e) => {
+            setAnaswer(e.target.value);
+          }}
+        />
       </div>
-      <FooterButton>답글 작성하기</FooterButton>
+      <FooterButton onClick={sendData}>답글 작성하기</FooterButton>
     </>
   );
 }
