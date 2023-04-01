@@ -8,7 +8,7 @@ import checkFileSize from 'utils/checkFileSize';
 import { IoMdRemoveCircleOutline } from 'react-icons/io';
 import CustomHeader from 'components/common/CustomHeader';
 import { useNavigate } from 'react-router-dom';
-
+import { postImg } from 'utils';
 interface PostInfo {
   title: string;
   content: string;
@@ -71,10 +71,14 @@ export default function NewPost() {
     setImgFile((prev) => [...prev.filter((_, i) => i !== index)]);
     setFilePreview((prev) => [...prev.filter((_, i) => i !== index)]);
   };
-  const onSendData = () => {
+
+  const onSendData = async () => {
     const formData = new FormData();
-    formData.append('requiest', new Blob([JSON.stringify(postInfo)], { type: 'application/json' }));
-    formData.append('imgFile', imgFile[0]);
+    formData.append('request', new Blob([JSON.stringify(postInfo)], { type: 'application/json' }));
+    formData.append('file', imgFile[0]);
+
+    const res = await postImg({ endpoint: 'questions/write', body: formData });
+    console.log(res);
   };
 
   return (

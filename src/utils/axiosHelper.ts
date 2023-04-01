@@ -38,3 +38,12 @@ export async function post({ endpoint, body }: POST) {
     },
   });
 }
+
+export async function postImg({ endpoint, body }: POST) {
+  return axios.post(`${SERVER_URL}${endpoint}`, body, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      Authorization: sessionStorage.getItem('userToken'),
+    },
+  });
+}
