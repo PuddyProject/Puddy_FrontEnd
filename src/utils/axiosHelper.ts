@@ -10,7 +10,12 @@ interface GET {
 
 interface POST {
   endpoint: string;
-  body?: Object;
+  body?: object;
+}
+
+interface PATCH {
+  endpoint: string;
+  body?: object | File;
 }
 
 interface PATCH {
