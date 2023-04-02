@@ -1,9 +1,10 @@
 import Button from 'components/common/Button';
 import { AiOutlineCheckCircle } from 'react-icons/ai';
-import { AnswerInfo } from 'types/commentTypes';
 import classnames from 'classnames';
 import { patch } from 'utils';
 import { useLocation } from 'react-router-dom';
+import { AnswerInfo, PostDataInfo } from 'types/commentTypes';
+import { Dispatch, SetStateAction } from 'react';
 
 const cn = classnames;
 interface CommentProps {
@@ -12,6 +13,9 @@ interface CommentProps {
   isSolved?: boolean;
   isExport?: boolean;
   isWriteUser?: boolean;
+  answerList?: AnswerInfo[];
+  setPostDataInfo: Dispatch<SetStateAction<PostDataInfo>>;
+  setAnswerList: Dispatch<SetStateAction<AnswerInfo[]>>;
 }
 
 export default function Comment({
@@ -20,6 +24,8 @@ export default function Comment({
   postWriterName,
   isExport = false,
   isWriteUser = false,
+  setPostDataInfo,
+  setAnswerList,
 }: CommentProps) {
   const location = useLocation();
 
@@ -29,7 +35,15 @@ export default function Comment({
     });
     if (res.status === 200) {
       alert('답글이 채택 되었습니다.');
-      window.location.reload();
+      setAnswerList((answerList: AnswerInfo[]) => {
+        return answerList.map((answer: AnswerInfo) => {
+          if (answer.id === answerData.id) {
+            return { ...answer, selected: true };
+          }
+          return answer;
+        });
+      });
+      setPostDataInfo((prev: PostDataInfo) => ({ ...prev, isSolved: true }));
     } else {
       alert('오류가 생겼습니다. 잠시 후 다시 시도해주세요.');
     }
