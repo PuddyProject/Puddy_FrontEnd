@@ -1,19 +1,25 @@
 import { FiSettings as SettingIcon } from 'react-icons/fi';
 import { AiOutlineQuestionCircle as QuestionIcon } from 'react-icons/ai';
 
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
+import { useAuth } from 'hooks/useAuth';
 
 import { Button } from 'components';
 
 import { Tier, myPageList, MypageListItem } from 'constants/myPageList';
 import Modal from 'components/common/Modal';
-import { useState } from 'react';
 
 const TEMP_IMAGE_URL =
   'https://blog.kakaocdn.net/dn/GHYFr/btrsSwcSDQV/UQZxkayGyAXrPACyf0MaV1/img.jpg';
 
 export default function MyPage() {
   const [showModal, setShowModal] = useState(false);
+
+  const { decodedUserToken } = useAuth();
+  const loggedInUser = decodedUserToken();
+  console.log(loggedInUser);
 
   const navigate = useNavigate();
 
@@ -29,7 +35,7 @@ export default function MyPage() {
     //TODO: 펫 등록 여부를 확인할 필요가 있을듯함.
     // 펫 등록된 유저:  /mypage/pets
     // 미등록 유저 : /profile/pets
-    navigate('/mypage');
+    navigate('/profile/pets');
   };
 
   return (
@@ -43,6 +49,7 @@ export default function MyPage() {
           <h3 className='nickname'>닉네임</h3>
           <Button onClick={onClickMyPetInfo} outline width='200px' height='35px'>
             내 펫 정보
+            {/* //TODO: 펫 등록/미등록에 따라 라우팅 변경 */}
           </Button>
         </section>
         <hr className='dividing-line' />
