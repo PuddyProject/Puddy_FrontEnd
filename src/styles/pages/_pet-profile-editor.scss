@@ -44,6 +44,12 @@
   align-items: flex-start;
   gap: 10px;
 
+  div {
+    .input-title {
+      margin-bottom: 10px;
+    }
+  }
+
   input {
     margin-bottom: 5px;
   }

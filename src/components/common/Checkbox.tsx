@@ -6,10 +6,12 @@ interface CheckboxProps {
   checked?: boolean;
   required?: boolean;
   readonly?: boolean;
+  onClick?: (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => void;
   requestOnChange?: (isChecked: boolean) => void;
 }
 
 export default function Checkbox({
+  onClick,
   requestOnChange,
   text,
   required,
@@ -29,6 +31,7 @@ export default function Checkbox({
   return (
     <div className='check-box-container'>
       <input
+        onClick={onClick}
         onChange={onChange}
         checked={isChecked}
         readOnly={readonly}

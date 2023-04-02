@@ -12,10 +12,12 @@ interface InputBoxProps {
   min?: string;
   max?: string;
   readonly?: boolean;
+  className?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function InputBox({
+  className,
   onChange,
   inputRef,
   width,
@@ -46,7 +48,7 @@ export default function InputBox({
       max={max}
       ref={inputRef}
       required={required}
-      className={`input-box ${placeholderAlignRight ? 'ph-align-right' : ''}`}
+      className={`input-box ${placeholderAlignRight ? 'ph-align-right' : ''} ${className}`}
       style={inputStyle}
       type={type}
       id={id}
