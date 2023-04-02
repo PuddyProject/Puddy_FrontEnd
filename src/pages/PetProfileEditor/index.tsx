@@ -1,4 +1,5 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { IoMdClose as CloseIcon } from 'react-icons/io';
 
 import {
@@ -25,6 +26,8 @@ export default function PetProfileEditor() {
     breed: useRef(null),
     weight: useRef(null),
   });
+
+  const navigate = useNavigate();
 
   const [isMounted, setIsMounted] = useState(false);
 
@@ -92,7 +95,7 @@ export default function PetProfileEditor() {
    * * 펫 프로필
    * 서버 POST 요청
    */
-  const onSubmitPetProfile = () => {
+  const onSubmitPetProfile = async () => {
     const emptyValues = Object.entries(petProfile)
       .map(([key, value]) => (REQUIRED_KEY && !value ? key : ''))
       .filter((key) => key && REQUIRED_KEY.includes(key as RequiredValues));
@@ -107,7 +110,7 @@ export default function PetProfileEditor() {
 
     if (!emptyValues.length) {
       try {
-        const res = post({
+        const res = await post({
           endpoint: 'users/pets',
           body: {
             request: {
@@ -119,6 +122,11 @@ export default function PetProfileEditor() {
           },
         });
         console.log(res);
+
+        if (res.status === 201) {
+          window.alert('등록을 완료했어요.'); // *임시 메시지
+          navigate('/');
+        }
       } catch (err) {
         console.error(err);
         window.alert('에러가 발생했어요. 잠시 후 다시 시도해주세요.');
