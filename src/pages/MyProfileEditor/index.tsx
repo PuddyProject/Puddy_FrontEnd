@@ -38,8 +38,6 @@ export default function MyProfileEditor() {
     setProfileDatas(null);
   };
 
-  console.log(profileDatas);
-
   const onSubmitProfile = async () => {
     // 파일이 변경된 경우에만 post요청
     //TODO: 추후 닉네임 변경 유무도 필요함
