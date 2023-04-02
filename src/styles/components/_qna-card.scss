@@ -2,40 +2,38 @@
 
 .main-qna-card {
   border-radius: 10px;
-  width: 160px;
+  min-width: 130px;
+  min-height: 120px;
   margin: 15px 5px;
   background-color: $bg-color;
-  padding: 10px 10px;
+  padding: 10px 10px 0px 10px;
 
   filter: drop-shadow(0px 0px 10px rgba(169, 169, 169, 0.2));
 
   .title {
+    @include ellipsis-text;
     @include font-styles(16px, 800, $color-gray01);
     margin-bottom: 5px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
   }
 
   .body {
     @include font-styles(14px, 400, $color-gray01);
+    @include multiline-ellipsis-text;
     margin-top: 10px;
-    margin-bottom: 30px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
   }
 
   .bottom-section {
-    display: flex;
-    justify-content: space-between;
+    position: fixed;
+    bottom: 0px;
+    max-width: 120px;
+    margin-bottom: 10px;
+    @include ellipsis-text();
 
     .answer-text {
+      margin-right: 30px;
       @include font-styles(10px, 800, $color-gray01);
 
-      .solved {
+      &.solved {
         @include font-styles(10px, 800, $primary-color);
       }
     }
