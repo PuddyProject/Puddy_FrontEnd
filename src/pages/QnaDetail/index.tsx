@@ -100,7 +100,7 @@ export default function QnaDetail() {
                 )}
                 {answerList.filter((answer) => answer.selected === false).length === 0 ? (
                   answerList.filter((answer) => answer.selected === true).length === 0 && (
-                    <div className='comment-zero'>아직 답글이 없습니다</div>
+                    <div className='comment-zero'>답변이 존재하지 않아요</div>
                   )
                 ) : (
                   <>
