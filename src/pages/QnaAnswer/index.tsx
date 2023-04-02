@@ -23,36 +23,36 @@ export default function QnaAnswer() {
     });
 
     if (res.data.resultCode === 'SUCCESS') {
-      alert('답글 작성 완료');
+      alert('답변 작성 완료');
       nav(-1);
     } else {
-      alert('답글 작성 실패. 잠시 후 다시 시도해주세요');
+      alert('답변 작성 실패. 잠시 후 다시 시도해주세요');
     }
   }
   return (
     <>
       <CustomHeader
         left={'<'}
-        center='Q&A 답글 작성'
+        center='Q&A 답변 작성'
         onClickLeft={() => {
           nav(-1);
         }}
       />
       <div>
         <InputTilte isRequire={true} margin='50px 0px 10px 0px'>
-          답글 내용
+          답변 내용
         </InputTilte>
         <textarea
           className='text-body'
           defaultValue={answer}
-          placeholder='답글을 입력해주세요.(최대 500자)'
+          placeholder='답변을 입력해주세요.(최대 500자)'
           ref={textAreaRef}
           onChange={(e) => {
             setAnaswer(e.target.value);
           }}
         />
       </div>
-      <FooterButton onClick={sendData}>답글 작성하기</FooterButton>
+      <FooterButton onClick={sendData}>답변 작성하기</FooterButton>
     </>
   );
 }
