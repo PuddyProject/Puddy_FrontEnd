@@ -79,6 +79,13 @@ export default function NewPost() {
 
     const res = await postImg({ endpoint: 'questions/write', body: formData });
     console.log(res);
+
+    if (res.status === 200) {
+      alert('Q&A 작성 완료 되었습니다.');
+      nav(-1);
+    } else {
+      alert('게시글을 작성하지 못하였습니다. 잠시 후 다시 시도해주세요.');
+    }
   };
 
   return (
