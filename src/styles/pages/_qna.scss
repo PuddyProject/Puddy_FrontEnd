@@ -56,7 +56,11 @@
   }
 
   .answer-text {
-    @include font-styles(12px, 800, $primary-color);
+    @include font-styles(12px, 800, $color-gray01);
+
+    &.solved {
+      @include font-styles(12px, 800, $primary-color);
+    }
   }
 
   .writer-text {

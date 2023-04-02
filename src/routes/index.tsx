@@ -84,8 +84,8 @@ export default function Router() {
       </Route>
 
       <Route path='/' element={<LayoutWithoutHeader />}>
-        <Route path='qna/detail' element={<QnaDetail />} />
-        <Route path='qna/detail/write/answer' element={<QnaAnswer />} />
+        <Route path='qna/detail/:id' element={<QnaDetail />} />
+        <Route path='qna/detail/:id/write/answer' element={<QnaAnswer />} />
         <Route path='qna/newpost' element={<NewPost />} />
       </Route>
 

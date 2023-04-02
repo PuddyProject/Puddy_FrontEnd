@@ -39,7 +39,11 @@
     color: $color-gray04;
   }
 }
-
+.comment-zero {
+  @include center;
+  font-size: 15px;
+  font-weight: 800;
+}
 .qna-divide-line {
   @include dividing-line(290px, $color-gray04);
 }
@@ -47,7 +51,7 @@
 .body-text {
   color: #000000;
   font-weight: 300;
-  margin-top: 20px;
+  margin: 20px 0px;
   font-size: 14px;
   line-height: 23px;
 }
