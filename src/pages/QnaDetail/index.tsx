@@ -5,30 +5,18 @@ import { useEffect, useState } from 'react';
 
 import { useLocation, useNavigate } from 'react-router-dom';
 import { get } from 'utils';
-import { AnswerInfo } from 'types/commentTypes';
-
-interface PostDataInfo {
-  category: string;
-  content: string;
-  createdDate: string;
-  isSolved: boolean;
-  nickname: string;
-  postCategory: number;
-  questionId: number;
-  title: string;
-  viewCount: number;
-}
-
+import { AnswerInfo, PostDataInfo } from 'types/commentTypes';
+import { initQnaDetail } from 'utils/initialValues/qnaDetail';
 export default function QnaDetail() {
   const nav = useNavigate();
   const location = useLocation();
   const postId = location.pathname.split('/')[3];
   const [answerList, setAnswerList] = useState<AnswerInfo[]>([]);
-  const [postDataInfo, setPostDataInfo] = useState<PostDataInfo>();
+  const [postDataInfo, setPostDataInfo] = useState<PostDataInfo>(initQnaDetail);
 
   const getDetailData = async () => {
     const res = await get({ endpoint: 'questions', params: `/${postId}` });
-    console.log(res);
+
     setPostDataInfo(res.data.data);
     setAnswerList(res.data.data.answerList);
   };
@@ -37,15 +25,20 @@ export default function QnaDetail() {
     getDetailData();
   }, []);
 
+  useEffect(() => {}, [answerList, postDataInfo]);
+
   const AnsewerList = (answer: AnswerInfo) => {
     let isExport = answer.userRole === 'ROLE_USER' ? false : true;
     return (
       <Comment
         key={answer.id}
-        isExport={isExport}
         answerData={answer}
-        isSolved={postDataInfo?.isSolved}
         postWriterName={postDataInfo?.nickname}
+        answerList={answerList}
+        isExport={isExport}
+        isSolved={postDataInfo?.isSolved}
+        setPostDataInfo={setPostDataInfo}
+        setAnswerList={setAnswerList}
       />
     );
   };
@@ -105,8 +98,10 @@ export default function QnaDetail() {
                       })}
                   </div>
                 )}
-                {answerList.length === 0 ? (
-                  <div className='comment-zero'>아직 답글이 없습니다</div>
+                {answerList.filter((answer) => answer.selected === false).length === 0 ? (
+                  answerList.filter((answer) => answer.selected === true).length === 0 && (
+                    <div className='comment-zero'>아직 답글이 없습니다</div>
+                  )
                 ) : (
                   <>
                     <span className='comment-title'>
