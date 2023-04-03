@@ -23,6 +23,7 @@ export default function QnaContainer({ title, cardDataList }: QnaContainerProps)
           );
         })}
         <PlusButton
+          padding='15px 0px 0px 10px'
           onClick={() => {
             nav('qna');
           }}
