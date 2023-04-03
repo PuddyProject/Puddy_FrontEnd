@@ -42,12 +42,12 @@ export default function Qna() {
       </div>
       {qnaData?.map((data) => {
         return (
-          <Link to={`detail/${data.questionId}`}>
+          <Link key={data.questionId} to={`detail/${data.questionId}`}>
             <QnaCard key={data.questionId} qnaData={data} />
           </Link>
         );
       })}
-      <div ref={lastCardRef}></div>
+      <div ref={lastCardRef} />
       <WriteButton
         onClick={() => {
           nav('newpost');
