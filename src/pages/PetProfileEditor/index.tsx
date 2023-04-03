@@ -13,9 +13,9 @@ import {
 } from 'components';
 
 import checkExtensions from 'utils/checkExtensions';
-import { post } from 'utils';
 
 import { MyPetFormRefs, Profile, RequiredValues } from 'types/petProfileTypes';
+import { postImg } from 'utils/axiosHelper';
 
 const REQUIRED_KEY: RequiredValues[] = ['name', 'breed', 'age', 'gender', 'weight'];
 
@@ -103,23 +103,28 @@ export default function PetProfileEditor() {
     setEmptyValues(() => [...emptyValues] as RequiredValues[]);
     setInputsToShake(() => []);
 
+    const convertProfileData = {
+      ...petProfile,
+      age: Number(petProfile.age),
+      weight: Number(petProfile.weight),
+      gender: petProfile.gender === '암컷' ? true : false,
+    };
+
     const formData = new FormData();
     if (imgFile) {
       formData.append('file', imgFile);
     }
 
+    formData.append(
+      'request',
+      new Blob([JSON.stringify(convertProfileData)], { type: 'application/json' })
+    );
+
     if (!emptyValues.length) {
       try {
-        const res = await post({
+        const res = await postImg({
           endpoint: 'users/pets',
-          body: {
-            request: {
-              ...petProfile,
-              age: Number(petProfile.age),
-              weight: Number(petProfile.weight),
-            },
-            file: formData,
-          },
+          body: formData,
         });
         console.log(res);
 
@@ -244,7 +249,11 @@ export default function PetProfileEditor() {
             </div>
           </div>
 
-          <Checkbox onClick={onClickNeutered} text={'중성화 수술을 했어요.'} />
+          <Checkbox
+            checked={petProfile.isNeutered}
+            onClick={onClickNeutered}
+            text={'중성화 수술을 했어요.'}
+          />
 
           <div className={`${inputsToShake.includes('weight') ? 'shake' : ''}`}>
             <InputTitle isRequire>체중</InputTitle>
