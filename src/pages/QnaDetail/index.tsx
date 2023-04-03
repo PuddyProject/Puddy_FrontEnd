@@ -71,8 +71,19 @@ export default function QnaDetail() {
 
             <section className='body'>
               <div className='body-text'>{postDataInfo.content}</div>
-              {/* 
-              TODO: 내 펫 정보 등록 시 해당 정보 보여주기
+
+              <div className='img-box'>
+                {postDataInfo.imagePath !== '' ? (
+                  <>
+                    <img className='qna-image' src={postDataInfo.imagePath} />
+                  </>
+                ) : (
+                  <></>
+                )}
+              </div>
+
+              {/*
+                            TODO: 내 펫 정보 등록 시 해당 정보 보여주기
               <div className='tag-container'>
                 <span className='tag-item'>알레스카 말라뮤트</span>
                 <span className='tag-item'>중성화</span>
