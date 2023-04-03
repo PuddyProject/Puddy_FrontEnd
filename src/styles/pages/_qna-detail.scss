@@ -61,7 +61,6 @@
 .img-box {
   display: flex;
   overflow: scroll;
-  min-width: 320px;
   gap: 15px;
   margin-bottom: 30px;
   justify-content: center;
@@ -80,7 +79,6 @@
 
 .tag-container {
   margin-top: 15px;
-  min-width: 320px;
   width: 100%;
   display: flex;
   overflow: scroll;
