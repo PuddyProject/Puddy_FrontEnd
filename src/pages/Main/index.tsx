@@ -6,8 +6,8 @@ import { get } from 'utils';
 import dragEvent from 'utils/dragEvent';
 import { MainQnaCardType } from 'types/qnaCardTypes';
 import { useNavigate } from 'react-router-dom';
-const COLOR = ['red', 'black', 'green', 'pink', 'skyblue'];
-const MAX_INDEX = 4;
+const COLOR = ['red', 'black', 'green', 'gray', 'skyblue', 'yellow', 'pink'];
+const MAX_INDEX = COLOR.length - 1;
 
 interface MainQnaList {
   popularQuestions: MainQnaCardType[];
@@ -58,7 +58,7 @@ export default function Main() {
           </div>
 
           <div className='circle-container'>
-            {Array(5)
+            {Array(MAX_INDEX + 1)
               .fill(0)
               .map((_, i) => {
                 return (
