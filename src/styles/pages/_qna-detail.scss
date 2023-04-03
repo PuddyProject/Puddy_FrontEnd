@@ -39,11 +39,13 @@
     color: $color-gray04;
   }
 }
+
 .comment-zero {
   @include center;
   font-size: 15px;
   font-weight: 800;
 }
+
 .qna-divide-line {
   @include dividing-line(290px, $color-gray04);
 }
@@ -54,6 +56,26 @@
   margin: 20px 0px;
   font-size: 14px;
   line-height: 23px;
+}
+
+.img-box {
+  display: flex;
+  overflow: scroll;
+  min-width: 320px;
+  gap: 15px;
+  margin-bottom: 30px;
+  justify-content: center;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .qna-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 15px;
+  }
 }
 
 .tag-container {
