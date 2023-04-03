@@ -12,4 +12,8 @@
   font-size: 1.4rem;
   border: none;
   cursor: pointer;
+
+  &:disabled {
+    background-color: $color-gray02;
+  }
 }
