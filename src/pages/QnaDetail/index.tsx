@@ -1,12 +1,14 @@
 import CustomHeader from 'components/common/CustomHeader';
 import FooterButton from 'components/common/FooterButton';
 import Comment from 'components/qnaDetail/Comment';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 
 import { useLocation, useNavigate } from 'react-router-dom';
 import { get } from 'utils';
 import { AnswerInfo, PostDataInfo } from 'types/commentTypes';
 import { initQnaDetail } from 'utils/initialValues/qnaDetail';
+import { UserInfo } from 'App';
+
 export default function QnaDetail() {
   const nav = useNavigate();
   const location = useLocation();
@@ -21,6 +23,9 @@ export default function QnaDetail() {
     setAnswerList(res.data.data.answerList);
   };
 
+  const userInfo = useContext(UserInfo);
+  console.log(userInfo);
+
   useEffect(() => {
     getDetailData();
   }, []);
@@ -29,17 +34,36 @@ export default function QnaDetail() {
 
   const AnsewerList = (answer: AnswerInfo) => {
     let isExport = answer.userRole === 'ROLE_USER' ? false : true;
+    let isPostUser = postDataInfo.nickname === userInfo.nickname;
+    const isCommentWriteUser = answer.nickname === userInfo.nickname;
+
     return (
       <Comment
         key={answer.id}
         answerData={answer}
-        postWriterName={postDataInfo?.nickname}
-        answerList={answerList}
         isExport={isExport}
+        isPostUser={isPostUser}
         isSolved={postDataInfo?.isSolved}
+        isCommentWriteUser={isCommentWriteUser}
         setPostDataInfo={setPostDataInfo}
         setAnswerList={setAnswerList}
       />
+    );
+  };
+
+  const IsFirstWriter = () => {
+    const isFirstWriter = !answerList.some((answer) => answer.nickname === userInfo.nickname);
+    return (
+      <FooterButton
+        onClick={() => {
+          isFirstWriter
+            ? nav('write/answer', { state: postId })
+            : nav('write/answer', { state: postId });
+          //TODO: 첫번째 작성자가 아니면 수정페이지로 이동 하기. 현재는 수정페이지 이동이 없어서 라우팅 주소가 같음
+        }}
+      >
+        {isFirstWriter ? '답글 입력하기' : '답글 수정하기'}
+      </FooterButton>
     );
   };
 
@@ -132,13 +156,7 @@ export default function QnaDetail() {
                 })}
             </section>
           </div>
-          <FooterButton
-            onClick={() => {
-              nav('write/answer', { state: postId });
-            }}
-          >
-            답글 입력하기
-          </FooterButton>
+          {postDataInfo.nickname === userInfo.nickname ? '' : IsFirstWriter()}
         </div>
       )}
     </>
