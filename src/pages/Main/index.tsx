@@ -1,11 +1,12 @@
 import Button from 'components/common/Button';
 import ExpertContainer from 'components/main/ExpertContainer';
 import QnaContainer from 'components/main/QnaContainer';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { get } from 'utils';
 import dragEvent from 'utils/dragEvent';
 import { MainQnaCardType } from 'types/qnaCardTypes';
 import { useNavigate } from 'react-router-dom';
+import { UserInfo } from 'App';
 const COLOR = ['red', 'black', 'green', 'gray', 'skyblue', 'yellow', 'pink'];
 const MAX_INDEX = COLOR.length - 1;
 
@@ -13,6 +14,7 @@ interface MainQnaList {
   popularQuestions: MainQnaCardType[];
   recentQuestions: MainQnaCardType[];
 }
+
 export default function Main() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [transX, setTransX] = useState(0);
@@ -24,6 +26,17 @@ export default function Main() {
     setMainQnaList(res.data.data);
   };
 
+  const userInfo = useContext(UserInfo);
+  console.log(userInfo);
+
+  const buttonOnClick = (movePage: () => void) => {
+    if (sessionStorage.getItem('userToken')) {
+      movePage();
+    } else {
+      alert('회원전용 페이지 입니다. 로그인 페이지로 이동합니다.');
+      nav('/auth/login');
+    }
+  };
   useEffect(() => {
     getMainData();
   }, []);
@@ -74,10 +87,10 @@ export default function Main() {
           </div>
 
           <div className='button-container'>
-            <Button onClick={() => nav('/qna/newpost')} width='160px'>
+            <Button onClick={() => buttonOnClick(() => nav('/auth/login'))} width='160px'>
               Q&A 질문하기
             </Button>
-            <Button onClick={() => nav('/profile/pets')} outline width='160px'>
+            <Button onClick={() => buttonOnClick(() => nav('/profile/pets'))} outline width='160px'>
               내 펫 등록하기
             </Button>
           </div>
