@@ -161,6 +161,7 @@ export default function NewPost() {
         <InputTilte isRequire={true}> 내용 </InputTilte>
         <textarea
           id='content'
+          maxLength={500}
           className='text-body'
           placeholder='내용을 입력해주세요.(500자 이내)'
           defaultValue={postInfo.content}

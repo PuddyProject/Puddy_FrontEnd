@@ -47,9 +47,9 @@ export default function QnaAnswer() {
         </InputTilte>
         <textarea
           className='text-body'
-          maxLength={500}
+          maxLength={100}
           defaultValue={answer}
-          placeholder='답변을 입력해주세요.(최대 500자)'
+          placeholder='답변을 입력해주세요.(최대 100자)'
           ref={textAreaRef}
           onChange={(e) => {
             setAnaswer(e.target.value);
