@@ -9,11 +9,10 @@ import { Dispatch, SetStateAction } from 'react';
 const cn = classnames;
 interface CommentProps {
   answerData: AnswerInfo;
-  postWriterName?: string;
-  isSolved?: boolean;
-  isExport?: boolean;
-  isWriteUser?: boolean;
-  answerList?: AnswerInfo[];
+  isSolved: boolean;
+  isExport: boolean;
+  isPostUser: boolean;
+  isCommentWriteUser: boolean;
   setPostDataInfo: Dispatch<SetStateAction<PostDataInfo>>;
   setAnswerList: Dispatch<SetStateAction<AnswerInfo[]>>;
 }
@@ -21,9 +20,9 @@ interface CommentProps {
 export default function Comment({
   answerData,
   isSolved,
-  postWriterName,
-  isExport = false,
-  isWriteUser = false,
+  isPostUser,
+  isExport,
+  isCommentWriteUser,
   setPostDataInfo,
   setAnswerList,
 }: CommentProps) {
@@ -62,7 +61,7 @@ export default function Comment({
 
         <div className='user-roll-container'>
           <span className='user-roll'>{isExport ? '전문가 답변' : '사용자 답변'}</span>
-          {isWriteUser && (
+          {isCommentWriteUser && (
             <span className='user-roll'>
               <span>수정하기</span> | <span>삭제하기</span>
             </span>
@@ -71,7 +70,7 @@ export default function Comment({
       </div>
       <div className='comment-card-body'>{answerData.content}</div>
       <div className='comment-button'>
-        {!isSolved && (
+        {!isSolved && isPostUser && (
           <Button
             width='110px'
             height='25px'
