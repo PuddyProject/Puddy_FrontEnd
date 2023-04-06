@@ -5,11 +5,11 @@ import { UserProvider } from 'context/UserContext';
 
 function App() {
   return (
-    <BrowserRouter>
-      <UserProvider>
+    <UserProvider>
+      <BrowserRouter>
         <Router />
-      </UserProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </UserProvider>
   );
 }
 
