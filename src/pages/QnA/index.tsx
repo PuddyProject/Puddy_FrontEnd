@@ -40,13 +40,17 @@ export default function Qna() {
           내 반려견과 관련한 <span>질문/답변</span>을 작성해 보세요.
         </div>
       </div>
-      {qnaData?.map((data) => {
-        return (
-          <Link key={data.questionId} to={`detail/${data.questionId}`}>
-            <QnaCard key={data.questionId} qnaData={data} />
-          </Link>
-        );
-      })}
+      {qnaData.length === 0 ? (
+        <div className='qna-zero-data'>Q&A 게시글이 없습니다</div>
+      ) : (
+        qnaData?.map((data) => {
+          return (
+            <Link key={data.questionId} to={`detail/${data.questionId}`}>
+              <QnaCard key={data.questionId} qnaData={data} />
+            </Link>
+          );
+        })
+      )}
       <div ref={lastCardRef} />
       <WriteButton
         onClick={() => {
