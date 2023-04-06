@@ -24,11 +24,9 @@
 }
 
 .category-item {
+  @include center();
   width: 94px;
   height: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   border: 1px solid $color-gray04;
   color: $icon-color;
   border-radius: 10px;
@@ -59,9 +57,7 @@
 
 .image-item-add-button {
   @include qna-image-box($bg-color);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include center();
 }
 
 .image-add-item {
@@ -69,17 +65,13 @@
 }
 
 .image-add-item-plus {
-  color: $color-gray02;
-  font-size: 25px;
-  font-weight: 600;
+  @include font-styles(25px, 600, $color-gray02);
   margin-bottom: 3px;
   text-align: center;
 }
 
 .image-add-item-text {
-  color: $color-gray02;
-  font-size: 8px;
-  font-weight: 700;
+  @include font-styles(8px, 700, $color-gray02);
 }
 
 .text-body {
