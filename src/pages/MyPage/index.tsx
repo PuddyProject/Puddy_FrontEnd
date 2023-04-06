@@ -1,27 +1,38 @@
 import { FiSettings as SettingIcon } from 'react-icons/fi';
 import { AiOutlineQuestionCircle as QuestionIcon } from 'react-icons/ai';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { useAuth } from 'hooks/useAuth';
-
+import Modal from 'components/common/Modal';
 import { Button } from 'components';
 
 import { Tier, myPageList, MypageListItem } from 'constants/myPageList';
-import Modal from 'components/common/Modal';
+import { get } from 'utils';
+
+import { usePet } from 'context/PetContext';
 
 const TEMP_IMAGE_URL =
   'https://blog.kakaocdn.net/dn/GHYFr/btrsSwcSDQV/UQZxkayGyAXrPACyf0MaV1/img.jpg';
 
 export default function MyPage() {
-  const [showModal, setShowModal] = useState(false);
-
-  const { decodedUserToken } = useAuth();
-  const loggedInUser = decodedUserToken();
-  console.log(loggedInUser);
+  const { setHasPet } = usePet();
 
   const navigate = useNavigate();
+
+  const [showModal, setShowModal] = useState(false);
+
+  const [user, setUser] = useState({
+    nickname: '',
+    imagePath: null,
+    hasPet: false,
+  });
+
+  useEffect(() => {
+    if (user.hasPet) {
+      setHasPet(user.hasPet);
+    }
+  });
 
   const onClickQuestionIcon = () => {
     setShowModal(true);
@@ -32,24 +43,35 @@ export default function MyPage() {
   };
 
   const onClickMyPetInfo = () => {
-    //TODO: 펫 등록 여부를 확인할 필요가 있을듯함.
     // 펫 등록된 유저:  /mypage/pets
     // 미등록 유저 : /profile/pets
-    navigate('/profile/pets');
+    if (user.hasPet) return navigate('/mypage/pets');
+    return navigate('/profile/pets');
   };
+
+  useEffect(() => {
+    get({ endpoint: 'users/me' }).then((res) => {
+      setUser(res.data.data);
+    });
+  }, []);
+
+  console.log(user);
 
   return (
     <>
       <div className='container'>
         <section className='profile'>
-          <img className='profile-image' src={TEMP_IMAGE_URL} alt='프로필 이미지' />
+          <img
+            className='profile-image'
+            src={user.imagePath ? user.imagePath : TEMP_IMAGE_URL}
+            alt='프로필 이미지'
+          />
           <div className='setting' onClick={onClickSetting}>
             <ProfileSettingButton />
           </div>
-          <h3 className='nickname'>닉네임</h3>
+          <h3 className='nickname'>{user.nickname}</h3>
           <Button onClick={onClickMyPetInfo} outline width='200px' height='35px'>
-            내 펫 정보
-            {/* //TODO: 펫 등록/미등록에 따라 라우팅 변경 */}
+            {user.hasPet ? '내 펫 정보' : '내 펫 등록'}
           </Button>
         </section>
         <hr className='dividing-line' />
