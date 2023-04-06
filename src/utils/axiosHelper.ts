@@ -11,52 +11,65 @@ interface GET {
 interface POST {
   endpoint: string;
   body?: object;
+  isImage?: boolean;
 }
 
 interface PATCH {
   endpoint: string;
   body?: object | File;
+  isFormData: boolean;
 }
 
-export async function get({ endpoint, params = '', queryString = '' }: GET) {
-  console.log(`%cGET 요청 ${SERVER_URL}${endpoint}/${params}${queryString}`, 'color: #a25cd1;');
+const ContentTypes = {
+  json: 'application/json',
+  formData: 'multipart/form-data',
+};
 
-  return (
-    axios.get(`${SERVER_URL}${endpoint}/${params}`),
-    {
-      headers: {
-        Authorization: sessionStorage.getItem('userToken'),
-      },
-    }
-  );
+const instance = axios.create({
+  baseURL: SERVER_URL,
+  headers: {
+    'Content-Type': ContentTypes.json,
+  },
+});
+
+instance.interceptors.request.use((config) => {
+  const userToken = sessionStorage.getItem('userToken');
+
+  if (userToken) {
+    config.headers.Authorization = userToken;
+  }
+
+  return config;
+});
+
+export async function get({ endpoint, params = '' }: GET) {
+  const URL = `${endpoint}${params}`;
+  console.log(`%cGET 요청 ${SERVER_URL}${URL}`, 'color: #2a60ff;');
+
+  return instance.get(URL);
 }
 
-export async function post({ endpoint, body }: POST) {
-  const bodyData = JSON.stringify(body);
-  console.log(`%cPOST 요청:${SERVER_URL}${endpoint}`, 'color: #296aba;');
-  console.log(`%cPOST 요청 데이터: ${bodyData}`, 'color: #296aba;');
+export async function post({ endpoint, body, isImage = false }: POST) {
+  const URL = endpoint;
+  const bodyData = isImage ? body : JSON.stringify(body);
 
-  return axios.post(`${SERVER_URL}${endpoint}`, bodyData, {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: sessionStorage.getItem('userToken'),
-    },
-  });
+  console.log(`%cPOST 요청:${SERVER_URL}${endpoint}`, 'color: #2a60ff;');
+  console.log(`%cPOST 요청 데이터: ${bodyData}`, 'color: #2a60ff;');
+
+  const headers = {
+    'Content-Type': isImage ? ContentTypes.formData : ContentTypes.json,
+  };
+
+  return instance.post(URL, bodyData, { headers });
 }
 
-export async function postImg({ endpoint, body }: POST) {
-  return axios.post(`${SERVER_URL}${endpoint}`, body, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-      Authorization: sessionStorage.getItem('userToken'),
-    },
-  });
-}
+export async function patch({ endpoint, body, isFormData }: PATCH) {
+  const URL = endpoint;
+  const headers = {
+    'Content-Type': isFormData ? ContentTypes.formData : ContentTypes.json,
+  };
 
-export async function patch({ endpoint, body }: PATCH) {
-  return axios.patch(`${SERVER_URL}${endpoint}`, body, {
-    headers: {
-      Authorization: sessionStorage.getItem('userToken'),
-    },
+  return instance.patch(URL, isFormData ? body : JSON.stringify(body), {
+    headers,
   });
 }
