@@ -8,7 +8,7 @@ import checkFileSize from 'utils/checkFileSize';
 import { IoMdRemoveCircleOutline } from 'react-icons/io';
 import CustomHeader from 'components/common/CustomHeader';
 import { useNavigate } from 'react-router-dom';
-import { postImg } from 'utils';
+import { post } from 'utils';
 interface PostInfo {
   title: string;
   content: string;
@@ -54,14 +54,17 @@ export default function NewPost() {
     const files = e.target.files as FileList;
     const isValidImageExtensions = checkExtensions(files!);
     const isRightSize = checkFileSize(files!);
+
     if (!isValidImageExtensions) {
       alert('.jpg, .jpeg, .png, .gif 확장자만 업로드 할 수 있어요.');
       return;
     }
+
     if (!isRightSize) {
       alert('최대 10MB까지 업로드할 수 있어요.');
       return;
     }
+
     // eslint-disable-next-line semi-spacing
     for (let i = 0; i < files.length; i++) {
       setImgFile((prev) => [...prev, files[i]]);
@@ -77,9 +80,13 @@ export default function NewPost() {
   const onSendData = async () => {
     const formData = new FormData();
     formData.append('request', new Blob([JSON.stringify(postInfo)], { type: 'application/json' }));
-    formData.append('file', imgFile[0]);
 
-    const res = await postImg({ endpoint: 'questions/write', body: formData });
+    // eslint-disable-next-line semi-spacing
+    for (let i = 0; i < imgFile.length; i++) {
+      formData.append('images', imgFile[i]);
+    }
+
+    const res = await post({ endpoint: 'questions/write', body: formData, isImage: true });
     console.log(res);
 
     if (res.status === 200) {
