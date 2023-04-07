@@ -57,13 +57,13 @@
   overflow: scroll;
   gap: 15px;
   margin-bottom: 30px;
-  justify-content: center;
 
   &::-webkit-scrollbar {
     display: none;
   }
 
   .qna-image {
+    min-width: 150px;
     width: 150px;
     height: 150px;
     object-fit: cover;
