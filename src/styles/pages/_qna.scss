@@ -1,15 +1,15 @@
 @use '../abstracts' as *;
 
 .qna-container {
+  margin: 0 auto;
   @include header-gap;
   @include footer-gap;
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
   width: 90vw;
 
   .qna-title-section {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
   }
 
   .qna-title {
@@ -31,7 +31,7 @@
 .qna-card {
   border-radius: 10px;
   width: 100%;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   background-color: $bg-color;
   padding: 15px;
   filter: drop-shadow(0px 0px 5px $shadow-color);

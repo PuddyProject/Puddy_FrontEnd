@@ -16,5 +16,5 @@ export interface PostDataInfo {
   questionId: number;
   title: string;
   viewCount: number;
-  imagePath: string;
+  images: string[];
 }

@@ -1,13 +1,13 @@
 import CustomHeader from 'components/common/CustomHeader';
 import FooterButton from 'components/common/FooterButton';
 import Comment from 'components/qnaDetail/Comment';
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useLocation, useNavigate } from 'react-router-dom';
 import { get } from 'utils';
 import { AnswerInfo, PostDataInfo } from 'types/commentTypes';
 import { initQnaDetail } from 'utils/initialValues/qnaDetail';
-import { UserInfo } from 'App';
+import { useUser } from 'context/UserContext';
 
 export default function QnaDetail() {
   const nav = useNavigate();
@@ -15,27 +15,21 @@ export default function QnaDetail() {
   const postId = location.pathname.split('/')[3];
   const [answerList, setAnswerList] = useState<AnswerInfo[]>([]);
   const [postDataInfo, setPostDataInfo] = useState<PostDataInfo>(initQnaDetail);
-
-  const getDetailData = async () => {
-    const res = await get({ endpoint: 'questions', params: `/${postId}` });
-
-    setPostDataInfo(res.data.data);
-    setAnswerList(res.data.data.answerList);
-  };
-
-  const userInfo = useContext(UserInfo);
-  console.log(userInfo);
+  const { decodedToken } = useUser();
 
   useEffect(() => {
-    getDetailData();
+    get({ endpoint: 'questions', params: `/${postId}` }).then((res) => {
+      setPostDataInfo(res.data.data);
+      setAnswerList(res.data.data.answerList);
+    });
   }, []);
 
   useEffect(() => {}, [answerList, postDataInfo]);
 
   const AnsewerList = (answer: AnswerInfo) => {
     let isExport = answer.userRole === 'ROLE_USER' ? false : true;
-    let isPostUser = postDataInfo.nickname === userInfo.nickname;
-    const isCommentWriteUser = answer.nickname === userInfo.nickname;
+    let isPostUser = postDataInfo.nickname === decodedToken?.nickname;
+    const isCommentWriteUser = answer.nickname === decodedToken?.nickname;
 
     return (
       <Comment
@@ -52,7 +46,7 @@ export default function QnaDetail() {
   };
 
   const IsFirstWriter = () => {
-    const isFirstWriter = !answerList.some((answer) => answer.nickname === userInfo.nickname);
+    const isFirstWriter = !answerList.some((answer) => answer.nickname === decodedToken?.nickname);
     return (
       <FooterButton
         onClick={() => {
@@ -97,9 +91,12 @@ export default function QnaDetail() {
               <div className='body-text'>{postDataInfo.content}</div>
 
               <div className='img-box'>
-                {postDataInfo.imagePath !== '' ? (
+                {postDataInfo.images.length !== 0 ? (
                   <>
-                    <img className='qna-image' src={postDataInfo.imagePath} />
+                    {postDataInfo.images.map((v) => {
+                      console.log(v);
+                      return <img className='qna-image' src={v} alt={''} />;
+                    })}
                   </>
                 ) : (
                   <></>
@@ -156,7 +153,7 @@ export default function QnaDetail() {
                 })}
             </section>
           </div>
-          {postDataInfo.nickname === userInfo.nickname ? '' : IsFirstWriter()}
+          {postDataInfo.nickname === decodedToken?.nickname ? '' : IsFirstWriter()}
         </div>
       )}
     </>

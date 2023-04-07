@@ -31,7 +31,9 @@ export default function Comment({
   const selectAnswer = async () => {
     const res = await patch({
       endpoint: `questions/${location.pathname.split('/')[3]}/answers/${answerData.id}`,
+      isFormData: false,
     });
+
     if (res.status === 200) {
       alert('답글이 채택 되었습니다.');
       setAnswerList((answerList: AnswerInfo[]) => {
