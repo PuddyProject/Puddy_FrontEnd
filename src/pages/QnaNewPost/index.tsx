@@ -24,6 +24,8 @@ export default function NewPost() {
   const [filePreview, setFilePreview] = useState<string[]>([]);
   const [imgFile, setImgFile] = useState<File[]>([]);
   const nav = useNavigate();
+  const isVaildForm =
+    postInfo.content.length >= 1 && postInfo.content !== '' && postInfo.title.length >= 1;
 
   const onChangeHandler = (e: FormEvent<HTMLElement>) => {
     if ((e.target as HTMLInputElement).id === 'imgFile') {
@@ -143,7 +145,7 @@ export default function NewPost() {
             .fill(0)
             .map((_, i) => {
               return filePreview[i] !== undefined ? (
-                <div className='image-item'>
+                <div key={i} className='image-item'>
                   <img key={i} className='image-item' src={filePreview[i]} alt='error' />
                   <IoMdRemoveCircleOutline
                     size='25px'
@@ -159,12 +161,15 @@ export default function NewPost() {
         <InputTilte isRequire={true}> 내용 </InputTilte>
         <textarea
           id='content'
+          maxLength={500}
           className='text-body'
           placeholder='내용을 입력해주세요.(500자 이내)'
           defaultValue={postInfo.content}
         ></textarea>
       </div>
-      <FooterButton onClick={onSendData}>등록하기</FooterButton>
+      <FooterButton onClick={onSendData} disabled={!isVaildForm}>
+        등록하기
+      </FooterButton>
     </div>
   );
 }

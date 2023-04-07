@@ -28,37 +28,51 @@
   }
 
   .post-date {
-    font-size: 10px;
-    font-weight: 400;
-    color: $color-gray02;
+    @include font-styles(10px, 400, $color-gray02);
   }
 
   .post-user {
-    font-size: 12px;
-    font-weight: 700;
-    color: $color-gray04;
+    @include font-styles(12px, 700, $color-gray04);
   }
 }
+
 .comment-zero {
   @include center;
   font-size: 15px;
   font-weight: 800;
 }
+
 .qna-divide-line {
   @include dividing-line(290px, $color-gray04);
 }
 
 .body-text {
-  color: #000000;
-  font-weight: 300;
+  @include font-styles(14px, 300, #000000);
   margin: 20px 0px;
-  font-size: 14px;
   line-height: 23px;
+}
+
+.img-box {
+  display: flex;
+  overflow: scroll;
+  gap: 15px;
+  margin-bottom: 30px;
+  justify-content: center;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .qna-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 15px;
+  }
 }
 
 .tag-container {
   margin-top: 15px;
-  min-width: 320px;
   width: 100%;
   display: flex;
   overflow: scroll;
@@ -109,19 +123,15 @@
 
   .comment-card-user-info {
     .user {
-      color: $color-gray01;
-      font-weight: 700;
-      font-size: 16px;
+      @include font-styles(16px, 700, $color-gray01);
       margin-bottom: 10px;
     }
 
     .user-export {
+      @include font-styles(16px, 700, $primary-color);
       display: flex;
       align-items: center;
       gap: 5px;
-      color: $primary-color;
-      font-weight: 700;
-      font-size: 16px;
       margin-bottom: 10px;
     }
 
@@ -144,8 +154,7 @@
 }
 
 .comment-card-body {
-  color: #000000;
-  font-weight: 300;
-  font-size: 14px;
+  @include font-styles(14px, 300, #000000);
   line-height: 23px;
+  margin-top: 20px;
 }
