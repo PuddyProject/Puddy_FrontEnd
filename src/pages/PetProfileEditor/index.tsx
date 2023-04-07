@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { IoMdClose as CloseIcon } from 'react-icons/io';
 
 import {
@@ -13,9 +13,10 @@ import {
 } from 'components';
 
 import checkExtensions from 'utils/checkExtensions';
-import { post } from 'utils';
 
 import { MyPetFormRefs, Profile, RequiredValues } from 'types/petProfileTypes';
+import { post } from 'utils/axiosHelper';
+import { useUser } from 'context/UserContext';
 
 const REQUIRED_KEY: RequiredValues[] = ['name', 'breed', 'age', 'gender', 'weight'];
 
@@ -27,7 +28,11 @@ export default function PetProfileEditor() {
     weight: useRef(null),
   });
 
+  const { decodedToken } = useUser();
+
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const pathId = Number(pathname.split('/').pop());
 
   const [isMounted, setIsMounted] = useState(false);
 
@@ -37,16 +42,25 @@ export default function PetProfileEditor() {
   const [emptyValues, setEmptyValues] = useState<RequiredValues[]>([]);
   const [inputsToShake, setInputsToShake] = useState<RequiredValues[]>([]);
 
+  useEffect(() => {
+    // * 수정하기 페이지 진입 시 토큰의 id와 경로 id가 일치하는지 확인
+    // TODO: 수정하기 기능 추가하기
+    if (decodedToken?.id !== pathId) {
+      window.alert('404 Not found');
+      return navigate('/');
+    }
+  }, [decodedToken?.id]);
+
   /**
    * 서버로 전송할 Pet Profile Values, image file
    */
   const [petProfile, setPetProfile] = useState<Profile>({
     name: '',
     breed: '',
-    age: '',
+    age: 0,
     gender: '',
     isNeutered: false,
-    weight: '',
+    weight: 0,
     note: '',
   });
   const [imgFile, setImgFile] = useState<File | null>();
@@ -85,6 +99,8 @@ export default function PetProfileEditor() {
       });
     };
 
+  console.log(petProfile);
+
   const onClickNeutered = () => {
     setPetProfile((prev) => {
       return { ...prev, isNeutered: !petProfile.isNeutered };
@@ -103,23 +119,29 @@ export default function PetProfileEditor() {
     setEmptyValues(() => [...emptyValues] as RequiredValues[]);
     setInputsToShake(() => []);
 
+    const convertProfileData = {
+      ...petProfile,
+      age: Number(petProfile.age),
+      weight: Number(petProfile.weight),
+      gender: petProfile.gender === '암컷' ? true : false,
+    };
+
     const formData = new FormData();
     if (imgFile) {
-      formData.append('file', imgFile);
+      formData.append('images', imgFile);
     }
+
+    formData.append(
+      'request',
+      new Blob([JSON.stringify(convertProfileData)], { type: 'application/json' })
+    );
 
     if (!emptyValues.length) {
       try {
         const res = await post({
           endpoint: 'users/pets',
-          body: {
-            request: {
-              ...petProfile,
-              age: Number(petProfile.age),
-              weight: Number(petProfile.weight),
-            },
-            file: formData,
-          },
+          body: formData,
+          isImage: true,
         });
         console.log(res);
 
@@ -244,7 +266,11 @@ export default function PetProfileEditor() {
             </div>
           </div>
 
-          <Checkbox onClick={onClickNeutered} text={'중성화 수술을 했어요.'} />
+          <Checkbox
+            checked={petProfile.isNeutered}
+            onClick={onClickNeutered}
+            text={'중성화 수술을 했어요.'}
+          />
 
           <div className={`${inputsToShake.includes('weight') ? 'shake' : ''}`}>
             <InputTitle isRequire>체중</InputTitle>

@@ -27,6 +27,7 @@ const MEMBER_ONLY_PAGES = ['mypage', 'profile', 'expert', 'detail', 'newpost'];
 
 export default function Router() {
   const isLoggedIn = sessionStorage.getItem('userToken');
+  // TODO: 로그인에 따른 페이지 라우트 수정 필요
   const location = useLocation();
 
   useEffect(() => {
@@ -75,6 +76,7 @@ export default function Router() {
         {/* 프로필 작성 */}
         {/* //TODO 전문가 프로필 작성 페이지는 전문가 회원 유형만 접근할 수 있도록 추가 필요 */}
         <Route path='profile/pets' element={<PetProfileEditor />} />
+        <Route path='profile/pets/:id' element={<PetProfileEditor />} />
         <Route path='profile/experts' element={<ExpertProfileEditor />} />
 
         {/* 프로필 보기 */}

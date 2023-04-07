@@ -1,10 +1,10 @@
 export interface Profile {
   name: string;
   breed: string;
-  age: string;
+  age: number;
   gender: string;
   isNeutered: boolean;
-  weight: string;
+  weight: number;
   note?: string;
 }
 

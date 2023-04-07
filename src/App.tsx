@@ -6,16 +6,21 @@ import { initUserInfo } from 'utils/initialValues/userInfo';
 
 export const UserInfo = createContext(initUserInfo);
 
+import { UserProvider } from 'context/UserContext';
+import { PetProvider } from 'context/PetContext';
+
 function App() {
   const { decodedUserToken } = useAuth();
   const userInfo = decodedUserToken();
 
   return (
-    <UserInfo.Provider value={userInfo!}>
-      <BrowserRouter>
-        <Router />
-      </BrowserRouter>
-    </UserInfo.Provider>
+    <UserProvider>
+      <PetProvider>
+        <BrowserRouter>
+          <Router />
+        </BrowserRouter>
+      </PetProvider>
+    </UserProvider>
   );
 }
 

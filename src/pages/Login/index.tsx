@@ -9,9 +9,14 @@ import { Google, Naver, Kakao } from 'assets/login/symbols';
 import Logo from 'assets/Logo.svg';
 
 import { post } from 'utils';
+import { useUser } from 'context/UserContext';
+import { useAuth } from 'hooks/useAuth';
 
 export default function Login() {
   const navigate = useNavigate();
+
+  const { initSessionStorageUserToken } = useAuth();
+  const { setToken } = useUser();
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -42,7 +47,9 @@ export default function Login() {
       const res = await post(payload);
 
       if (res.status === 200) {
-        sessionStorage.setItem('userToken', res.data.data.accessToken);
+        const accessToken = res.data.data.accessToken;
+        initSessionStorageUserToken(accessToken);
+        setToken(accessToken);
         alert('로그인 성공!');
         navigate('/');
       }
