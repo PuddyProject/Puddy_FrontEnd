@@ -6,7 +6,7 @@ import { get } from 'utils';
 import dragEvent from 'utils/dragEvent';
 import { MainQnaCardType } from 'types/qnaCardTypes';
 import { useNavigate } from 'react-router-dom';
-import { UserInfo } from 'App';
+
 const COLOR = ['red', 'black', 'green', 'gray', 'skyblue', 'yellow', 'pink'];
 const MAX_INDEX = COLOR.length - 1;
 
@@ -25,9 +25,6 @@ export default function Main() {
     const res = await get({ endpoint: 'home' });
     setMainQnaList(res.data.data);
   };
-
-  const userInfo = useContext(UserInfo);
-  console.log(userInfo);
 
   const buttonOnClick = (movePage: () => void) => {
     if (sessionStorage.getItem('userToken')) {
