@@ -4,7 +4,7 @@ export const initQnaDetail = {
   createdDate: '',
   nickname: '',
   title: '',
-  imagePath: '',
+  images: [],
   postCategory: 0,
   questionId: 0,
   viewCount: 0,
