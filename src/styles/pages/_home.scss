@@ -12,9 +12,7 @@
 }
 
 .qna-title {
-  font-weight: 700;
-  font-size: 16px;
-  color: $color-gray01;
+  @include font-styles(16px, 700, $color-gray01);
   padding-left: 10px;
   margin-top: 30px;
 }
@@ -24,9 +22,21 @@
   overflow: scroll;
   align-items: center;
 
+  &.zero-data {
+    display: block;
+    text-align: center;
+  }
+
   &::-webkit-scrollbar {
     display: none;
   }
+}
+
+.qna-zero-data {
+  font-size: 18px;
+  color: $color-gray02;
+  margin-top: 15px;
+  text-align: center;
 }
 
 .plus-button {
@@ -48,9 +58,7 @@
   }
 
   div {
-    font-weight: 400;
-    color: $color-gray01;
-    font-size: 10px;
+    @include font-styles(10px, 400, $color-gray01);
     padding-top: 5px;
     text-align: center;
     text-decoration: underline;
@@ -63,6 +71,7 @@
   overflow: scroll;
   align-items: center;
   gap: 6px;
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -90,16 +99,12 @@
       flex-direction: column;
 
       .description-title {
-        color: $color-gray01;
-        font-weight: 800;
-        font-size: 12px;
+        @include font-styles(12px, 800, $color-gray01);
         line-height: 20px;
       }
 
       .description-sub {
-        color: $color-gray01;
-        font-weight: 400;
-        font-size: 10px;
+        @include font-styles(10px, 400, $color-gray01);
         line-height: 15px;
       }
     }

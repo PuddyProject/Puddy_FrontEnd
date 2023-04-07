@@ -1,9 +1,9 @@
 @use '../abstracts' as *;
 
 .qna-container {
-  margin: 0 auto;
   @include header-gap;
   @include footer-gap;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   width: 90vw;
@@ -21,6 +21,7 @@
     padding-left: 10px;
     margin-top: 8px;
     margin-bottom: 10px;
+
     span {
       @include font-styles(13px, 700, $color-gray01);
     }

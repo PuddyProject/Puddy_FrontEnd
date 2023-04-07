@@ -10,15 +10,17 @@ export default function QnaAnswer() {
   const location = useLocation();
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const [answer, setAnaswer] = useState('');
+
   useEffect(() => {
     textAreaRef.current?.focus();
   }, []);
+
   async function sendData() {
     const res = await post({
       endpoint: `questions/${location.state}/answers/write`,
       body: {
         content: answer,
-        postCategory: '2',
+        postCategory: '1',
       },
     });
 
@@ -29,6 +31,7 @@ export default function QnaAnswer() {
       alert('답변 작성 실패. 잠시 후 다시 시도해주세요');
     }
   }
+
   return (
     <>
       <CustomHeader
@@ -44,8 +47,9 @@ export default function QnaAnswer() {
         </InputTilte>
         <textarea
           className='text-body'
+          maxLength={100}
           defaultValue={answer}
-          placeholder='답변을 입력해주세요.(최대 500자)'
+          placeholder='답변을 입력해주세요.(최대 100자)'
           ref={textAreaRef}
           onChange={(e) => {
             setAnaswer(e.target.value);

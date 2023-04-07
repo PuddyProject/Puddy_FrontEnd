@@ -14,19 +14,26 @@ export default function QnaContainer({ title, cardDataList }: QnaContainerProps)
   return (
     <>
       <div className='qna-title'>{title}</div>
-      <div className='main-qna-container'>
-        {cardDataList.map((cardData) => {
-          return (
-            <Link key={cardData.questionId} to={`qna/detail/${cardData.questionId}`}>
-              <MainQnaCard key={cardData.questionId} cardData={cardData} />
-            </Link>
-          );
-        })}
-        <PlusButton
-          onClick={() => {
-            nav('qna');
-          }}
-        />
+      <div className={`main-qna-container ${cardDataList.length === 0 ? 'zero-data' : ''}`}>
+        {cardDataList.length === 0 ? (
+          <div className='qna-zero-data'>데이터가 없습니다.</div>
+        ) : (
+          <>
+            {cardDataList.map((cardData) => {
+              return (
+                <Link key={cardData.questionId} to={`qna/detail/${cardData.questionId}`}>
+                  <MainQnaCard key={cardData.questionId} cardData={cardData} />
+                </Link>
+              );
+            })}
+            <PlusButton
+              padding='15px 0px 0px 10px'
+              onClick={() => {
+                nav('qna');
+              }}
+            />
+          </>
+        )}
       </div>
     </>
   );
