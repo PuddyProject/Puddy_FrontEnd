@@ -1,4 +1,12 @@
-import { Button, Checkbox, FooterButton, InputBox, InputTitle, TextArea } from 'components';
+import {
+  Button,
+  Checkbox,
+  CustomHeader,
+  FooterButton,
+  InputBox,
+  InputTitle,
+  TextArea,
+} from 'components';
 
 import { useUser } from 'context/UserContext';
 
@@ -33,6 +41,12 @@ export default function PetProfile() {
   return (
     <>
       <div className='container pet-profile-container'>
+        <CustomHeader
+          title='펫 프로필'
+          onClickLeft={() => {
+            navigate('/mypage');
+          }}
+        />
         <img
           className='profile-img'
           src={myPet?.imagePath ? myPet.imagePath : TEMP_IMAGE_URL}

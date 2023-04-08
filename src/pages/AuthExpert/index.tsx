@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FileInput, FooterButton } from 'components';
+import { CustomHeader, FileInput, FooterButton } from 'components';
 
 import checkFileSize from 'utils/checkFileSize';
 
@@ -47,6 +47,7 @@ export default function AuthExpert() {
 
   return (
     <div className='auth-expert-container'>
+      <CustomHeader title='전문가 인증' hideIcon />
       <h3 className='auth-expert-title'>
         <strong>자격증 및 기타 인증 서류</strong>를 업로드해 주세요.
         <br />

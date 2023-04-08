@@ -10,6 +10,7 @@ import {
   TextArea,
   FooterButton,
   ImageUploader,
+  CustomHeader,
 } from 'components';
 
 import checkExtensions from 'utils/checkExtensions';
@@ -230,8 +231,12 @@ export default function PetProfileEditor() {
 
   useEffect(() => {
     setIsMounted(true);
-    inputRefs.current.name.current?.focus();
-  }, []);
+
+    if (inputRefs.current.name.current) {
+      inputRefs.current.name.current.value = petProfile?.name;
+      inputRefs.current.name.current?.focus();
+    }
+  }, [petProfile.name, inputRefs.current]);
 
   useEffect(() => {
     if (!isMounted) return;
@@ -271,6 +276,8 @@ export default function PetProfileEditor() {
   return (
     <>
       <div className='profile-editor-container'>
+        <CustomHeader onClickLeft={() => navigate('/mypage')} title='펫 프로필 등록' hideIcon />
+
         {profileImg ? (
           <div
             onMouseEnter={() => setShowImgDeleteText(true)}

@@ -1,7 +1,15 @@
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { IoMdClose as CloseIcon } from 'react-icons/io';
 
-import { Button, FooterButton, ImageUploader, InputBox, InputTitle, Message } from 'components';
+import {
+  Button,
+  CustomHeader,
+  FooterButton,
+  ImageUploader,
+  InputBox,
+  InputTitle,
+  Message,
+} from 'components';
 
 import checkExtensions from 'utils/checkExtensions';
 import { patch, post } from 'utils/axiosHelper';
@@ -161,6 +169,8 @@ export default function MyProfileEditor() {
 
   return (
     <div className='profile-editor-container'>
+      <CustomHeader title='내 프로필 변경' hideIcon />
+
       {profileImg ? (
         <div
           onMouseEnter={() => setShowImgDeleteText(true)}
