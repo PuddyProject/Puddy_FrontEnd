@@ -16,7 +16,9 @@ export default function MyProfileEditor() {
 
   const navigate = useNavigate();
 
+  const [prevProfieImg, setPrevProfileImg] = useState(''); // 변경 전 이미지
   const [profileImg, setProfileImg] = useState('');
+
   const [prevNickname, setPrevNickname] = useState('');
   const [nickname, setNickname] = useState('');
   const [showImgDeleteText, setShowImgDeleteText] = useState(false);
@@ -35,6 +37,7 @@ export default function MyProfileEditor() {
       setPrevNickname(() => userNickname);
       setNickname(() => userNickname);
       setProfileImg(() => userImage);
+      setPrevProfileImg(() => userImage);
     });
   }, []);
 
@@ -61,12 +64,13 @@ export default function MyProfileEditor() {
     setProfileImg('');
     setProfileDatas(null);
   };
+  console.log(prevProfieImg, profileImg, nickname);
 
   const onSubmitProfile = async () => {
     // 파일이 변경된 경우에만 post요청
-    //TODO: 추후 닉네임 변경 유무도 필요함
+    //TODO: 서버에서 payload에 images 키가 없으면 이미지 삭제 시켜주셔야 할듯
 
-    if (!profileDatas && prevNickname === nickname) {
+    if (prevProfieImg === profileImg && prevNickname === nickname) {
       return window.alert('변경된 사항이 없어요!');
     }
 
@@ -74,10 +78,10 @@ export default function MyProfileEditor() {
       return window.alert('닉네임을 확인해주세요.');
     }
 
-    console.log(profileDatas, nickname);
-
     const formData = new FormData();
-    if (profileDatas) formData.append('images', profileDatas);
+    if (profileImg) {
+      if (profileDatas) formData.append('images', profileDatas);
+    }
     formData.append(
       'request',
       new Blob([JSON.stringify({ nickname })], {
@@ -153,7 +157,7 @@ export default function MyProfileEditor() {
       inputRef.current.value = nickname;
       inputRef.current.focus();
     }
-  });
+  }, [inputRef.current]);
 
   return (
     <div className='profile-editor-container'>
