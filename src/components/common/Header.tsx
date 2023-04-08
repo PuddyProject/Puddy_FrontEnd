@@ -1,11 +1,15 @@
+import { Link } from 'react-router-dom';
+import { BiBell as BellIcon } from 'react-icons/bi';
+
 import Logo from 'assets/Logo.svg';
-import { BiBell } from 'react-icons/bi';
 
 export default function Header() {
   return (
     <header className='header'>
-      <img className='logo-img' src={Logo} alt='' />
-      <BiBell className='bell-icon' size='25' />
+      <Link to='/'>
+        <img className='logo-img' src={Logo} alt='logo' />
+      </Link>
+      <BellIcon className='bell-icon' size='25' />
     </header>
   );
 }
