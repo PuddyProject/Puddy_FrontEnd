@@ -10,3 +10,4 @@ export { default as QnaCard } from './common/QnaCard';
 export { default as FileInput } from './common/FileInput';
 export { default as FooterButton } from './common/FooterButton';
 export { default as ImageUploader } from './common/ImageUploader';
+export { default as CustomHeader } from './common/CustomHeader';
