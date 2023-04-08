@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface CheckboxProps {
   text?: string;
@@ -20,7 +20,13 @@ export default function Checkbox({
 }: CheckboxProps) {
   const [isChecked, setIsChecked] = useState(checked);
 
+  useEffect(() => {
+    setIsChecked(() => checked);
+  }, [checked]);
+
   const onChange = () => {
+    if (readonly) return;
+
     if (requestOnChange) {
       requestOnChange(!isChecked);
     }
