@@ -99,13 +99,7 @@ export default function NewPost() {
 
   return (
     <div>
-      <CustomHeader
-        left={'<'}
-        center='Q&A 등록'
-        onClickLeft={() => {
-          nav(-1);
-        }}
-      />
+      <CustomHeader title='Q&A 등록' hideIcon />
       <div className='qna-newpost-container' onChange={onChangeHandler}>
         <InputTilte isRequire={true}>카테고리 </InputTilte>
         <div className='category-container'>
