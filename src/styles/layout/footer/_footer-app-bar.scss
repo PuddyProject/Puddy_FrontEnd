@@ -5,7 +5,7 @@
   width: 100vw;
   height: 60px;
   position: fixed;
-  bottom: 0;
+  bottom: -1px;
   display: flex;
   border-top: 2px solid $color-gray04;
   background-color: $bg-color;
@@ -26,7 +26,7 @@
 .nav-item {
   cursor: pointer;
   font-size: 10px;
-  width: 25%;
+  width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
@@ -34,19 +34,28 @@
 
   a {
     @include center;
+    font-size: 1.2rem;
+    color: inherit;
     width: 100%;
     height: 100%;
-    font-size: 1.2rem;
   }
 
   .nav-selected-link {
+    @include center;
+    flex-direction: column;
     color: $primary-color;
     text-decoration-line: none;
     font-weight: 600;
   }
 
   .nav-link {
+    @include center;
+    flex-direction: column;
     color: $color-gray03;
     text-decoration-line: none;
+  }
+
+  svg {
+    margin-bottom: 4px;
   }
 }
