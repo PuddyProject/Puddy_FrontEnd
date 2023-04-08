@@ -5,17 +5,11 @@ header {
   width: 100vw;
   height: 48px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   border-bottom: 1px solid $color-gray04;
   background-color: $bg-color;
   position: fixed;
   top: 0;
   z-index: 100;
-}
-
-.custom-header {
-  div {
-    min-width: 33%;
-  }
 }
