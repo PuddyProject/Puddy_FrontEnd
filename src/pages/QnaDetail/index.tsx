@@ -4,7 +4,7 @@ import Comment from 'components/qnaDetail/Comment';
 import { useEffect, useState } from 'react';
 
 import { useLocation, useNavigate } from 'react-router-dom';
-import { get } from 'utils';
+import { del, get } from 'utils';
 import { AnswerInfo, PostDataInfo } from 'types/commentTypes';
 import { initQnaDetail } from 'utils/initialValues/qnaDetail';
 import { useUser } from 'context/UserContext';
@@ -16,6 +16,7 @@ export default function QnaDetail() {
   const [answerList, setAnswerList] = useState<AnswerInfo[]>([]);
   const [postDataInfo, setPostDataInfo] = useState<PostDataInfo>(initQnaDetail);
   const { decodedToken } = useUser();
+  const isPostUser = postDataInfo.nickname === decodedToken?.nickname;
 
   useEffect(() => {
     get({ endpoint: 'questions', params: `/${postId}` }).then((res) => {
@@ -28,7 +29,6 @@ export default function QnaDetail() {
 
   const AnsewerList = (answer: AnswerInfo) => {
     let isExport = answer.userRole === 'ROLE_USER' ? false : true;
-    let isPostUser = postDataInfo.nickname === decodedToken?.nickname;
     const isCommentWriteUser = answer.nickname === decodedToken?.nickname;
 
     return (
@@ -45,6 +45,12 @@ export default function QnaDetail() {
     );
   };
 
+  const deletePost = async () => {
+    const res = await del({ endpoint: 'questions/', params: postId });
+    alert('삭제되었습니다.');
+    nav(-1);
+    console.log(res);
+  };
   const IsFirstWriter = () => {
     const isFirstWriter = !answerList.some((answer) => answer.nickname === decodedToken?.nickname);
     return (
@@ -76,7 +82,7 @@ export default function QnaDetail() {
           <div className='qna-detail-container'>
             <section className='title'>
               <div className='title-text'>
-                <span className='title-category'>[{postDataInfo.category}]</span>
+                <span className='title-category'>[{postDataInfo.category}] </span>
                 {postDataInfo.title}
               </div>
 
@@ -84,6 +90,15 @@ export default function QnaDetail() {
                 <span className='post-date'>{postDataInfo.createdDate.slice(0, 10)}</span>
                 <span className='post-user'>{postDataInfo.nickname}</span>
               </div>
+              {isPostUser && (
+                <div className={`user-roll-container ${isPostUser ? 'post-user' : ''}`}>
+                  <span className={`user-roll ${isPostUser ? 'post-user' : ''}`}>
+                    <span onClick={() => nav('edit', { state: postDataInfo })}>수정하기</span> |
+                    <span onClick={deletePost}> 삭제하기</span>
+                  </span>
+                </div>
+              )}
+
               <hr className='qna-divide-line' />
             </section>
 
@@ -153,7 +168,7 @@ export default function QnaDetail() {
                 })}
             </section>
           </div>
-          {postDataInfo.nickname === decodedToken?.nickname ? '' : IsFirstWriter()}
+          {isPostUser ? '' : IsFirstWriter()}
         </div>
       )}
     </>
