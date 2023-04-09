@@ -1,11 +1,10 @@
 export { default as Main } from './Main/';
 export { default as Login } from './Login/';
-export { default as Qna } from './QnA';
+export { default as List } from './List';
 export { default as QnaDetail } from './QnaDetail';
-export { default as NewPost } from './QnaNewPost';
+export { default as NewPost } from './NewPost';
 export { default as QnaAnswer } from './QnaAnswer';
 export { default as MyPage } from './MyPage';
-export { default as Community } from './Community';
 export { default as PetProfileEditor } from './PetProfileEditor';
 export { default as AuthExpert } from './AuthExpert';
 export { default as Signup } from './Signup';

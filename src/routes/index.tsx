@@ -7,10 +7,9 @@ import LayoutWithoutNav from 'layouts/LayoutWithoutNav';
 import {
   Main,
   Login,
-  Community,
   NewPost,
   MyPage,
-  Qna,
+  List,
   QnaDetail,
   QnaAnswer,
   AuthExpert,
@@ -45,8 +44,8 @@ export default function Router() {
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<Main />} />
-          <Route path='qna' element={<Qna />} />
-          <Route path='community' element={<Community />} />
+          <Route path='qna' element={<List />} />
+          <Route path='communinty' element={<List />} />
         </Route>
 
         <Route path='/' element={<LayoutWithoutHeader />}>
@@ -63,8 +62,8 @@ export default function Router() {
     <Routes>
       <Route element={<Layout />}>
         <Route index element={<Main />} />
-        <Route path='qna' element={<Qna />} />
-        <Route path='community' element={<Community />} />
+        <Route path='qna' element={<List />} />
+        <Route path='community' element={<List />} />
         <Route path='mypage' element={<MyPage />} />
       </Route>
 
@@ -88,7 +87,11 @@ export default function Router() {
       <Route path='/' element={<LayoutWithoutHeader />}>
         <Route path='qna/detail/:id' element={<QnaDetail />} />
         <Route path='qna/detail/:id/write/answer' element={<QnaAnswer />} />
+        <Route path='qna/detail/:id/edit' element={<NewPost />} />
+
         <Route path='qna/newpost' element={<NewPost />} />
+
+        <Route path='communinty/detail/:id' element={<QnaDetail />} />
       </Route>
 
       <Route path='*' element={<Navigate to='/' />} />
