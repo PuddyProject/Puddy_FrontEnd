@@ -134,22 +134,30 @@
       gap: 5px;
       margin-bottom: 10px;
     }
-
-    .user-roll-container {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 10px;
-
-      .user-roll {
-        color: $icon-color;
-        font-size: 12px;
-      }
-    }
   }
 
   .comment-button {
     display: flex;
     justify-content: flex-end;
+  }
+}
+
+.user-roll-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+
+  &.post-user {
+    justify-content: flex-end;
+  }
+
+  .user-roll {
+    color: $icon-color;
+    font-size: 12px;
+
+    &.post-user {
+      @include font-styles(12px, 700, $color-gray03);
+    }
   }
 }
 
