@@ -1,6 +1,6 @@
 @use '../abstracts' as *;
 
-.qna-container {
+.list-container {
   margin: 0 auto;
   @include header-gap;
   @include footer-gap;
@@ -8,22 +8,44 @@
   flex-direction: column;
   width: 90vw;
 
-  .qna-title-section {
-    margin-bottom: 20px;
+  .list-title-section {
+    margin-bottom: 15px;
   }
 
-  .qna-title {
+  .list-title {
     @include font-styles(18px, 700, $color-gray01);
+    padding-left: 10px;
+    margin-top: 30px;
   }
 
-  .qna-sub-title {
+  .list-sub-title {
     @include font-styles(13px, 300, $color-gray01);
     padding-left: 10px;
     margin-top: 8px;
     margin-bottom: 10px;
 
+    .communinty-title {
+      @include font-styles(13px, 400, $color-gray01);
+
+      span {
+        @include font-styles(13px, 700, $color-gray01);
+      }
+    }
+
+    p {
+      @include font-styles(10px, 400, $icon-color);
+      margin-top: 5px;
+    }
+
     span {
       @include font-styles(13px, 700, $color-gray01);
+    }
+  }
+
+  .card-list {
+    &.community {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
     }
   }
 }
