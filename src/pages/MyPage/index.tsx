@@ -16,7 +16,7 @@ const TEMP_IMAGE_URL =
   'https://blog.kakaocdn.net/dn/GHYFr/btrsSwcSDQV/UQZxkayGyAXrPACyf0MaV1/img.jpg';
 
 export default function MyPage() {
-  const { setHasPet } = usePet();
+  const { hasPet, setHasPet } = usePet();
 
   const navigate = useNavigate();
 
@@ -26,12 +26,6 @@ export default function MyPage() {
     nickname: '',
     imagePath: null,
     hasPet: false,
-  });
-
-  useEffect(() => {
-    if (user.hasPet) {
-      setHasPet(user.hasPet);
-    }
   });
 
   const onClickQuestionIcon = () => {
@@ -44,18 +38,19 @@ export default function MyPage() {
 
   const onClickMyPetInfo = () => {
     // 펫 등록된 유저:  /mypage/pets
+    if (hasPet) {
+      return navigate('/mypage/pets');
+    }
     // 미등록 유저 : /profile/pets
-    if (user.hasPet) return navigate('/mypage/pets');
     return navigate('/profile/pets');
   };
 
   useEffect(() => {
     get({ endpoint: 'users/me' }).then((res) => {
       setUser(res.data.data);
+      setHasPet(() => res.data.data.hasPet);
     });
   }, []);
-
-  console.log(user);
 
   return (
     <>

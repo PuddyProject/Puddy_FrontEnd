@@ -177,7 +177,7 @@ export default function Signup() {
         });
         if (res.status === 201) {
           window.alert('퍼디 회원이 되신 것을 환영해요!'); // *임시 메시지
-          navigate('/');
+          navigate('/auth/login');
         }
       } catch (err: unknown) {
         const error = err as ApiError;

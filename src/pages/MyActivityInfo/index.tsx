@@ -1,4 +1,4 @@
-import { QnaCard } from 'components';
+import { CustomHeader } from 'components';
 import { useState } from 'react';
 
 const TAB_MENU_TITLES = ['Q&A', '커뮤니티'];
@@ -12,6 +12,7 @@ export default function MyActivityInfo() {
 
   return (
     <>
+      <CustomHeader title='내 게시글/댓글' />
       <div>
         <ul className='tab-titles'>
           {TAB_MENU_TITLES.map((title, i) => (
@@ -25,19 +26,6 @@ export default function MyActivityInfo() {
             </li>
           ))}
         </ul>
-        <div className='my-posts'>
-          {currentTab === 0 ? (
-            <>
-              {Array(5)
-                .fill(0)
-                .map(() => (
-                  <QnaCard />
-                ))}
-            </>
-          ) : (
-            <div style={{ fontSize: '1.5rem' }}>준비중입니다.</div>
-          )}
-        </div>
       </div>
     </>
   );

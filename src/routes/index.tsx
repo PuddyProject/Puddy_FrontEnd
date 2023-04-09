@@ -60,25 +60,38 @@ export default function Router() {
 
   return (
     <Routes>
+      {/* // ********** 기본 레이아웃 *********** */}
       <Route element={<Layout />}>
         <Route index element={<Main />} />
         <Route path='qna' element={<List />} />
         <Route path='community' element={<List />} />
         <Route path='mypage' element={<MyPage />} />
       </Route>
+      {/* // ************************************ */}
+      {/* --------------------------------------- */}
+      {/* // ********** 상단 Nav 없음 *********** */}
+      <Route path='/' element={<LayoutWithoutHeader />}>
+        {/* //? Q&A 작성/상세 보기 */}
+        <Route path='qna/detail/:id' element={<QnaDetail />} />
+        <Route path='qna/detail/:id/write/answer' element={<QnaAnswer />} />
+        <Route path='qna/newpost' element={<NewPost />} />
 
-      <Route path='/' element={<LayoutWithoutNav />}>
-        {/* 마이페이지 메뉴 */}
-        <Route path='mypage/experts' element={<AuthExpert />} />
-        <Route path='mypage/posts' element={<MyActivityInfo />} />
-
-        {/* 프로필 작성 */}
+        {/* //? 프로필 작성 */}
         {/* //TODO 전문가 프로필 작성 페이지는 전문가 회원 유형만 접근할 수 있도록 추가 필요 */}
         <Route path='profile/pets' element={<PetProfileEditor />} />
         <Route path='profile/pets/:id' element={<PetProfileEditor />} />
         <Route path='profile/experts' element={<ExpertProfileEditor />} />
 
-        {/* 프로필 보기 */}
+        <Route path='mypage/posts' element={<MyActivityInfo />} />
+      </Route>
+      {/* // ************************************ */}
+      {/* --------------------------------------- */}
+      {/* // ********** 하단 Nav 없음 *********** */}
+      <Route path='/' element={<LayoutWithoutNav />}>
+        {/* //? 마이페이지 메뉴 */}
+        <Route path='mypage/experts' element={<AuthExpert />} />
+
+        {/* //? 프로필 보기 */}
         <Route path='mypage/profile' element={<MyProfileEditor />} />
         <Route path='experts/:id' element={<ExpertProfile />} />
         <Route path='mypage/pets' element={<PetProfile />} />

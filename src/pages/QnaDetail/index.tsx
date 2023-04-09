@@ -71,14 +71,7 @@ export default function QnaDetail() {
     <>
       {postDataInfo && (
         <div>
-          <CustomHeader
-            left={'<'}
-            center='Q&A'
-            onClickLeft={() => {
-              nav(-1);
-            }}
-            right='bell'
-          />
+          <CustomHeader title='Q&A' />
           <div className='qna-detail-container'>
             <section className='title'>
               <div className='title-text'>

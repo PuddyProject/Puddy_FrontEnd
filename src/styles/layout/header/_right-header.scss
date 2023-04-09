@@ -2,10 +2,14 @@
 
 .bell-icon {
   color: $icon-color;
-  margin-right: 23px;
+  margin-right: 5vw;
+  font-size: 2rem;
 }
 
 .custom-header-right {
   color: $icon-color;
   text-align: right;
+  width: 100%;
+  padding-right: 5vw;
+  margin-top: 2px;
 }

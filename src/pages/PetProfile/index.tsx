@@ -1,28 +1,26 @@
-import { Button, Checkbox, FooterButton, InputBox, InputTitle, TextArea } from 'components';
+import {
+  Button,
+  Checkbox,
+  CustomHeader,
+  FooterButton,
+  InputBox,
+  InputTitle,
+  TextArea,
+} from 'components';
 
 import { useUser } from 'context/UserContext';
 
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { PetInfo } from 'types/petProfileTypes';
 
 import { get } from 'utils';
 
 const TEMP_IMAGE_URL =
   'https://blog.kakaocdn.net/dn/GHYFr/btrsSwcSDQV/UQZxkayGyAXrPACyf0MaV1/img.jpg';
 
-interface MyPet {
-  name: string;
-  age: number;
-  breed: string;
-  isNeutered: boolean;
-  weight: number;
-  gender: boolean;
-  note?: string;
-  imagePath: string;
-}
-
 export default function PetProfile() {
-  const [myPet, setMyPet] = useState<MyPet>();
+  const [myPet, setMyPet] = useState<PetInfo>();
 
   const { decodedToken } = useUser();
 
@@ -38,9 +36,17 @@ export default function PetProfile() {
     navigate(`/profile/pets/${decodedToken?.id}`);
   };
 
+  console.log(myPet);
+
   return (
     <>
       <div className='container pet-profile-container'>
+        <CustomHeader
+          title='펫 프로필'
+          onClickLeft={() => {
+            navigate('/mypage');
+          }}
+        />
         <img
           className='profile-img'
           src={myPet?.imagePath ? myPet.imagePath : TEMP_IMAGE_URL}

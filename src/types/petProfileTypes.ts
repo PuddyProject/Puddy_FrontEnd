@@ -1,11 +1,12 @@
-export interface Profile {
+export interface PetInfo {
   name: string;
   breed: string;
   age: number;
-  gender: string;
+  gender: boolean | string;
   isNeutered: boolean;
   weight: number;
   note?: string;
+  imagePath?: string;
 }
 
 export interface MyPetFormRefs {
