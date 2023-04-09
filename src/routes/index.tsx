@@ -90,7 +90,7 @@ export default function Router() {
         <Route path='qna/detail/:id/edit' element={<NewPost />} />
 
         <Route path='qna/newpost' element={<NewPost />} />
-
+        <Route path='community/newpost' element={<NewPost />} />
         <Route path='community/detail/:id' element={<QnaDetail />} />
       </Route>
 
