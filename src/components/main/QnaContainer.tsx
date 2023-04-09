@@ -16,7 +16,7 @@ export default function QnaContainer({ title, cardDataList }: QnaContainerProps)
       <div className='qna-title'>{title}</div>
       <div className={`main-qna-container ${cardDataList.length === 0 ? 'zero-data' : ''}`}>
         {cardDataList.length === 0 ? (
-          <div className='qna-zero-data'>데이터가 없습니다.</div>
+          <div className='list-zero-data'>데이터가 없습니다.</div>
         ) : (
           <>
             {cardDataList.map((cardData) => {
