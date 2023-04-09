@@ -108,9 +108,8 @@ export default function QnaDetail() {
               <div className='img-box'>
                 {postDataInfo.images.length !== 0 ? (
                   <>
-                    {postDataInfo.images.map((v) => {
-                      console.log(v);
-                      return <img className='qna-image' src={v} alt={''} />;
+                    {postDataInfo.images.map((v, i) => {
+                      return <img key={i} className='qna-image' src={v} alt={''} />;
                     })}
                   </>
                 ) : (
