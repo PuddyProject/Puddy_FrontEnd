@@ -1,4 +1,4 @@
-import { QnaCard } from 'components';
+import { InputBox, QnaCard } from 'components';
 import CommunityCard from 'components/common/CommunityCard';
 import WriteButton from 'components/common/WriteButton';
 import { useEffect, useState } from 'react';
@@ -53,6 +53,9 @@ export default function List() {
             </>
           )}
         </div>
+      </div>
+      <div className='list-search-section'>
+        <InputBox placeholder='검색어를 입력하세요.' width='100%' className='search-box' />
       </div>
       {listData.length === 0 ? (
         <div className='list-zero-data'>
