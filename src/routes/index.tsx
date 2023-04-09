@@ -45,7 +45,7 @@ export default function Router() {
         <Route element={<Layout />}>
           <Route index element={<Main />} />
           <Route path='qna' element={<List />} />
-          <Route path='communinty' element={<List />} />
+          <Route path='community' element={<List />} />
         </Route>
 
         <Route path='/' element={<LayoutWithoutHeader />}>
@@ -91,7 +91,7 @@ export default function Router() {
 
         <Route path='qna/newpost' element={<NewPost />} />
 
-        <Route path='communinty/detail/:id' element={<QnaDetail />} />
+        <Route path='community/detail/:id' element={<QnaDetail />} />
       </Route>
 
       <Route path='*' element={<Navigate to='/' />} />
