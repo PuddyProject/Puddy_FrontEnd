@@ -34,13 +34,7 @@ export default function QnaAnswer() {
 
   return (
     <>
-      <CustomHeader
-        left={'<'}
-        center='Q&A 답변 작성'
-        onClickLeft={() => {
-          nav(-1);
-        }}
-      />
+      <CustomHeader title='Q&A 답변 작성' hideIcon />
       <div>
         <InputTilte isRequire={true} margin='50px 0px 10px 0px'>
           답변 내용

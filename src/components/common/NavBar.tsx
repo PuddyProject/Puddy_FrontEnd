@@ -7,15 +7,16 @@ export default function NavBar() {
 
   return (
     <nav className='nav-bar'>
-      {navItems.map(({ path, title, memberOnly }, i) => {
+      {navItems.map(({ path, title, memberOnly, icon }, i) => {
+        const Icon = icon;
+
         return (
           <div key={i} className='nav-item'>
-            <Link
-              key={i}
-              className={location.pathname === path ? 'nav-selected-link' : 'nav-link'}
-              to={memberOnly && !isLoggedIn ? '/auth/login' : path}
-            >
-              {title}
+            <Link key={i} to={memberOnly && !isLoggedIn ? '/auth/login' : path}>
+              <div className={location.pathname === path ? 'nav-selected-link' : 'nav-link'}>
+                <Icon size={20} />
+                {title}
+              </div>
             </Link>
           </div>
         );

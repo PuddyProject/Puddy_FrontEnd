@@ -6,7 +6,9 @@ export function useAuth() {
   const [userToken, setUserToken] = useState<string | null>(null);
 
   // * 토큰 설정
-  const initSessionStorageUserToken = (token: string) => {
+  const initSessionStorageUserToken = (token: string | null) => {
+    if (!token) return null;
+
     sessionStorage.setItem('userToken', token);
     setUserToken(token);
   };

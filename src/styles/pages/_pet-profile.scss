@@ -24,26 +24,6 @@
     & input[type='checkbox'] {
       cursor: auto;
 
-      &::after {
-        content: '';
-        color: $primary-color;
-        text-align: center;
-        border: none;
-        position: absolute;
-        top: -4px;
-        left: 1px;
-      }
-
-      &:checked::after {
-        content: '';
-        color: $primary-color;
-        text-align: center;
-        border: none;
-        position: absolute;
-        top: -4px;
-        left: 1px;
-      }
-
       &:checked:focus {
         border: 2px solid $color-gray04;
       }
