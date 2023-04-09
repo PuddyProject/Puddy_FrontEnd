@@ -94,6 +94,16 @@
   }
 }
 
+.tag-container {
+  display: flex;
+  flex-wrap: wrap;
+  overflow-x: scroll;
+
+  .tag-item {
+    border: 1px solid $primary-color;
+    @include font-styles(10px, 400, $primary-color);
+  }
+}
 .remove-image {
   position: relative;
   z-index: 10000;
