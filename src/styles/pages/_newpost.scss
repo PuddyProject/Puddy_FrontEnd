@@ -4,7 +4,6 @@
   background-color: $background-color;
   width: 65px;
   height: 68px;
-  border: 1px solid #e5e5e5;
   border-radius: 10px;
 }
 
@@ -51,6 +50,7 @@
 }
 
 .image-item-add-button {
+  border: 1px solid #e5e5e5;
   min-width: 65px;
   height: 68px;
 }
