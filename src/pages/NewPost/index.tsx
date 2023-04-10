@@ -54,6 +54,7 @@ export default function NewPost() {
 
   const sendQnaPage = async (formData: FormData) => {
     let res: AxiosResponse;
+
     if (isEditPage) {
       res = await post({
         endpoint: `questions/${location.state.questionId}`,
@@ -75,6 +76,7 @@ export default function NewPost() {
 
   const sendCommunityPage = async (formData: FormData) => {
     let res: AxiosResponse;
+
     if (isEditPage) {
       //TODO: 커뮤니티 수정 페이지에 들어갈 내용
     } else {
@@ -83,20 +85,23 @@ export default function NewPost() {
   };
 
   const onChangeHandler = (e: FormEvent<HTMLElement>) => {
-    if ((e.target as HTMLInputElement).id === 'imgFile') {
+    const target = e.target as HTMLInputElement;
+
+    if (target.id === 'imgFile') {
       return;
     } else {
       setPostInfo((prev) => ({
         ...prev,
-        [(e.target as HTMLInputElement).id]: (e.target as HTMLInputElement).value,
+        [target.id]: target.value,
       }));
     }
   };
 
   const onClickHandler = (e: React.MouseEvent) => {
+    const target = e.target as HTMLButtonElement;
     setPostInfo((prev) => ({
       ...prev,
-      [(e.target as HTMLButtonElement).id]: (e.target as HTMLButtonElement).innerText,
+      [target.id]: target.innerText,
     }));
   };
 
@@ -133,19 +138,24 @@ export default function NewPost() {
   };
 
   const onTagBoxKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    let target = e.target as HTMLInputElement;
+
     if (e.key === 'Enter') {
-      let currentHashTag = (e.target as HTMLInputElement).value;
+      let currentHashTag = target.value;
+
       if (currentHashTag === '') return;
       setTagList((prev) => Array.from(new Set([...prev, currentHashTag])));
 
-      (e.target as HTMLInputElement).value = '';
+      target.value = '';
     }
   };
 
   const onTagBoxChange = (e: FormEvent<HTMLElement>) => {
-    if ((e.target as HTMLInputElement).value.length > 10) {
+    let target = e.target as HTMLInputElement;
+
+    if (target.value.length > 10) {
       alert('해쉬태그 최대 글자수는 10자 입니다');
-      (e.target as HTMLInputElement).value = (e.target as HTMLInputElement).value.slice(0, 10);
+      target.value = target.value.slice(0, 10);
     }
   };
 
