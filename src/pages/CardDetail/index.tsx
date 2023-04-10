@@ -117,21 +117,23 @@ export default function QnaDetail() {
                   <></>
                 )}
               </div>
-              <div className='tag-container'>
+              {/* <div className='tag-container'>
                 <span className='tag-item'>알레스카 말라뮤트</span>
                 <span className='tag-item'>중성화</span>
                 <span className='tag-item'>여아</span>
                 <span className='tag-item'>2.5kg</span>
                 <span className='tag-item'>알레스카 말라뮤트</span>
-              </div>
-              <div className='like-container'>
-                {/* TODO: 사용자가 좋아요를 눌렸는지에 따른 상태관리로 아이콘 변경 기능 추가 
+              </div> */}
+              {isCommunityPage && (
+                <div className='like-container'>
+                  {/* TODO: 사용자가 좋아요를 눌렸는지에 따른 상태관리로 아이콘 변경 기능 추가 
                 <Heart size='15' /> 
                 */}
-                <ClickHeart size='15' style={{ color: '#2A60FF' }} />
-                <span className='like-text'>좋아요</span>
-                <span className='like-count'>312</span>
-              </div>
+                  <ClickHeart size='15' style={{ color: '#2A60FF' }} />
+                  <span className='like-text'>좋아요</span>
+                  <span className='like-count'>312</span>
+                </div>
+              )}
             </section>
             <hr className='qna-divide-line' />
             {!isCommunityPage && (
