@@ -21,6 +21,25 @@
     line-height: 21px;
   }
 
+  .user-role-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    margin-top: 30px;
+
+    .view-count {
+      @include font-styles(12px, 700, $color-gray03);
+    }
+
+    &.post-user {
+      justify-content: flex-end;
+
+      .user-role {
+        @include font-styles(12px, 700, $color-gray03);
+      }
+    }
+  }
+
   .post-info {
     margin: 40px 0px 15px 0px;
     display: flex;
@@ -134,30 +153,20 @@
       gap: 5px;
       margin-bottom: 10px;
     }
+
+    .comment-user-role-container {
+      display: flex;
+      justify-content: space-between;
+
+      .user-role {
+        @include font-styles(12px, 400, $icon-color);
+      }
+    }
   }
 
   .comment-button {
     display: flex;
     justify-content: flex-end;
-  }
-}
-
-.user-roll-container {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-
-  &.post-user {
-    justify-content: flex-end;
-  }
-
-  .user-roll {
-    color: $icon-color;
-    font-size: 12px;
-
-    &.post-user {
-      @include font-styles(12px, 700, $color-gray03);
-    }
   }
 }
 
