@@ -2,7 +2,7 @@ import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { HiOutlineStar as OutlineStar, HiStar as Star } from 'react-icons/hi';
 
-import { Button } from 'components';
+import { Button, CustomHeader } from 'components';
 
 import { get } from 'utils/axiosHelper';
 
@@ -32,6 +32,7 @@ export default function ExpertProfile() {
 
   return (
     <>
+      <CustomHeader title={`${profile?.username ? profile.username : ''} 전문가 프로필`} />
       <div className='expert-profile-container'>
         <section className='profile expert'>
           <img className='profile-image' src={TEMP_IMAGE_URL} alt='프로필 이미지' />
