@@ -3,14 +3,16 @@ import CommunityCard from 'components/common/CommunityCard';
 import WriteButton from 'components/common/WriteButton';
 import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { Link, useLocation } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { QnaData } from 'types/qnaCardTypes';
+import { FILTER_ITEM } from 'constants/cardList';
 import { get } from 'utils';
-export default function List() {
+
+export default function CardList() {
   const [listData, setListData] = useState<Array<QnaData>>([]);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [pageNumber, setPageNumber] = useState(1);
+  const [currentFilter, setCurrentFilter] = useState('최신순');
   const [lastCardRef, inView] = useInView();
   const nav = useNavigate();
   const location = useLocation();
@@ -56,6 +58,21 @@ export default function List() {
       </div>
       <div className='list-search-section'>
         <InputBox placeholder='검색어를 입력하세요.' width='100%' className='search-box' />
+      </div>
+
+      <div className='filter-container'>
+        {FILTER_ITEM.map((filter) => {
+          return (
+            <button
+              className={`filter-item ${filter === currentFilter ? 'select-filter' : ''}`}
+              onClick={() => {
+                setCurrentFilter(filter);
+              }}
+            >
+              {filter}
+            </button>
+          );
+        })}
       </div>
       {listData.length === 0 ? (
         <div className='list-zero-data'>
