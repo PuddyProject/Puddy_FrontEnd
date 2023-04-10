@@ -17,7 +17,7 @@ export default function QnaAnswer() {
   const isEditPage = location.pathname.includes('edit');
 
   useEffect(() => {
-    textAreaRef.current?.focus();
+    textAreaRef.current?.focus({});
   }, []);
 
   async function sendData() {
@@ -42,6 +42,11 @@ export default function QnaAnswer() {
     }
   }
 
+  const onFocus = (e: React.FocusEvent<HTMLTextAreaElement>) => {
+    const target = e.target;
+    target.selectionStart = target.value.length;
+  };
+
   return (
     <>
       <CustomHeader title='Q&A 답변 작성' hideIcon />
@@ -55,6 +60,7 @@ export default function QnaAnswer() {
           defaultValue={answer}
           placeholder='답변을 입력해주세요.(최대 100자)'
           ref={textAreaRef}
+          onFocus={onFocus}
           onChange={(e) => {
             setAnaswer(e.target.value);
           }}

@@ -157,6 +157,11 @@ export default function NewPost() {
     }
   };
 
+  const onFocus = (e: React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    const target = e.target;
+    target.selectionStart = target.value.length;
+  };
+
   const deleteTag = (index: number) => {
     setTagList((prev) => prev.filter((_, i) => i !== index));
   };
@@ -220,6 +225,7 @@ export default function NewPost() {
           placeholder='제목을 입력해주세요.(50자 이내)'
           value={postInfo.title}
           inputRef={firstInputBox}
+          onFocus={onFocus}
         />
         {!isCommunityPage && (
           <>
@@ -284,6 +290,7 @@ export default function NewPost() {
           className='text-body'
           placeholder='내용을 입력해주세요.(500자 이내)'
           defaultValue={postInfo.content}
+          onFocus={onFocus}
         ></textarea>
         {isCommunityPage && (
           <>
