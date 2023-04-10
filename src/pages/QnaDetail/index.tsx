@@ -1,5 +1,4 @@
-import CustomHeader from 'components/common/CustomHeader';
-import FooterButton from 'components/common/FooterButton';
+import { CustomHeader, FooterButton } from 'components';
 import Comment from 'components/qnaDetail/Comment';
 import { useEffect, useState } from 'react';
 
@@ -46,20 +45,21 @@ export default function QnaDetail() {
   };
 
   const deletePost = async () => {
-    const res = await del({ endpoint: 'questions/', params: postId });
+    await del({ endpoint: 'questions/', params: postId });
     alert('삭제되었습니다.');
     nav(-1);
-    console.log(res);
   };
+
   const IsFirstWriter = () => {
     const isFirstWriter = !answerList.some((answer) => answer.nickname === decodedToken?.nickname);
+    const myComment = answerList.filter((answer) => answer.nickname === decodedToken?.nickname);
+
     return (
       <FooterButton
         onClick={() => {
           isFirstWriter
             ? nav('write/answer', { state: postId })
-            : nav('write/answer', { state: postId });
-          //TODO: 첫번째 작성자가 아니면 수정페이지로 이동 하기. 현재는 수정페이지 이동이 없어서 라우팅 주소가 같음
+            : nav('write/answer/edit', { state: { comment: myComment[0], postId } });
         }}
       >
         {isFirstWriter ? '답글 입력하기' : '답글 수정하기'}
@@ -83,19 +83,23 @@ export default function QnaDetail() {
                 <span className='post-date'>{postDataInfo.createdDate.slice(0, 10)}</span>
                 <span className='post-user'>{postDataInfo.nickname}</span>
               </div>
-              {isPostUser && (
-                <div className={`user-roll-container ${isPostUser ? 'post-user' : ''}`}>
-                  <span className={`user-roll ${isPostUser ? 'post-user' : ''}`}>
-                    <span onClick={() => nav('edit', { state: postDataInfo })}>수정하기</span> |
-                    <span onClick={deletePost}> 삭제하기</span>
-                  </span>
-                </div>
-              )}
-
               <hr className='qna-divide-line' />
             </section>
 
             <section className='body'>
+              <div className='user-role-container'>
+                <div className='view-count'>조회수 {postDataInfo.viewCount}</div>
+                <div>
+                  {isPostUser && (
+                    <div className={`${isPostUser ? 'post-user' : ''}`}>
+                      <span className={`user-role ${isPostUser ? 'post-user' : ''}`}>
+                        <span onClick={() => nav('edit', { state: postDataInfo })}>수정하기</span> |
+                        <span onClick={deletePost}> 삭제하기</span>
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
               <div className='body-text'>{postDataInfo.content}</div>
 
               <div className='img-box'>
