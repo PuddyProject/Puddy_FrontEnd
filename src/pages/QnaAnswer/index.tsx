@@ -1,3 +1,4 @@
+import { AxiosResponse } from 'axios';
 import { FooterButton } from 'components';
 import CustomHeader from 'components/common/CustomHeader';
 import InputTilte from 'components/common/InputTitle';
@@ -6,22 +7,31 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { post } from 'utils';
 
 export default function QnaAnswer() {
-  const nav = useNavigate();
   const location = useLocation();
+  const nav = useNavigate();
+  const { comment } = location.state;
+
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
-  const [answer, setAnaswer] = useState('');
+  const [answer, setAnaswer] = useState<string>(comment?.content || '');
+
+  const isEditPage = location.pathname.includes('edit');
 
   useEffect(() => {
     textAreaRef.current?.focus();
   }, []);
 
   async function sendData() {
-    const res = await post({
-      endpoint: `questions/${location.state}/answers/write`,
+    let res: AxiosResponse;
+
+    res = await post({
+      endpoint: `questions/${isEditPage ? location.state.postId : location.state}/answers/${
+        isEditPage ? comment.id : 'write'
+      }`,
       body: {
         content: answer,
         postCategory: '1',
       },
+      isPost: isEditPage ? false : true,
     });
 
     if (res.data.resultCode === 'SUCCESS') {
