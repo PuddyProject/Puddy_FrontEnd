@@ -10,7 +10,7 @@ import {
   NewPost,
   MyPage,
   CardList,
-  QnaDetail,
+  CardDetail,
   QnaAnswer,
   AuthExpert,
   Signup,
@@ -72,7 +72,7 @@ export default function Router() {
       {/* // ********** 상단 Nav 없음 *********** */}
       <Route path='/' element={<LayoutWithoutHeader />}>
         {/* //? Q&A 작성/상세 보기 */}
-        <Route path='qna/detail/:id' element={<QnaDetail />} />
+        <Route path='qna/detail/:id' element={<CardDetail />} />
         <Route path='qna/detail/:id/write/answer' element={<QnaAnswer />} />
         <Route path='qna/detail/:id/write/answer/edit' element={<QnaAnswer />} />
         <Route path='qna/newpost' element={<NewPost />} />
@@ -99,13 +99,13 @@ export default function Router() {
       </Route>
 
       <Route path='/' element={<LayoutWithoutHeader />}>
-        <Route path='qna/detail/:id' element={<QnaDetail />} />
+        <Route path='qna/detail/:id' element={<CardDetail />} />
         <Route path='qna/detail/:id/write/answer' element={<QnaAnswer />} />
         <Route path='qna/detail/:id/edit' element={<NewPost />} />
 
         <Route path='qna/newpost' element={<NewPost />} />
         <Route path='community/newpost' element={<NewPost />} />
-        <Route path='community/detail/:id' element={<QnaDetail />} />
+        <Route path='community/detail/:id' element={<CardDetail />} />
       </Route>
 
       <Route path='*' element={<Navigate to='/' />} />

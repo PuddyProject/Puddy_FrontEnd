@@ -1,12 +1,14 @@
-import { CustomHeader, FooterButton } from 'components';
-import Comment from 'components/qnaDetail/Comment';
 import { useEffect, useState } from 'react';
-
 import { useLocation, useNavigate } from 'react-router-dom';
-import { del, get } from 'utils';
-import { AnswerInfo, PostDataInfo } from 'types/commentTypes';
+
+import { CustomHeader, FooterButton, QnaComment, CommunityComment } from 'components';
+
 import { initQnaDetail } from 'utils/initialValues/qnaDetail';
 import { useUser } from 'context/UserContext';
+
+import { AiOutlineHeart as Heart, AiTwotoneHeart as ClickHeart } from 'react-icons/ai';
+import { del, get } from 'utils';
+import { AnswerInfo, PostDataInfo } from 'types/commentTypes';
 
 export default function QnaDetail() {
   const nav = useNavigate();
@@ -16,6 +18,7 @@ export default function QnaDetail() {
   const [postDataInfo, setPostDataInfo] = useState<PostDataInfo>(initQnaDetail);
   const { decodedToken } = useUser();
   const isPostUser = postDataInfo.nickname === decodedToken?.nickname;
+  const isCommunityPage = location.pathname.includes('/community');
 
   useEffect(() => {
     get({ endpoint: 'questions', params: `/${postId}` }).then((res) => {
@@ -31,7 +34,7 @@ export default function QnaDetail() {
     const isCommentWriteUser = answer.nickname === decodedToken?.nickname;
 
     return (
-      <Comment
+      <QnaComment
         key={answer.id}
         answerData={answer}
         isExport={isExport}
@@ -71,11 +74,13 @@ export default function QnaDetail() {
     <>
       {postDataInfo && (
         <div>
-          <CustomHeader title='Q&A' />
+          <CustomHeader title={isCommunityPage ? '커뮤니티' : 'Q&A'} />
           <div className='qna-detail-container'>
             <section className='title'>
               <div className='title-text'>
-                <span className='title-category'>[{postDataInfo.category}] </span>
+                <span className='title-category'>
+                  [{isCommunityPage ? '커뮤니티' : postDataInfo.category}]
+                </span>
                 {postDataInfo.title}
               </div>
 
@@ -101,7 +106,6 @@ export default function QnaDetail() {
                 </div>
               </div>
               <div className='body-text'>{postDataInfo.content}</div>
-
               <div className='img-box'>
                 {postDataInfo.images.length !== 0 ? (
                   <>
@@ -113,56 +117,71 @@ export default function QnaDetail() {
                   <></>
                 )}
               </div>
-
-              {/*
-                            TODO: 내 펫 정보 등록 시 해당 정보 보여주기
               <div className='tag-container'>
                 <span className='tag-item'>알레스카 말라뮤트</span>
                 <span className='tag-item'>중성화</span>
                 <span className='tag-item'>여아</span>
                 <span className='tag-item'>2.5kg</span>
                 <span className='tag-item'>알레스카 말라뮤트</span>
-              </div> */}
+              </div>
+              <div className='like-container'>
+                {/* TODO: 사용자가 좋아요를 눌렸는지에 따른 상태관리로 아이콘 변경 기능 추가 
+                <Heart size='15' /> 
+                */}
+                <ClickHeart size='15' style={{ color: '#2A60FF' }} />
+                <span className='like-text'>좋아요</span>
+                <span className='like-count'>312</span>
+              </div>
             </section>
             <hr className='qna-divide-line' />
-            <section className='comment'>
-              <div className='comment-title-conainer'>
-                {postDataInfo.isSolved && (
-                  <div className='comment-selected-comment'>
-                    <span className='comment-title'>
-                      <span>채택된 답변 🐾</span>
-                    </span>
-                    <br />
-                    <span className='comment-sub-title'>작성자가 채택한 답변이에요.</span>
-                    {answerList
-                      .filter((answer) => answer.selected === true)
-                      .map((answer) => {
-                        return AnsewerList(answer);
-                      })}
-                  </div>
-                )}
-                {answerList.filter((answer) => answer.selected === false).length === 0 ? (
-                  answerList.filter((answer) => answer.selected === true).length === 0 && (
-                    <div className='comment-zero'>답변이 존재하지 않아요</div>
-                  )
-                ) : (
-                  <>
-                    <span className='comment-title'>
-                      작성된 <span>답변 🐾</span>
-                    </span>
-                    <br />
-                    <span className='comment-sub-title'>
-                      원하는 답변이 달렸다면 채택을 해보세요.
-                    </span>
-                  </>
-                )}
-              </div>
-              {answerList
-                .filter((answer) => answer.selected === false)
-                .map((answer) => {
-                  return AnsewerList(answer);
-                })}
-            </section>
+            {!isCommunityPage && (
+              <section className='qna-comment'>
+                <div className='comment-title-conainer'>
+                  {postDataInfo.isSolved && (
+                    <div className='comment-selected-comment'>
+                      <span className='comment-title'>
+                        <span>채택된 답변 🐾</span>
+                      </span>
+                      <br />
+                      <span className='comment-sub-title'>작성자가 채택한 답변이에요.</span>
+                      {answerList
+                        .filter((answer) => answer.selected === true)
+                        .map((answer) => {
+                          return AnsewerList(answer);
+                        })}
+                    </div>
+                  )}
+                  {answerList.filter((answer) => answer.selected === false).length === 0 ? (
+                    answerList.filter((answer) => answer.selected === true).length === 0 && (
+                      <div className='comment-zero'>답변이 존재하지 않아요</div>
+                    )
+                  ) : (
+                    <>
+                      <span className='comment-title'>
+                        작성된 <span>답변 🐾</span>
+                      </span>
+                      <br />
+                      <span className='comment-sub-title'>
+                        원하는 답변이 달렸다면 채택을 해보세요.
+                      </span>
+                    </>
+                  )}
+                </div>
+                {answerList
+                  .filter((answer) => answer.selected === false)
+                  .map((answer) => {
+                    return AnsewerList(answer);
+                  })}
+              </section>
+            )}
+            {isCommunityPage && (
+              <section className='community-comment'>
+                <CommunityComment />
+                <CommunityComment />
+                <CommunityComment />
+                <CommunityComment />
+              </section>
+            )}
           </div>
           {isPostUser ? '' : IsFirstWriter()}
         </div>

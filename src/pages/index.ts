@@ -1,7 +1,7 @@
 export { default as Main } from './Main/';
 export { default as Login } from './Login/';
 export { default as CardList } from './CardList';
-export { default as QnaDetail } from './QnaDetail';
+export { default as CardDetail } from './CardDetail';
 export { default as NewPost } from './NewPost';
 export { default as QnaAnswer } from './QnaAnswer';
 export { default as MyPage } from './MyPage';
