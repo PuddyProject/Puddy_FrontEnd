@@ -1,10 +1,10 @@
-import Button from 'components/common/Button';
+import { Button } from 'components';
+import { Dispatch, SetStateAction } from 'react';
 import { AiOutlineCheckCircle } from 'react-icons/ai';
 import classnames from 'classnames';
 import { del, patch } from 'utils';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { AnswerInfo, PostDataInfo } from 'types/commentTypes';
-import { Dispatch, SetStateAction } from 'react';
 
 const cn = classnames;
 interface CommentProps {
@@ -27,9 +27,13 @@ export default function QnaComment({
   setAnswerList,
 }: CommentProps) {
   const location = useLocation();
+  const nav = useNavigate();
+
+  const postId = location.pathname.split('/')[3];
+
   const selectAnswer = async () => {
     const res = await patch({
-      endpoint: `questions/${location.pathname.split('/')[3]}/answers/${answerData.id}`,
+      endpoint: `questions/${postId}/answers/${answerData.id}`,
       isFormData: false,
     });
 
@@ -43,6 +47,7 @@ export default function QnaComment({
           return answer;
         });
       });
+
       setPostDataInfo((prev: PostDataInfo) => ({ ...prev, isSolved: true }));
     } else {
       alert('오류가 생겼습니다. 잠시 후 다시 시도해주세요.');
@@ -77,7 +82,12 @@ export default function QnaComment({
           <div className='user-role'>{isExport ? '전문가 답변' : '사용자 답변'}</div>
           {isCommentWriteUser && (
             <div className='user-role'>
-              <span>수정하기</span> | <span onClick={deleteComment}>삭제하기</span>
+              <span
+                onClick={() => nav('write/answer/edit', { state: { comment: answerData, postId } })}
+              >
+                수정하기
+              </span>{' '}
+              | <span onClick={deleteComment}>삭제하기</span>
             </div>
           )}
         </div>
