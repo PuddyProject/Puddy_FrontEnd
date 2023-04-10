@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button, InputBox, Message } from 'components/index';
 
 import { ApiError } from 'types/errorsTypes';
+import { KAKAO_LOGIN_URI } from 'constants/kakaoLogin';
 
 import { Google, Naver, Kakao } from 'assets/login/symbols';
 import Logo from 'assets/Logo.svg';
@@ -102,10 +103,12 @@ export default function Login() {
         <hr className='dividing-line' />
         <h3>SNS 계정으로 간편하게 시작하기</h3>
         <ul className='sns-logins'>
-          <li className='social-login kakao' role='button' tabIndex={0}>
-            <span>카카오 로그인</span>
-            <img src={Kakao} alt='카카오' />
-          </li>
+          <Link to={KAKAO_LOGIN_URI}>
+            <li className='social-login kakao' role='button' tabIndex={0}>
+              <span>카카오 로그인</span>
+              <img src={Kakao} alt='카카오' />
+            </li>
+          </Link>
           <li className='social-login naver' role='button' tabIndex={0}>
             <span>네이버 로그인</span>
             <img src={Naver} alt='네이버' />
