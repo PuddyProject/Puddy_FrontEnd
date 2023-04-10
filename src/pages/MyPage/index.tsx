@@ -7,16 +7,19 @@ import { Link, useNavigate } from 'react-router-dom';
 import Modal from 'components/common/Modal';
 import { Button } from 'components';
 
-import { Tier, myPageList, MypageListItem } from 'constants/myPageList';
+import { Tier, myPageList, MypageListItem, Role } from 'constants/myPageList';
 import { get } from 'utils';
 
 import { usePet } from 'context/PetContext';
+import { useUser } from 'context/UserContext';
 
 const TEMP_IMAGE_URL =
   'https://blog.kakaocdn.net/dn/GHYFr/btrsSwcSDQV/UQZxkayGyAXrPACyf0MaV1/img.jpg';
 
 export default function MyPage() {
   const { hasPet, setHasPet } = usePet();
+  const { decodedToken } = useUser();
+  const [role, setRole] = useState('ROLE_EXPERT');
 
   const navigate = useNavigate();
 
@@ -71,7 +74,7 @@ export default function MyPage() {
         </section>
         <hr className='dividing-line' />
         <section className='setting-menus'>
-          <ul>{MenuItems(myPageList, onClickQuestionIcon)}</ul>
+          <ul>{createMenuItems({ list: myPageList, role, onClick: onClickQuestionIcon })}</ul>
         </section>
         {showModal && (
           <Modal closeModal={() => setShowModal(false)}>
@@ -98,9 +101,25 @@ const ProfileSettingButton = () => {
   );
 };
 
-const MenuItems = (list: Array<MypageListItem>, onClick: () => void) => {
+export interface MenuProps {
+  role: string;
+  list: Array<MypageListItem>;
+  onClick: () => void;
+}
+
+export const createMenuItems = ({ role, list, onClick }: MenuProps) => {
+  // TODO: 유저 role에 따라 메뉴 다르게 보여주기
+  const onlyUserMenu = list.filter((menu) => {
+    return menu.role === Role.USER;
+  });
+
+  const onlyExpertMenu = list.filter((menu) => {
+    return menu.role === Role.EXPERT;
+  });
+
   return list.map((item, i) => {
     const isTitle = item.tier === Tier.TITLE;
+    const isExpert = item.role === Role.EXPERT;
 
     return (
       <li key={`${item.title} ${i}`} role='button'>

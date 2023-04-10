@@ -1,68 +1,160 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Button, FooterButton, InputBox, TextArea } from 'components';
+import React, { useState, useEffect, useRef, ChangeEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { Button, CustomHeader, FooterButton, InputBox, TextArea } from 'components';
 import InputTilte from 'components/common/InputTitle';
 
-interface Profile {
-  education: string;
-  career?: string[];
-  introduce?: string;
-  location?: string;
-}
+import { useUser } from 'context/UserContext';
+import { post } from 'utils';
 
-const MAX_CAREER_COUNT = 4;
+import { Profile } from 'types/expertProfileTypes';
+
+const MAX_CAREER_COUNT = 5;
 
 const initProfile = {
+  username: '',
   education: '',
-  career: [],
+  careerList: [],
   introduce: '',
   location: '',
 };
 
-const createInputBox = () => {
-  return <InputBox width='250px' required placeholder='경력을 입력해주세요.' />;
-};
-
 export default function ExpertProfileEditor() {
   const inputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
+
+  const { decodedToken } = useUser();
+  const auth = decodedToken?.auth;
 
   const [profile, setProfile] = useState<Profile>(initProfile);
-  const [careerInputs, setCareerInputs] = useState<JSX.Element[]>([]);
+  const [careerIndex, setCareerIndex] = useState(0);
+  const [careerInputs, setCareerInputs] = useState(['']);
 
-  const onClick = (e: React.MouseEvent) => {
-    if (careerInputs.length >= MAX_CAREER_COUNT)
-      return window.alert('경력은 최대 5개까지 추가할 수 있어요.');
-    return setCareerInputs((prev) => [...prev, createInputBox()]);
+  const [isDisabled, setIsDisabled] = useState(true);
+
+  const submitExpertProfile = async () => {
+    try {
+      const res = await post({ endpoint: 'users/experts', body: profile });
+      // 서버에서 이름은 안받음
+      if (res.data.resultCode === 'SUCCESS') {
+        alert('프로필 등록 완료');
+        // TODO: 전문가 프로필 수정은 ?
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
+
+  useEffect(() => {
+    if (!auth) return;
+
+    if (auth !== 'ROLE_EXPERT') {
+      alert('접근 권한이 없습니다.');
+      return navigate('/');
+    }
+  }, [decodedToken, auth]);
+
+  const onChangeInput =
+    (target: string) => (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setProfile((prev) => {
+        return { ...prev, [target]: e.target.value };
+      });
+    };
+
+  useEffect(() => {
+    setCareerIndex((prev) => prev + 1);
+  }, []);
+
+  const onClick = () => {
+    if (careerInputs.length >= MAX_CAREER_COUNT) {
+      return window.alert('경력은 최대 5개까지 추가할 수 있어요.');
+    }
+    return setCareerInputs([...careerInputs, '']);
+  };
+
+  const onChangeCareerInput = (index: number) => (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    const newCareerInputs = [...careerInputs];
+    newCareerInputs[index] = value;
+    setCareerInputs(() => newCareerInputs);
+  };
+
+  useEffect(() => {
+    setProfile((prev) => {
+      return {
+        ...prev,
+        careerList: careerInputs,
+      };
+    });
+  }, [careerInputs]);
+
+  useEffect(() => {
+    if (profile.username && profile.education) {
+      setIsDisabled(() => false);
+    } else setIsDisabled(() => true);
+  }, [profile]);
 
   useEffect(() => {
     if (inputRef.current) inputRef.current.focus();
   }, [inputRef]);
 
   return (
-    <div className='expert-profile-container'>
-      <InputTilte isRequire>이름</InputTilte>
-      <InputBox inputRef={inputRef} width='250px' required placeholder='이름을 입력해주세요.' />
+    <>
+      <CustomHeader title='전문가 프로필 등록' hideIcon />
 
-      <InputTilte isRequire>학력</InputTilte>
-      <InputBox width='250px' required placeholder='최종 학력을 입력해주세요.' />
+      <div className='expert-profile-container'>
+        <InputTilte isRequire>이름</InputTilte>
+        <InputBox
+          onChange={onChangeInput('username')}
+          inputRef={inputRef}
+          width='250px'
+          required
+          placeholder='이름을 입력해주세요.'
+        />
 
-      <InputTilte>경력</InputTilte>
-      <div className='career-input-container'>
-        <InputBox width='250px' placeholder='경력을 입력해주세요.' />
-        {careerInputs.map((careerInput, i) => {
-          return <React.Fragment key={`${careerInput} ${i}`}>{careerInput}</React.Fragment>;
-        })}
+        <InputTilte isRequire>학력</InputTilte>
+        <InputBox
+          onChange={onChangeInput('education')}
+          width='250px'
+          required
+          placeholder='최종 학력을 입력해주세요.'
+        />
+
+        <InputTilte>경력</InputTilte>
+        <div className='career-input-container'>
+          {careerInputs.map((careerInput, i) => {
+            return (
+              <InputBox
+                width='250px'
+                required
+                placeholder='경력을 입력해주세요.'
+                key={`${careerIndex} ${i}`}
+                value={careerInput}
+                onChange={onChangeCareerInput(i)}
+              />
+            );
+          })}
+        </div>
+        <Button onClick={onClick} outline secondStyle>
+          추가하기
+        </Button>
+
+        <InputTilte>소개</InputTilte>
+        <TextArea
+          onChange={onChangeInput('introduce')}
+          placeholder='자유롭게 소개를 작성해주세요.'
+        ></TextArea>
+
+        <InputTilte>근무지/매장 위치</InputTilte>
+        <InputBox
+          onChange={onChangeInput('location')}
+          width='250px'
+          placeholder='근무지 또는 매장 위치를 홍보해보세요.'
+        />
+        <FooterButton disabled={isDisabled} onClick={submitExpertProfile}>
+          작성완료
+        </FooterButton>
       </div>
-      <Button onClick={onClick} outline secondStyle>
-        추가하기
-      </Button>
-
-      <InputTilte>소개</InputTilte>
-      <TextArea placeholder='자유롭게 소개를 작성해주세요.'></TextArea>
-
-      <InputTilte>근무지/매장 위치</InputTilte>
-      <InputBox width='250px' placeholder='근무지 또는 매장 위치를 홍보해보세요.' />
-      <FooterButton>작성완료</FooterButton>
-    </div>
+    </>
   );
 }
