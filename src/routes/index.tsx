@@ -9,7 +9,7 @@ import {
   Login,
   NewPost,
   MyPage,
-  List,
+  CardList,
   QnaDetail,
   QnaAnswer,
   AuthExpert,
@@ -44,8 +44,8 @@ export default function Router() {
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<Main />} />
-          <Route path='qna' element={<List />} />
-          <Route path='community' element={<List />} />
+          <Route path='qna' element={<CardList />} />
+          <Route path='community' element={<CardList />} />
         </Route>
 
         <Route path='/' element={<LayoutWithoutHeader />}>
@@ -63,8 +63,8 @@ export default function Router() {
       {/* // ********** 기본 레이아웃 *********** */}
       <Route element={<Layout />}>
         <Route index element={<Main />} />
-        <Route path='qna' element={<List />} />
-        <Route path='community' element={<List />} />
+        <Route path='qna' element={<CardList />} />
+        <Route path='community' element={<CardList />} />
         <Route path='mypage' element={<MyPage />} />
       </Route>
       {/* // ************************************ */}
@@ -74,6 +74,7 @@ export default function Router() {
         {/* //? Q&A 작성/상세 보기 */}
         <Route path='qna/detail/:id' element={<QnaDetail />} />
         <Route path='qna/detail/:id/write/answer' element={<QnaAnswer />} />
+        <Route path='qna/detail/:id/write/answer/edit' element={<QnaAnswer />} />
         <Route path='qna/newpost' element={<NewPost />} />
 
         {/* //? 프로필 작성 */}
