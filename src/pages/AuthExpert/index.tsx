@@ -1,10 +1,29 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { CustomHeader, FileInput, FooterButton } from 'components';
 
 import checkFileSize from 'utils/checkFileSize';
+import { patch } from 'utils';
+
+import { useUser } from 'context/UserContext';
 
 export default function AuthExpert() {
+  const navigate = useNavigate();
+
+  const { decodedToken } = useUser();
+  const auth = decodedToken?.auth;
+
   const [fileUploaderText, setFileUploaderText] = useState('파일 첨부');
+
+  useEffect(() => {
+    if (!decodedToken) return;
+
+    if (auth === 'ROLE_EXPERT') {
+      alert('이미 인증된 유저입니다.');
+      return navigate('/mypage');
+    }
+  }, [auth]);
 
   const checkAllowedExtensions = (files: FileList) => {
     const ALLOWED_FILE_EXTENSIONS = ['pdf', 'doc', 'docx', 'hwp', 'jpg', 'jpeg', 'png'];
@@ -18,8 +37,26 @@ export default function AuthExpert() {
     return true;
   };
 
-  const onClickSubmit = (e: React.MouseEvent) => {
+  const onClickSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
+
+    /* 
+    ! 임시 코드
+    ! 제출하기 버튼을 누르면 강제로 전문가 권한 부여 
+    TODO: 파일 제출 서버 통신 코드 추가 필요
+    */
+
+    try {
+      const res = await patch({ endpoint: 'users/update-auth', isFormData: false });
+      console.log(res);
+      if (res.status === 201) {
+        window.alert('전문가 권한 부여 완료. 재로그인 해주세요.');
+        sessionStorage.removeItem('userToken');
+        navigate('/auth/login');
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const onChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
