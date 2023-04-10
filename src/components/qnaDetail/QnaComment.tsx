@@ -27,7 +27,6 @@ export default function QnaComment({
   setAnswerList,
 }: CommentProps) {
   const location = useLocation();
-
   const selectAnswer = async () => {
     const res = await patch({
       endpoint: `questions/${location.pathname.split('/')[3]}/answers/${answerData.id}`,
@@ -35,7 +34,7 @@ export default function QnaComment({
     });
 
     if (res.status === 200) {
-      alert('답글이 채택 되었습니다.');
+      alert('답변이 채택 되었습니다.');
       setAnswerList((answerList: AnswerInfo[]) => {
         return answerList.map((answer: AnswerInfo) => {
           if (answer.id === answerData.id) {
@@ -51,10 +50,16 @@ export default function QnaComment({
   };
 
   const deleteComment = async () => {
-    await del({
+    let res = await del({
       endpoint: `questions/${location.pathname.split('/')[3]}/answers/${answerData.id}`,
-      params: String(answerData.id),
     });
+
+    if (res.status === 200) {
+      alert('답변을 삭제했습니다.');
+      setAnswerList((answerList: AnswerInfo[]) => {
+        return answerList.filter((answer) => answer.id !== answerData.id);
+      });
+    }
   };
 
   return (
