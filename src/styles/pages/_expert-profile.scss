@@ -17,6 +17,8 @@
 
 .expert + .dividing-line {
   width: 100%;
+  margin-top: 20px;
+  margin-bottom: 30px;
 }
 
 .profile-expert_header {
@@ -43,7 +45,7 @@
 .profile-expert_education {
   font-size: 1.4rem;
   color: $color-gray02;
-  margin-top: 7px;
+  margin-top: 10px;
 }
 
 /* 전문가 프로필 하단: 경력사항 등*/
@@ -59,8 +61,13 @@
   }
 
   .content {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
+    line-height: 2rem;
     margin-bottom: 2rem;
+  }
+
+  .produce {
+    line-height: 2.3rem;
   }
 }
 
