@@ -1,0 +1,28 @@
+@use '../abstracts' as *;
+
+.commnuity-comment-container {
+  margin: 30px 0px;
+
+  .user-info {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0px;
+
+    .user-nickname {
+      @include font-styles(12px, 700, $color-gray01);
+    }
+
+    .user-role {
+      @include font-styles(10px, 400, $icon-color);
+    }
+  }
+
+  .body {
+    @include font-styles(12px, 400, $color-gray01);
+    margin: 10px 0px;
+  }
+
+  .date {
+    @include font-styles(10px, 400, $icon-color);
+  }
+}
