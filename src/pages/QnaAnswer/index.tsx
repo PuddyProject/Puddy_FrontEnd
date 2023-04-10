@@ -35,10 +35,10 @@ export default function QnaAnswer() {
     });
 
     if (res.data.resultCode === 'SUCCESS') {
-      alert('답변 작성 완료');
+      alert(`답변 ${isEditPage ? '수정' : '작성'} 완료`);
       nav(-1);
     } else {
-      alert('답변 작성 실패. 잠시 후 다시 시도해주세요');
+      alert(`답변 ${isEditPage ? '수정' : '작성'} 실패. 잠시 후 다시 시도해주세요`);
     }
   }
 
@@ -60,7 +60,9 @@ export default function QnaAnswer() {
           }}
         />
       </div>
-      <FooterButton onClick={sendData}>답변 작성하기</FooterButton>
+      <FooterButton onClick={sendData}>
+        {isEditPage ? '답변 수정하기' : '답변 작성하기'}
+      </FooterButton>
     </>
   );
 }

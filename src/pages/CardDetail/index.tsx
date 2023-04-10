@@ -65,7 +65,7 @@ export default function QnaDetail() {
             : nav('write/answer/edit', { state: { comment: myComment[0], postId } });
         }}
       >
-        {isFirstWriter ? '답글 입력하기' : '답글 수정하기'}
+        {isFirstWriter ? '답변 작성하기' : '답변 수정하기'}
       </FooterButton>
     );
   };
