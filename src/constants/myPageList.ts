@@ -3,11 +3,17 @@ export enum Tier {
   CONTENT_NAME,
 }
 
+export enum Role {
+  USER = 'ROLE_USER',
+  EXPERT = 'ROLE_EXPERTS',
+}
+
 export interface MypageListItem {
   tier: Tier;
   title: string;
   url?: string;
   icon?: boolean;
+  role?: Role;
 }
 
 export const myPageList: Array<MypageListItem> = [
@@ -34,6 +40,13 @@ export const myPageList: Array<MypageListItem> = [
     title: '전문가 인증하기',
     url: '/mypage/experts',
     icon: true,
+    role: Role.USER,
+  },
+  {
+    tier: Tier.CONTENT_NAME,
+    title: '전문가 프로필 등록',
+    url: '/profile/experts',
+    role: Role.EXPERT,
   },
   {
     tier: Tier.TITLE,
