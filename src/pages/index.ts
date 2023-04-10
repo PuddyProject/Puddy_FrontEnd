@@ -13,3 +13,4 @@ export { default as ExpertProfile } from './ExpertProfile';
 export { default as PetProfile } from './PetProfile';
 export { default as MyActivityInfo } from './MyActivityInfo';
 export { default as MyProfileEditor } from './MyProfileEditor';
+export { default as KakaoLogin } from './Login/Kakao';
