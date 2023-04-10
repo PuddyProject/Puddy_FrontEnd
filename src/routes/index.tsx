@@ -20,6 +20,7 @@ import {
   ExpertProfileEditor,
   MyActivityInfo,
   MyProfileEditor,
+  KakaoLogin,
 } from 'pages';
 
 const MEMBER_ONLY_PAGES = ['mypage', 'profile', 'expert', 'detail', 'newpost'];
@@ -51,6 +52,7 @@ export default function Router() {
         <Route path='/' element={<LayoutWithoutHeader />}>
           <Route path='auth/login' element={<Login />} />
           <Route path='auth/Signup' element={<Signup />} />
+          <Route path='oauth/authorize' element={<KakaoLogin />} />
         </Route>
 
         <Route path='*' element={<Navigate to='/' />} />
