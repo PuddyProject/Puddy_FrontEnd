@@ -17,7 +17,7 @@ interface CommentProps {
   setAnswerList: Dispatch<SetStateAction<AnswerInfo[]>>;
 }
 
-export default function Comment({
+export default function QnaComment({
   answerData,
   isSolved,
   isPostUser,
