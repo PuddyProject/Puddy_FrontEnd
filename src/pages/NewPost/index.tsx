@@ -10,34 +10,37 @@ import CustomHeader from 'components/common/CustomHeader';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { post } from 'utils';
 import { PostDataInfo } from 'types/commentTypes';
-import SymbolLogo from 'assets/SymbolLogo.svg';
 import { AxiosResponse } from 'axios';
 
 interface PostInfo {
   title: string;
   content: string;
   category: string;
+  postCategory: number;
 }
 
 export default function NewPost() {
   const location = useLocation();
   const editData: PostDataInfo = location.state;
-  const isEditPage = location.pathname.includes('edit');
   const [postInfo, setPostInfo] = useState<PostInfo>({
     content: editData?.content || '',
     category: editData?.category || '',
     title: editData?.title || '',
+    postCategory: 1,
   });
 
   const [tagList, setTagList] = useState<string[]>([]);
   const [filePreview, setFilePreview] = useState<string[]>(editData?.images || []);
   const [imgFile, setImgFile] = useState<File[]>([]);
   const firstInputBox = useRef<HTMLInputElement>(null);
-  const nav = useNavigate();
   const isVaildForm =
     postInfo.content.length >= 1 && postInfo.content !== '' && postInfo.title.length >= 1;
 
+  const nav = useNavigate();
+
   const isCommunityPage = location.pathname.includes('community');
+  const isEditPage = location.pathname.includes('edit');
+
   useEffect(() => {
     // TODO: 현재는 안되는 코드이며 향후 시도 CORS 오류로 인해 일단 보류
     // fetch(`${editData?.images[0]}`, {
@@ -48,6 +51,36 @@ export default function NewPost() {
     // }).then((res) => console.log(res));
     firstInputBox.current?.focus();
   }, []);
+
+  const sendQnaPage = async (formData: FormData) => {
+    let res: AxiosResponse;
+    if (isEditPage) {
+      res = await post({
+        endpoint: `questions/${location.state.questionId}`,
+        body: formData,
+        isImage: true,
+        isPost: false,
+      });
+    } else {
+      res = await post({ endpoint: 'questions/write', body: formData, isImage: true });
+    }
+
+    if (res.status === 200) {
+      isEditPage ? alert('Q&A 수정이 완료 되었습니다.') : alert('Q&A 작성 완료 되었습니다.');
+      nav(-1);
+    } else {
+      alert('게시글을 작성하지 못하였습니다. 잠시 후 다시 시도해주세요.');
+    }
+  };
+
+  const sendCommunityPage = async (formData: FormData) => {
+    let res: AxiosResponse;
+    if (isEditPage) {
+      //TODO: 커뮤니티 수정 페이지에 들어갈 내용
+    } else {
+      res = await post({ endpoint: 'articles', body: formData, isImage: true });
+    }
+  };
 
   const onChangeHandler = (e: FormEvent<HTMLElement>) => {
     if ((e.target as HTMLInputElement).id === 'imgFile') {
@@ -122,15 +155,35 @@ export default function NewPost() {
 
   const onSendData = async () => {
     const formData = new FormData();
+
+    const commonData = { title: postInfo.title, content: postInfo.content };
     if (isCommunityPage) {
       formData.append(
         'request',
-        new Blob([JSON.stringify(postInfo, tagList)], { type: 'application/json' })
+        new Blob(
+          [
+            JSON.stringify({
+              ...commonData,
+              tagList,
+              postCategory: 2,
+            }),
+          ],
+          { type: 'application/json' }
+        )
       );
     } else {
       formData.append(
         'request',
-        new Blob([JSON.stringify(postInfo)], { type: 'application/json' })
+        new Blob(
+          [
+            JSON.stringify({
+              ...commonData,
+              category: postInfo.category,
+              postCategory: 1,
+            }),
+          ],
+          { type: 'application/json' }
+        )
       );
     }
 
@@ -139,28 +192,11 @@ export default function NewPost() {
       formData.append('images', imgFile[i]);
     }
 
-    // if (isEditPage) {
-    //   res = await post({
-    //     endpoint: `questions/${location.state.questionId}`,
-    //     body: formData,
-    //     isImage: true,
-    //     isPost: false,
-    //   });
-    // } else {
-    //   res = await post({ endpoint: 'questions/write', body: formData, isImage: true });
-    // }
-
-    let res: AxiosResponse;
     if (isCommunityPage) {
-      res = await post({ endpoint: 'articles/write', body: formData, isImage: true });
-      console.log(res);
+      sendCommunityPage(formData);
+    } else {
+      sendQnaPage(formData);
     }
-    // if (res.status === 200) {
-    //   isEditPage ? alert('Q&A 수정이 완료 되었습니다.') : alert('Q&A 작성 완료 되었습니다.');
-    //   nav(-1);
-    // } else {
-    //   alert('게시글을 작성하지 못하였습니다. 잠시 후 다시 시도해주세요.');
-    // }
   };
 
   return (
@@ -228,7 +264,7 @@ export default function NewPost() {
                 </div>
               ) : (
                 <div key={i} className='image-item'>
-                  <img key={i} className='image-item' src={SymbolLogo} alt='error' />
+                  <img key={i} className='image-item' />
                 </div>
               );
             })}
