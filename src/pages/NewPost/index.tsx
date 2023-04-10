@@ -1,14 +1,11 @@
-import InputBox from 'components/common/InputBox';
-import InputTilte from 'components/common/InputTitle';
-import FooterButton from 'components/common/FooterButton';
 import { useState, FormEvent, useEffect, useRef } from 'react';
-import { categoryItem } from 'constants/qnaNewPost';
-import checkExtensions from 'utils/checkExtensions';
-import checkFileSize from 'utils/checkFileSize';
 import { IoMdRemoveCircleOutline } from 'react-icons/io';
-import CustomHeader from 'components/common/CustomHeader';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { post } from 'utils';
+
+import { InputBox, InputTitle, FooterButton, CustomHeader } from 'components';
+import { categoryItem } from 'constants/qnaNewPost';
+
+import { checkExtensions, checkFileSize, post } from 'utils';
 import { PostDataInfo } from 'types/commentTypes';
 import { AxiosResponse } from 'axios';
 
@@ -99,6 +96,7 @@ export default function NewPost() {
 
   const onClickHandler = (e: React.MouseEvent) => {
     const target = e.target as HTMLButtonElement;
+
     setPostInfo((prev) => ({
       ...prev,
       [target.id]: target.innerText,
@@ -213,7 +211,7 @@ export default function NewPost() {
     <div>
       <CustomHeader title='Q&A 등록' hideIcon />
       <div className='qna-newpost-container' onChange={onChangeHandler}>
-        <InputTilte isRequire={true}> 제목 </InputTilte>
+        <InputTitle isRequire={true}> 제목 </InputTitle>
         <InputBox
           id='title'
           margin='10px 0px 20px 0px'
@@ -225,7 +223,7 @@ export default function NewPost() {
         />
         {!isCommunityPage && (
           <>
-            <InputTilte isRequire={true}>카테고리 </InputTilte>
+            <InputTitle isRequire={true}>카테고리 </InputTitle>
             <div className='category-container'>
               {categoryItem.map((category, i) => {
                 const isSelected = category === postInfo.category;
@@ -279,7 +277,7 @@ export default function NewPost() {
               );
             })}
         </div>
-        <InputTilte isRequire={true}> 내용 </InputTilte>
+        <InputTitle isRequire={true}> 내용 </InputTitle>
         <textarea
           id='content'
           maxLength={500}
@@ -289,7 +287,7 @@ export default function NewPost() {
         ></textarea>
         {isCommunityPage && (
           <>
-            <InputTilte margin='15px 0px'>태그</InputTilte>
+            <InputTitle margin='15px 0px'>태그</InputTitle>
             <InputBox
               width='100%'
               placeholder='태그를 등록해보세요.'

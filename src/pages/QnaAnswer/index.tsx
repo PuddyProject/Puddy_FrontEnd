@@ -1,10 +1,10 @@
-import { AxiosResponse } from 'axios';
-import { FooterButton } from 'components';
-import CustomHeader from 'components/common/CustomHeader';
-import InputTilte from 'components/common/InputTitle';
 import { useRef, useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+
+import { FooterButton, InputTitle, CustomHeader } from 'components';
+
 import { post } from 'utils';
+import { AxiosResponse } from 'axios';
 
 export default function QnaAnswer() {
   const location = useLocation();
@@ -46,9 +46,9 @@ export default function QnaAnswer() {
     <>
       <CustomHeader title='Q&A 답변 작성' hideIcon />
       <div>
-        <InputTilte isRequire={true} margin='50px 0px 10px 0px'>
+        <InputTitle isRequire={true} margin='50px 0px 10px 0px'>
           답변 내용
-        </InputTilte>
+        </InputTitle>
         <textarea
           className='text-body'
           maxLength={100}

@@ -1,9 +1,7 @@
-import { InputBox, QnaCard } from 'components';
-import CommunityCard from 'components/common/CommunityCard';
-import WriteButton from 'components/common/WriteButton';
 import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { InputBox, QnaCard, CommunityCard, WriteButton } from 'components';
 import { QnaData } from 'types/qnaCardTypes';
 import { FILTER_ITEM } from 'constants/cardList';
 import { get } from 'utils';
@@ -16,7 +14,7 @@ export default function CardList() {
   const [lastCardRef, inView] = useInView();
   const nav = useNavigate();
   const location = useLocation();
-  const isCommunityPage = location.pathname === '/community';
+  const isCommunityPage = location.pathname.includes('/community');
 
   async function getData() {
     const res = await get({
