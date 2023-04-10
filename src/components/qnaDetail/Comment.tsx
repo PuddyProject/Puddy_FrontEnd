@@ -1,7 +1,7 @@
 import Button from 'components/common/Button';
 import { AiOutlineCheckCircle } from 'react-icons/ai';
 import classnames from 'classnames';
-import { patch } from 'utils';
+import { del, patch } from 'utils';
 import { useLocation } from 'react-router-dom';
 import { AnswerInfo, PostDataInfo } from 'types/commentTypes';
 import { Dispatch, SetStateAction } from 'react';
@@ -50,6 +50,13 @@ export default function Comment({
     }
   };
 
+  const deleteComment = async () => {
+    await del({
+      endpoint: `questions/${location.pathname.split('/')[3]}/answers/${answerData.id}`,
+      params: String(answerData.id),
+    });
+  };
+
   return (
     <div className={cn('comment-card', { isExport })}>
       <div className='comment-card-user-info'>
@@ -61,12 +68,12 @@ export default function Comment({
           <div className='user'>{answerData.nickname}</div>
         )}
 
-        <div className='user-roll-container'>
-          <span className='user-roll'>{isExport ? '전문가 답변' : '사용자 답변'}</span>
+        <div className='comment-user-role-container'>
+          <div className='user-role'>{isExport ? '전문가 답변' : '사용자 답변'}</div>
           {isCommentWriteUser && (
-            <span className='user-roll'>
-              <span>수정하기</span> | <span>삭제하기</span>
-            </span>
+            <div className='user-role'>
+              <span>수정하기</span> | <span onClick={deleteComment}>삭제하기</span>
+            </div>
           )}
         </div>
       </div>
