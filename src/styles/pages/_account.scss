@@ -1,0 +1,16 @@
+@use '../abstracts' as *;
+
+.setting-menus ul.account-menus {
+  padding-top: 1px;
+  margin-top: 100px;
+  font-size: 1.4rem;
+  gap: 5rem;
+
+  li {
+    cursor: pointer;
+  }
+
+  li:last-child {
+    color: $color-gray03;
+  }
+}
