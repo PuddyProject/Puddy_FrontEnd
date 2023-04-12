@@ -11,7 +11,7 @@ import {
   MyPage,
   CardList,
   CardDetail,
-  QnaAnswer,
+  CommentAnswer,
   AuthExpert,
   Signup,
   PetProfile,
@@ -73,9 +73,18 @@ export default function Router() {
       <Route path='/' element={<LayoutWithoutHeader />}>
         {/* //? Q&A 작성/상세 보기 */}
         <Route path='qna/detail/:id' element={<CardDetail />} />
-        <Route path='qna/detail/:id/write/answer' element={<QnaAnswer />} />
-        <Route path='qna/detail/:id/write/answer/edit' element={<QnaAnswer />} />
+        <Route path='qna/detail/:id/edit' element={<NewPost />} />
+        <Route path='qna/detail/:id/write/answer' element={<CommentAnswer />} />
+        <Route path='qna/detail/:id/write/answer/edit' element={<CommentAnswer />} />
         <Route path='qna/newpost' element={<NewPost />} />
+
+        {/* //? 커뮤니티 작성/상세 보기 */}
+
+        <Route path='community/detail/:id' element={<CardDetail />} />
+        <Route path='community/detail/:id/edit' element={<NewPost />} />
+        <Route path='community/detail/:id/write/answer' element={<CommentAnswer />} />
+        <Route path='community/detail/:id/write/answer/edit' element={<CommentAnswer />} />
+        <Route path='community/newpost' element={<NewPost />} />
 
         {/* //? 프로필 작성 */}
         {/* //TODO 전문가 프로필 작성 페이지는 전문가 회원 유형만 접근할 수 있도록 추가 필요 */}
@@ -96,16 +105,6 @@ export default function Router() {
         <Route path='mypage/profile' element={<MyProfileEditor />} />
         <Route path='experts/:id' element={<ExpertProfile />} />
         <Route path='mypage/pets' element={<PetProfile />} />
-      </Route>
-
-      <Route path='/' element={<LayoutWithoutHeader />}>
-        <Route path='qna/detail/:id' element={<CardDetail />} />
-        <Route path='qna/detail/:id/write/answer' element={<QnaAnswer />} />
-        <Route path='qna/detail/:id/edit' element={<NewPost />} />
-
-        <Route path='qna/newpost' element={<NewPost />} />
-        <Route path='community/newpost' element={<NewPost />} />
-        <Route path='community/detail/:id' element={<CardDetail />} />
       </Route>
 
       <Route path='*' element={<Navigate to='/' />} />
