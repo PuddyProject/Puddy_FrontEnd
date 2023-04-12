@@ -17,4 +17,4 @@ export const ExpertProfileEditor = lazy(() => import('./ExpertProfileEditor'));
 export const MyActivityInfo = lazy(() => import('./MyActivityInfo'));
 export const MyProfileEditor = lazy(() => import('./MyProfileEditor'));
 export const KakaoLogin = lazy(() => import('./Login/Kakao'));
-export const Account = lazy(() => import('./Login'));
+export const Account = lazy(() => import('./MyPage/Account'));
