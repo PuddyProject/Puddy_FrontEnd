@@ -64,38 +64,38 @@ instance.interceptors.request.use((config) => {
 });
 
 // ! 아래 코드는 테스트가 필요합니당..!
-instance.interceptors.response.use(
-  (res) => {
-    return res;
-  },
-  async (err) => {
-    const originalRequest = err.config;
-    const navigate = useNavigate();
-    const userToken = sessionStorage.getItem('userToken');
-    if (userToken) {
-      if (err.response.status === 401 && !originalRequest._retry && isTokenExpired(userToken)) {
-        originalRequest._retry = true;
+// instance.interceptors.response.use(
+//   (res) => {
+//     return res;
+//   },
+//   async (err) => {
+//     const originalRequest = err.config;
+//     const navigate = useNavigate();
+//     const userToken = sessionStorage.getItem('userToken');
+//     if (userToken) {
+//       if (err.response.status === 401 && !originalRequest._retry && isTokenExpired(userToken)) {
+//         originalRequest._retry = true;
 
-        try {
-          const getNewAccessToken = () => {
-            get({ endpoint: 'users/login/reissue' });
-          };
+//         try {
+//           const getNewAccessToken = () => {
+//             get({ endpoint: 'users/login/reissue' });
+//           };
 
-          const newAccessToken = await getNewAccessToken();
-          originalRequest.headers.Authorization = newAccessToken;
-          return axios(originalRequest);
-        } catch (err) {
-          // * 리프레시 토큰 만료, 기타 에러
-          console.error(err);
-          window.alert('로그인 시간이 만료되었어요.');
-          navigate('/auth/login');
-        }
-      }
-    }
+//           const newAccessToken = await getNewAccessToken();
+//           originalRequest.headers.Authorization = newAccessToken;
+//           return axios(originalRequest);
+//         } catch (err) {
+//           // * 리프레시 토큰 만료, 기타 에러
+//           console.error(err);
+//           window.alert('로그인 시간이 만료되었어요.');
+//           navigate('/auth/login');
+//         }
+//       }
+//     }
 
-    return Promise.reject(err);
-  }
-);
+//     return Promise.reject(err);
+//   }
+// );
 
 export async function get({ endpoint, params = '' }: GET) {
   const URL = `${endpoint}${params}`;
