@@ -1,10 +1,10 @@
-import Button from 'components/common/Button';
+import { Button } from 'components';
+import { Dispatch, SetStateAction } from 'react';
 import { AiOutlineCheckCircle } from 'react-icons/ai';
 import classnames from 'classnames';
-import { patch } from 'utils';
-import { useLocation } from 'react-router-dom';
+import { del, patch } from 'utils';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { AnswerInfo, PostDataInfo } from 'types/commentTypes';
-import { Dispatch, SetStateAction } from 'react';
 
 const cn = classnames;
 interface CommentProps {
@@ -17,7 +17,7 @@ interface CommentProps {
   setAnswerList: Dispatch<SetStateAction<AnswerInfo[]>>;
 }
 
-export default function Comment({
+export default function QnaComment({
   answerData,
   isSolved,
   isPostUser,
@@ -27,15 +27,18 @@ export default function Comment({
   setAnswerList,
 }: CommentProps) {
   const location = useLocation();
+  const nav = useNavigate();
+
+  const postId = location.pathname.split('/')[3];
 
   const selectAnswer = async () => {
     const res = await patch({
-      endpoint: `questions/${location.pathname.split('/')[3]}/answers/${answerData.id}`,
+      endpoint: `questions/${postId}/answers/${answerData.id}`,
       isFormData: false,
     });
 
     if (res.status === 200) {
-      alert('답글이 채택 되었습니다.');
+      alert('답변이 채택 되었습니다.');
       setAnswerList((answerList: AnswerInfo[]) => {
         return answerList.map((answer: AnswerInfo) => {
           if (answer.id === answerData.id) {
@@ -44,9 +47,23 @@ export default function Comment({
           return answer;
         });
       });
+
       setPostDataInfo((prev: PostDataInfo) => ({ ...prev, isSolved: true }));
     } else {
       alert('오류가 생겼습니다. 잠시 후 다시 시도해주세요.');
+    }
+  };
+
+  const deleteComment = async () => {
+    let res = await del({
+      endpoint: `questions/${location.pathname.split('/')[3]}/answers/${answerData.id}`,
+    });
+
+    if (res.status === 200) {
+      alert('답변을 삭제했습니다.');
+      setAnswerList((answerList: AnswerInfo[]) => {
+        return answerList.filter((answer) => answer.id !== answerData.id);
+      });
     }
   };
 
@@ -61,12 +78,17 @@ export default function Comment({
           <div className='user'>{answerData.nickname}</div>
         )}
 
-        <div className='user-roll-container'>
-          <span className='user-roll'>{isExport ? '전문가 답변' : '사용자 답변'}</span>
+        <div className='comment-user-role-container'>
+          <div className='user-role'>{isExport ? '전문가 답변' : '사용자 답변'}</div>
           {isCommentWriteUser && (
-            <span className='user-roll'>
-              <span>수정하기</span> | <span>삭제하기</span>
-            </span>
+            <div className='user-role'>
+              <span
+                onClick={() => nav('write/answer/edit', { state: { comment: answerData, postId } })}
+              >
+                수정하기
+              </span>{' '}
+              | <span onClick={deleteComment}>삭제하기</span>
+            </div>
           )}
         </div>
       </div>

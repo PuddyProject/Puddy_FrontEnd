@@ -7,11 +7,10 @@ import LayoutWithoutNav from 'layouts/LayoutWithoutNav';
 import {
   Main,
   Login,
-  Community,
   NewPost,
   MyPage,
-  Qna,
-  QnaDetail,
+  CardList,
+  CardDetail,
   QnaAnswer,
   AuthExpert,
   Signup,
@@ -45,8 +44,8 @@ export default function Router() {
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<Main />} />
-          <Route path='qna' element={<Qna />} />
-          <Route path='community' element={<Community />} />
+          <Route path='qna' element={<CardList />} />
+          <Route path='community' element={<CardList />} />
         </Route>
 
         <Route path='/' element={<LayoutWithoutHeader />}>
@@ -64,8 +63,8 @@ export default function Router() {
       {/* // ********** 기본 레이아웃 *********** */}
       <Route element={<Layout />}>
         <Route index element={<Main />} />
-        <Route path='qna' element={<Qna />} />
-        <Route path='community' element={<Community />} />
+        <Route path='qna' element={<CardList />} />
+        <Route path='community' element={<CardList />} />
         <Route path='mypage' element={<MyPage />} />
       </Route>
       {/* // ************************************ */}
@@ -73,8 +72,9 @@ export default function Router() {
       {/* // ********** 상단 Nav 없음 *********** */}
       <Route path='/' element={<LayoutWithoutHeader />}>
         {/* //? Q&A 작성/상세 보기 */}
-        <Route path='qna/detail/:id' element={<QnaDetail />} />
+        <Route path='qna/detail/:id' element={<CardDetail />} />
         <Route path='qna/detail/:id/write/answer' element={<QnaAnswer />} />
+        <Route path='qna/detail/:id/write/answer/edit' element={<QnaAnswer />} />
         <Route path='qna/newpost' element={<NewPost />} />
 
         {/* //? 프로필 작성 */}
@@ -97,8 +97,16 @@ export default function Router() {
         <Route path='experts/:id' element={<ExpertProfile />} />
         <Route path='mypage/pets' element={<PetProfile />} />
       </Route>
-      {/* // ************************************ */}
-      {/* --------------------------------------- */}
+
+      <Route path='/' element={<LayoutWithoutHeader />}>
+        <Route path='qna/detail/:id' element={<CardDetail />} />
+        <Route path='qna/detail/:id/write/answer' element={<QnaAnswer />} />
+        <Route path='qna/detail/:id/edit' element={<NewPost />} />
+
+        <Route path='qna/newpost' element={<NewPost />} />
+        <Route path='community/newpost' element={<NewPost />} />
+        <Route path='community/detail/:id' element={<CardDetail />} />
+      </Route>
 
       <Route path='*' element={<Navigate to='/' />} />
     </Routes>

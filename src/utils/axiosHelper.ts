@@ -9,11 +9,17 @@ interface GET {
   params?: string;
   queryString?: string;
 }
+interface DELETE {
+  endpoint: string;
+  params?: string;
+  queryString?: string;
+}
 
 interface POST {
   endpoint: string;
   body?: object;
   isImage?: boolean;
+  isPost?: boolean;
 }
 
 interface PATCH {
@@ -98,18 +104,29 @@ export async function get({ endpoint, params = '' }: GET) {
   return instance.get(URL);
 }
 
-export async function post({ endpoint, body, isImage = false }: POST) {
+export async function del({ endpoint, params = '' }: DELETE) {
+  const URL = `${endpoint}${params}`;
+  console.log(`%cDELETE 요청 ${SERVER_URL}${URL}`, 'color: #2a60ff;');
+
+  return instance.delete(URL);
+}
+
+export async function post({ endpoint, body, isImage = false, isPost = true }: POST) {
   const URL = endpoint;
   const bodyData = isImage ? body : JSON.stringify(body);
 
-  console.log(`%cPOST 요청:${SERVER_URL}${endpoint}`, 'color: #2a60ff;');
-  console.log(`%cPOST 요청 데이터: ${bodyData}`, 'color: #2a60ff;');
+  console.log(`%c${isPost ? 'POST' : 'PUT'} 요청:${SERVER_URL}${endpoint}`, 'color: #2a60ff;');
+  console.log(`%c${isPost ? 'POST' : 'PUT'} 요청 데이터: ${bodyData}`, 'color: #2a60ff;');
 
   const headers = {
     'Content-Type': isImage ? ContentTypes.formData : ContentTypes.json,
   };
 
-  return instance.post(URL, bodyData, { headers });
+  if (isPost) {
+    return instance.post(URL, bodyData, { headers });
+  } else {
+    return instance.put(URL, bodyData, { headers });
+  }
 }
 
 export async function patch({ endpoint, body, isFormData }: PATCH) {

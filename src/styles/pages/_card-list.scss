@@ -1,6 +1,6 @@
 @use '../abstracts' as *;
 
-.qna-container {
+.list-container {
   margin: 0 auto;
   @include header-gap;
   @include footer-gap;
@@ -8,22 +8,68 @@
   flex-direction: column;
   width: 90vw;
 
-  .qna-title-section {
+  .list-title-section {
+    margin-bottom: 15px;
+  }
+
+  .list-search-section {
     margin-bottom: 20px;
   }
 
-  .qna-title {
-    @include font-styles(18px, 700, $color-gray01);
+  .filter-container {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+
+    .filter-item {
+      background-color: #ffffff;
+      padding: 3px 12px;
+      border-radius: 10px;
+      border: 1px solid $icon-color;
+      color: $icon-color;
+
+      &.select-filter {
+        color: $primary-color;
+        border: 1px solid $primary-color;
+      }
+    }
   }
 
-  .qna-sub-title {
+  .list-title {
+    @include font-styles(18px, 700, $color-gray01);
+    padding-left: 10px;
+    margin-top: 30px;
+  }
+
+  .list-sub-title {
     @include font-styles(13px, 300, $color-gray01);
     padding-left: 10px;
     margin-top: 8px;
     margin-bottom: 10px;
 
+    .communinty-title {
+      @include font-styles(13px, 400, $color-gray01);
+
+      span {
+        @include font-styles(13px, 700, $color-gray01);
+      }
+    }
+
+    p {
+      @include font-styles(10px, 400, $icon-color);
+      margin-top: 5px;
+    }
+
     span {
       @include font-styles(13px, 700, $color-gray01);
+    }
+  }
+
+  .card-list {
+    &.community {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
     }
   }
 }

@@ -14,11 +14,15 @@ interface InputBoxProps {
   readonly?: boolean;
   className?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyPress?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
 }
 
 export default function InputBox({
   className,
   onChange,
+  onKeyPress,
+  onFocus,
   inputRef,
   width,
   margin,
@@ -43,6 +47,8 @@ export default function InputBox({
   return (
     <input
       onChange={onChange}
+      onKeyDown={onKeyPress}
+      onFocus={onFocus}
       readOnly={readonly}
       min={min}
       max={max}

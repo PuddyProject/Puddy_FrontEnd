@@ -1,11 +1,9 @@
-import Button from 'components/common/Button';
-import ExpertContainer from 'components/main/ExpertContainer';
-import QnaContainer from 'components/main/QnaContainer';
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { MainQnaCardType } from 'types/qnaCardTypes';
+import { ExpertContainer, QnaContainer, Button } from 'components';
 import { get } from 'utils';
 import dragEvent from 'utils/dragEvent';
-import { MainQnaCardType } from 'types/qnaCardTypes';
-import { useNavigate } from 'react-router-dom';
 
 const COLOR = ['red', 'black', 'green', 'gray', 'skyblue', 'yellow', 'pink'];
 const MAX_INDEX = COLOR.length - 1;
