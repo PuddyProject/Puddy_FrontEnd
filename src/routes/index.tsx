@@ -1,27 +1,11 @@
 import { Route, Routes, Navigate, useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import Layout from 'layouts';
 import LayoutWithoutHeader from 'layouts/LayoutWithoutHeader';
 import LayoutWithoutNav from 'layouts/LayoutWithoutNav';
+import Loading from 'components/common/Loading';
 
-import {
-  Main,
-  Login,
-  NewPost,
-  MyPage,
-  CardList,
-  CardDetail,
-  QnaAnswer,
-  AuthExpert,
-  Signup,
-  PetProfile,
-  PetProfileEditor,
-  ExpertProfile,
-  ExpertProfileEditor,
-  MyActivityInfo,
-  MyProfileEditor,
-  KakaoLogin,
-} from 'pages';
+import * as pages from 'pages';
 
 const MEMBER_ONLY_PAGES = ['mypage', 'profile', 'expert', 'detail', 'newpost'];
 
@@ -42,75 +26,75 @@ export default function Router() {
 
   if (!isLoggedIn) {
     return (
-      <Routes>
-        <Route element={<Layout />}>
-          <Route index element={<Main />} />
-          <Route path='qna' element={<CardList />} />
-          <Route path='community' element={<CardList />} />
-        </Route>
+      <>
+        <Suspense fallback={<Loading />}>
+          <Routes>
+            <Route element={<Layout />}>
+              <Route index element={<pages.Main />} />
+              <Route path='qna' element={<pages.Qna />} />
+              <Route path='community' element={<pages.Community />} />
+            </Route>
 
-        <Route path='/' element={<LayoutWithoutHeader />}>
-          <Route path='auth/login' element={<Login />} />
-          <Route path='auth/Signup' element={<Signup />} />
-          <Route path='oauth/authorize' element={<KakaoLogin />} />
-        </Route>
+            <Route path='/' element={<LayoutWithoutHeader />}>
+              <Route path='auth/login' element={<pages.Login />} />
+              <Route path='auth/Signup' element={<pages.Signup />} />
+              <Route path='oauth/authorize' element={<pages.KakaoLogin />} />
+            </Route>
 
-        <Route path='*' element={<Navigate to='/' />} />
-      </Routes>
+            <Route path='*' element={<Navigate to='/' />} />
+          </Routes>
+        </Suspense>
+      </>
     );
   }
 
   return (
-    <Routes>
-      {/* // ********** 기본 레이아웃 *********** */}
-      <Route element={<Layout />}>
-        <Route index element={<Main />} />
-        <Route path='qna' element={<CardList />} />
-        <Route path='community' element={<CardList />} />
-        <Route path='mypage' element={<MyPage />} />
-      </Route>
-      {/* // ************************************ */}
-      {/* --------------------------------------- */}
-      {/* // ********** 상단 Nav 없음 *********** */}
-      <Route path='/' element={<LayoutWithoutHeader />}>
-        {/* //? Q&A 작성/상세 보기 */}
-        <Route path='qna/detail/:id' element={<CardDetail />} />
-        <Route path='qna/detail/:id/write/answer' element={<QnaAnswer />} />
-        <Route path='qna/detail/:id/write/answer/edit' element={<QnaAnswer />} />
-        <Route path='qna/newpost' element={<NewPost />} />
+    <Suspense fallback={<Loading />}>
+      <Routes>
+        {/* // ********** 기본 레이아웃 *********** */}
+        <Route element={<Layout />}>
+          <Route index element={<pages.Main />} />
+          <Route path='qna' element={<pages.Qna />} />
+          <Route path='community' element={<pages.Community />} />
+          <Route path='mypage' element={<pages.MyPage />} />
+        </Route>
+        {/* // ************************************ */}
+        {/* --------------------------------------- */}
+        {/* // ********** 상단 Nav 없음 *********** */}
+        <Route path='/' element={<LayoutWithoutHeader />}>
+          {/* //? Q&A 작성/상세 보기 */}
+          <Route path='qna/detail/:id' element={<pages.QnaDetail />} />
+          <Route path='qna/detail/:id/write/answer' element={<pages.QnaAnswer />} />
+          <Route path='qna/newpost' element={<pages.NewPost />} />
 
-        {/* //? 프로필 작성 */}
-        {/* //TODO 전문가 프로필 작성 페이지는 전문가 회원 유형만 접근할 수 있도록 추가 필요 */}
-        <Route path='profile/pets' element={<PetProfileEditor />} />
-        <Route path='profile/pets/:id' element={<PetProfileEditor />} />
-        <Route path='profile/experts' element={<ExpertProfileEditor />} />
+          {/* //? 프로필 작성 */}
+          {/* //TODO 전문가 프로필 작성 페이지는 전문가 회원 유형만 접근할 수 있도록 추가 필요 */}
+          <Route path='profile/pets' element={<pages.PetProfileEditor />} />
+          <Route path='profile/pets/:id' element={<pages.PetProfileEditor />} />
+          <Route path='profile/experts' element={<pages.ExpertProfileEditor />} />
 
-        <Route path='mypage/posts' element={<MyActivityInfo />} />
-      </Route>
-      {/* // ************************************ */}
-      {/* --------------------------------------- */}
-      {/* // ********** 하단 Nav 없음 *********** */}
-      <Route path='/' element={<LayoutWithoutNav />}>
-        {/* //? 마이페이지 메뉴 */}
-        <Route path='mypage/experts' element={<AuthExpert />} />
+          <Route path='mypage/posts' element={<pages.MyActivityInfo />} />
+        </Route>
+        {/* // ************************************ */}
+        {/* --------------------------------------- */}
+        {/* // ********** 하단 Nav 없음 *********** */}
+        <Route path='/' element={<LayoutWithoutNav />}>
+          {/* //? 마이페이지 메뉴 */}
+          <Route path='mypage/experts' element={<pages.AuthExpert />} />
+          <Route path='mypage/account' element={<pages.Account />} />
 
-        {/* //? 프로필 보기 */}
-        <Route path='mypage/profile' element={<MyProfileEditor />} />
-        <Route path='experts/:id' element={<ExpertProfile />} />
-        <Route path='mypage/pets' element={<PetProfile />} />
-      </Route>
+          {/* //? 내 프로필 수정 */}
+          <Route path='mypage/profile' element={<pages.MyProfileEditor />} />
 
-      <Route path='/' element={<LayoutWithoutHeader />}>
-        <Route path='qna/detail/:id' element={<CardDetail />} />
-        <Route path='qna/detail/:id/write/answer' element={<QnaAnswer />} />
-        <Route path='qna/detail/:id/edit' element={<NewPost />} />
+          {/* //? 프로필 보기 */}
+          <Route path='experts/:id' element={<pages.ExpertProfile />} />
+          <Route path='mypage/pets' element={<pages.PetProfile />} />
+        </Route>
+        {/* // ************************************ */}
+        {/* --------------------------------------- */}
 
-        <Route path='qna/newpost' element={<NewPost />} />
-        <Route path='community/newpost' element={<NewPost />} />
-        <Route path='community/detail/:id' element={<CardDetail />} />
-      </Route>
-
-      <Route path='*' element={<Navigate to='/' />} />
-    </Routes>
+        <Route path='*' element={<Navigate to='/' />} />
+      </Routes>
+    </Suspense>
   );
 }
