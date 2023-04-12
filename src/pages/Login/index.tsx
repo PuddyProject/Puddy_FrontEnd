@@ -29,6 +29,8 @@ export default function Login() {
 
   const onChangeLoginForm =
     (target: 'account' | 'password') => (e: ChangeEvent<HTMLInputElement>) => {
+      setShowWarningMessage(() => false);
+
       setLoginInputValues((prev) => {
         return {
           ...prev,
@@ -55,7 +57,12 @@ export default function Login() {
         navigate('/');
       }
     } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error(err.message);
+      }
+
       const error = err as ApiError;
+      console.log(error);
       if (error.response && error.response?.status >= 400) {
         setShowWarningMessage(true);
       }
