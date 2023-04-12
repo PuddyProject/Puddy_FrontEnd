@@ -27,6 +27,10 @@ import {
   QNA_PATH,
   getPathWriteAnswer,
   getPathPetProfile,
+  COMMUNITY_WRTIE_POST_PATH,
+  getPathCommunityDetail,
+  getPathModificationQna,
+  getPathModificationAnswer,
 } from 'constants/routes';
 
 import * as pages from 'pages';
@@ -82,14 +86,19 @@ export default function Router() {
           <Route path={COMMUNITY_PATH} element={<pages.Community />} />
           <Route path={MY_PAGE_PATH} element={<pages.MyPage />} />
         </Route>
-        {/* // ************************************ */}
+        {/*  ************************************ */}
         {/* --------------------------------------- */}
         {/* // ********** 상단 Nav 없음 *********** */}
         <Route path='/' element={<LayoutWithoutHeader />}>
           {/* //? Q&A 작성/상세 보기 */}
           <Route path={QNA_DETAIL_PATH} element={<pages.CardDetail />} />
           <Route path={getPathWriteAnswer()} element={<pages.QnaAnswer />} />
+          <Route path={getPathModificationAnswer()} element={<pages.QnaAnswer />} />
           <Route path={QNA_WRITE_POST_PATH} element={<pages.NewPost />} />
+          <Route path={getPathModificationQna()} element={<pages.NewPost />} />
+
+          <Route path={COMMUNITY_WRTIE_POST_PATH} element={<pages.NewPost />} />
+          <Route path={getPathCommunityDetail()} element={<pages.CardDetail />} />
 
           {/* //? 프로필 작성 */}
           {/* //TODO 전문가 프로필 작성 페이지는 전문가 회원 유형만 접근할 수 있도록 추가 필요 */}
@@ -99,7 +108,7 @@ export default function Router() {
 
           <Route path={MY_POSTS_PATH} element={<pages.MyActivityInfo />} />
         </Route>
-        {/* // ************************************ */}
+        {/* *************************************** */}
         {/* --------------------------------------- */}
         {/* // ********** 하단 Nav 없음 *********** */}
         <Route path='/' element={<LayoutWithoutNav />}>
@@ -114,10 +123,10 @@ export default function Router() {
           <Route path={EXPERT_PROFILE_PATH} element={<pages.ExpertProfile />} />
           <Route path={MY_PAGE_PET_PATH} element={<pages.PetProfile />} />
         </Route>
-        {/* // ************************************ */}
+        {/* *************************************** */}
         {/* --------------------------------------- */}
 
-        <Route path='*' element={<Navigate to={HOME_PATH} />} />
+        {/* <Route path='*' element={<Navigate to={HOME_PATH} />} /> */}
       </Routes>
     </Suspense>
   );
