@@ -30,11 +30,17 @@ export const petsApi = Object.freeze({
 const QUESTIONS_API = 'questions';
 export const questionsApi = Object.freeze({
   QUESTIONS: `${QUESTIONS_API}/`,
+
+  /* Q&A 게시글 등록 */
   POST_CREATE_QUESTION: `${QUESTIONS_API}/write`,
+
+  /* Q&A 게시글 리스트 조회 */
   GET_QUESTION_LIST: `${QUESTIONS_API}`,
+
+  /* Q&A 게시글 개수 조회 */
   GET_QUESTIONS_COUNT: `${QUESTIONS_API}/count`,
 
-  /* 게시글 단건 get, put, delete 요청 시 아래 함수 사용 */
+  /* Q&A 게시글 get, put, delete */
   requestQuestionsId: (id: string) => {
     return `${QUESTIONS_API}/${id}`;
   },
@@ -48,21 +54,22 @@ export const questionsApi = Object.freeze({
 */
 const ANSWER_API = 'answers';
 export const answersApi = Object.freeze({
+  /* 답변 글 개수 조회 */
   GET_ANSWERS_COUNT: `${ANSWER_API}/count`,
 
-  /* 답변 put, delete, patch 요청 시 아래 함수 사용 */
+  /* 답변 글 수정, 삭제 (put, delete, patch) */
   requestPutDeletePatchAnswer: (questionId: string, answerId: string) => {
-    return `questions/${questionId}/${ANSWER_API}/${answerId}`;
+    return `questions/${questionId}/answers/${answerId}`;
   },
 
   /* 답변 글 작성 */
   requestPostAnswer: (questionId: string) => {
-    return `questions/${questionId}/${ANSWER_API}/write`;
+    return `questions/${questionId}/answers/write`;
   },
 
   /* 답변 글 목록 조회 */
   requestGetAnswers: (questionId: string) => {
-    return `questions/${questionId}/${ANSWER_API}`;
+    return `questions/${questionId}/answers`;
   },
 });
 
@@ -81,6 +88,11 @@ export const expertApi = Object.freeze({
   requestExpertId: (userId: string) => {
     return `experts/${userId}`;
   },
+
+  /* 전문가 목록 조회 */
+  requestExpertList: (pageCount: string) => {
+    return `experts?page=${pageCount}`;
+  },
 });
 
 /* ------------------------------------- */
@@ -91,11 +103,22 @@ export const expertApi = Object.freeze({
 */
 const ARTICLE_API = 'articles';
 export const articleApi = Object.freeze({
+  /* 커뮤니티 글 작성 post */
   GET_POST_ARTICLES: `${ARTICLE_API}`,
 
-  /* 커뮤니티 글 get, put 요청 시 아래 함수 사용 */
+  /* 커뮤니티 글 조회, 수정 get, put */
   getArticle: (articleId: string) => {
     return `${ARTICLE_API}/${articleId}`;
+  },
+
+  /* 커뮤니티 게시글 좋아요 */
+  patchLike: (articleId: string) => {
+    return `${ARTICLE_API}/${articleId}/like`;
+  },
+
+  /* 커뮤니티 게시글 좋아요 취소 */
+  deleteLike: (articleId: string) => {
+    return `${ARTICLE_API}/${articleId}/unlike`;
   },
 });
 
@@ -107,6 +130,7 @@ export const articleApi = Object.freeze({
 */
 const COMMENT_API = 'articles';
 export const articlesApi = Object.freeze({
+  /* 커뮤니티 댓글 작성 */
   requestArticleId: (articleId: string) => {
     return `${COMMENT_API}/${articleId}/comments`;
   },
@@ -146,6 +170,17 @@ export const loginApi = Object.freeze({
 /* ------------------------------------- */
 /*
 #=========================================#
+|            소셜 로그인 - 카카오         |
+#=========================================#
+*/
+const SOCIAL_LOGIN_API = 'oauth';
+export const socialLoginApi = Object.freeze({
+  POST_SOCIAL_LOGIN_KAKAO: `${SOCIAL_LOGIN_API}/kakao`,
+});
+
+/* ------------------------------------- */
+/*
+#=========================================#
 |           아이디/비밀번호 찾기           |
 #=========================================#
 */
@@ -163,7 +198,10 @@ export const findIdPwApi = Object.freeze({
 */
 const MY_PAGE_API = 'users';
 export const myPageApi = Object.freeze({
+  /* 내 프로필 수정 */
   PATCH_MY_PROFILE: `${MY_PAGE_API}/update-profile`,
+
+  /* 유저 권한 변경 */
   PATCH_USER_AUTH: `${MY_PAGE_API}/update-auth`,
   GET_MY_POSTS: `${MY_PAGE_API}/posts`,
   GET_MY_PAGE_INFO: `${MY_PAGE_API}/me`,
@@ -178,7 +216,7 @@ export const myPageApi = Object.freeze({
 */
 const REVIEW_API = 'reviews';
 export const reviewApi = Object.freeze({
-  /* 리뷰 get, post 요청 시 아래 함수 사용 */
+  /* 리뷰 작성 get, post */
   requestReviewId: (expertId: string) => {
     return `${REVIEW_API}/${expertId}`;
   },
