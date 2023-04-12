@@ -3,7 +3,7 @@ export { default as Login } from './Login/';
 export { default as CardList } from './CardList';
 export { default as CardDetail } from './CardDetail';
 export { default as NewPost } from './NewPost';
-export { default as QnaAnswer } from './QnaAnswer';
+export { default as CommentAnswer } from './CommentAnswer';
 export { default as MyPage } from './MyPage';
 export { default as PetProfileEditor } from './PetProfileEditor';
 export { default as AuthExpert } from './AuthExpert';

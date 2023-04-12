@@ -6,7 +6,7 @@ import { FooterButton, InputTitle, CustomHeader } from 'components';
 import { post } from 'utils';
 import { AxiosResponse } from 'axios';
 
-export default function QnaAnswer() {
+export default function CommentAnswer() {
   const location = useLocation();
   const nav = useNavigate();
   const { comment } = location.state;
@@ -24,7 +24,7 @@ export default function QnaAnswer() {
     let res: AxiosResponse;
 
     res = await post({
-      endpoint: `questions/${isEditPage ? location.state.postId : location.state}/answers/${
+      endpoint: `community/${isEditPage ? location.state.postId : location.state}/answers/${
         isEditPage ? comment.id : 'write'
       }`,
       body: {
@@ -49,7 +49,7 @@ export default function QnaAnswer() {
 
   return (
     <>
-      <CustomHeader title='Q&A 답변 작성' hideIcon />
+      <CustomHeader title={`${isEditPage ? '커뮤니티' : 'Q&A'} 답변 작성`} hideIcon />
       <div>
         <InputTitle isRequire={true} margin='50px 0px 10px 0px'>
           답변 내용
