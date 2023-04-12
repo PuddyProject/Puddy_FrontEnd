@@ -1,3 +1,6 @@
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import {
   Button,
   Checkbox,
@@ -8,10 +11,11 @@ import {
   TextArea,
 } from 'components';
 
+import { petsApi } from 'constants/apiEndpoint';
+import { MY_PAGE_PATH, getPathPetProfile } from 'constants/routes';
+
 import { useUser } from 'context/UserContext';
 
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { PetInfo } from 'types/petProfileTypes';
 
 import { get } from 'utils';
@@ -28,12 +32,14 @@ export default function PetProfile() {
 
   useEffect(() => {
     get({
-      endpoint: 'users/pets/detail',
+      endpoint: `${petsApi.GET_PET_DETAIL}`,
     }).then((res) => setMyPet(res.data.data));
   }, []);
 
   const onClickModification = () => {
-    navigate(`/profile/pets/${decodedToken?.id}`);
+    if (!decodedToken) return;
+
+    navigate(`${getPathPetProfile(decodedToken?.id.toString())}`);
   };
 
   console.log(myPet);
@@ -44,7 +50,7 @@ export default function PetProfile() {
         <CustomHeader
           title='펫 프로필'
           onClickLeft={() => {
-            navigate('/mypage');
+            navigate(`${MY_PAGE_PATH}`);
           }}
         />
         <img

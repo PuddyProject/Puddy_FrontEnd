@@ -7,6 +7,9 @@ import { get } from 'utils';
 import dragEvent from 'utils/dragEvent';
 import useLoading from 'hooks/useLoading';
 
+import { homeApi } from 'constants/apiEndpoint';
+import { LOGIN_PATH } from 'constants/routes';
+
 const COLOR = ['red', 'black', 'green', 'gray', 'skyblue', 'yellow', 'pink'];
 const MAX_INDEX = COLOR.length - 1;
 
@@ -27,7 +30,7 @@ export default function Main() {
     showLoading();
 
     try {
-      const res = await get({ endpoint: 'home' });
+      const res = await get({ endpoint: `${homeApi.GET_HOME}` });
       setMainQnaList(res.data.data);
     } catch (err) {
       console.error(err);
@@ -41,7 +44,7 @@ export default function Main() {
       movePage();
     } else {
       alert('회원전용 페이지 입니다. 로그인 페이지로 이동합니다.');
-      nav('/auth/login');
+      nav(`${LOGIN_PATH}`);
     }
   };
   useEffect(() => {

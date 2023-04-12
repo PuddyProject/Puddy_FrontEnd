@@ -1,9 +1,33 @@
 import { Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import { Suspense, useEffect } from 'react';
+
 import Layout from 'layouts';
 import LayoutWithoutHeader from 'layouts/LayoutWithoutHeader';
 import LayoutWithoutNav from 'layouts/LayoutWithoutNav';
+
 import Loading from 'components/common/Loading';
+
+import {
+  COMMUNITY_PATH,
+  EXPERTS_PROFILE_PATH,
+  EXPERT_PROFILE_PATH,
+  HOME_PATH,
+  JOIN_PATH,
+  KAKAO_AUTH_PATH,
+  LOGIN_PATH,
+  MY_PAGE_ACCOUNT_PATH,
+  MY_PAGE_AUTH_EXPERT_PATH,
+  MY_PAGE_PATH,
+  MY_PAGE_PET_PATH,
+  MY_PAGE_PROFILE_PATH,
+  MY_POSTS_PATH,
+  PROFILE_PET_PATH,
+  QNA_DETAIL_PATH,
+  QNA_WRITE_POST_PATH,
+  QNA_PATH,
+  getPathWriteAnswer,
+  getPathPetProfile,
+} from 'constants/routes';
 
 import * as pages from 'pages';
 
@@ -31,17 +55,17 @@ export default function Router() {
           <Routes>
             <Route element={<Layout />}>
               <Route index element={<pages.Main />} />
-              <Route path='qna' element={<pages.CardList />} />
-              <Route path='community' element={<pages.Community />} />
+              <Route path={QNA_PATH} element={<pages.CardList />} />
+              <Route path={COMMUNITY_PATH} element={<pages.Community />} />
             </Route>
 
-            <Route path='/' element={<LayoutWithoutHeader />}>
-              <Route path='auth/login' element={<pages.Login />} />
-              <Route path='auth/Signup' element={<pages.Signup />} />
-              <Route path='oauth/authorize' element={<pages.KakaoLogin />} />
+            <Route path={HOME_PATH} element={<LayoutWithoutHeader />}>
+              <Route path={LOGIN_PATH} element={<pages.Login />} />
+              <Route path={JOIN_PATH} element={<pages.Signup />} />
+              <Route path={KAKAO_AUTH_PATH} element={<pages.KakaoLogin />} />
             </Route>
 
-            <Route path='*' element={<Navigate to='/' />} />
+            <Route path='*' element={<Navigate to={HOME_PATH} />} />
           </Routes>
         </Suspense>
       </>
@@ -54,46 +78,46 @@ export default function Router() {
         {/* // ********** 기본 레이아웃 *********** */}
         <Route element={<Layout />}>
           <Route index element={<pages.Main />} />
-          <Route path='qna' element={<pages.CardList />} />
-          <Route path='community' element={<pages.Community />} />
-          <Route path='mypage' element={<pages.MyPage />} />
+          <Route path={QNA_PATH} element={<pages.CardList />} />
+          <Route path={COMMUNITY_PATH} element={<pages.Community />} />
+          <Route path={MY_PAGE_PATH} element={<pages.MyPage />} />
         </Route>
         {/* // ************************************ */}
         {/* --------------------------------------- */}
         {/* // ********** 상단 Nav 없음 *********** */}
         <Route path='/' element={<LayoutWithoutHeader />}>
           {/* //? Q&A 작성/상세 보기 */}
-          <Route path='qna/detail/:id' element={<pages.CardDetail />} />
-          <Route path='qna/detail/:id/write/answer' element={<pages.QnaAnswer />} />
-          <Route path='qna/newpost' element={<pages.NewPost />} />
+          <Route path={QNA_DETAIL_PATH} element={<pages.CardDetail />} />
+          <Route path={getPathWriteAnswer()} element={<pages.QnaAnswer />} />
+          <Route path={QNA_WRITE_POST_PATH} element={<pages.NewPost />} />
 
           {/* //? 프로필 작성 */}
           {/* //TODO 전문가 프로필 작성 페이지는 전문가 회원 유형만 접근할 수 있도록 추가 필요 */}
-          <Route path='profile/pets' element={<pages.PetProfileEditor />} />
-          <Route path='profile/pets/:id' element={<pages.PetProfileEditor />} />
-          <Route path='profile/experts' element={<pages.ExpertProfileEditor />} />
+          <Route path={PROFILE_PET_PATH} element={<pages.PetProfileEditor />} />
+          <Route path={getPathPetProfile()} element={<pages.PetProfileEditor />} />
+          <Route path={EXPERTS_PROFILE_PATH} element={<pages.ExpertProfileEditor />} />
 
-          <Route path='mypage/posts' element={<pages.MyActivityInfo />} />
+          <Route path={MY_POSTS_PATH} element={<pages.MyActivityInfo />} />
         </Route>
         {/* // ************************************ */}
         {/* --------------------------------------- */}
         {/* // ********** 하단 Nav 없음 *********** */}
         <Route path='/' element={<LayoutWithoutNav />}>
           {/* //? 마이페이지 메뉴 */}
-          <Route path='mypage/experts' element={<pages.AuthExpert />} />
-          <Route path='mypage/account' element={<pages.Account />} />
+          <Route path={MY_PAGE_AUTH_EXPERT_PATH} element={<pages.AuthExpert />} />
+          <Route path={MY_PAGE_ACCOUNT_PATH} element={<pages.Account />} />
 
           {/* //? 내 프로필 수정 */}
-          <Route path='mypage/profile' element={<pages.MyProfileEditor />} />
+          <Route path={MY_PAGE_PROFILE_PATH} element={<pages.MyProfileEditor />} />
 
           {/* //? 프로필 보기 */}
-          <Route path='experts/:id' element={<pages.ExpertProfile />} />
-          <Route path='mypage/pets' element={<pages.PetProfile />} />
+          <Route path={EXPERT_PROFILE_PATH} element={<pages.ExpertProfile />} />
+          <Route path={MY_PAGE_PET_PATH} element={<pages.PetProfile />} />
         </Route>
         {/* // ************************************ */}
         {/* --------------------------------------- */}
 
-        <Route path='*' element={<Navigate to='/' />} />
+        <Route path='*' element={<Navigate to={HOME_PATH} />} />
       </Routes>
     </Suspense>
   );

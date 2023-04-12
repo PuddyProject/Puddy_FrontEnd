@@ -14,11 +14,21 @@ import {
 } from 'components';
 
 import checkExtensions from 'utils/checkExtensions';
+import { get, post, put } from 'utils/axiosHelper';
 
 import { MyPetFormRefs, PetInfo, RequiredValues } from 'types/petProfileTypes';
-import { get, post, put } from 'utils/axiosHelper';
+
 import { useUser } from 'context/UserContext';
 import { usePet } from 'context/PetContext';
+
+import {
+  HOME_PATH,
+  MY_PAGE_PATH,
+  MY_PAGE_PET_PATH,
+  PROFILE_PET_PATH,
+  getPathPetProfile,
+} from 'constants/routes';
+import { petsApi } from 'constants/apiEndpoint';
 
 const REQUIRED_KEY: RequiredValues[] = ['name', 'breed', 'age', 'gender', 'weight'];
 
@@ -77,29 +87,31 @@ export default function PetProfileEditor() {
     // TODO: 수정하기 기능 추가하기
     // 펫 등록 여부에 따라 라우팅 분기
 
-    if (!hasPet) return navigate('/profile/pets');
+    if (!hasPet) return navigate(`${PROFILE_PET_PATH}`);
 
-    if (hasPet && pathname === '/profile/pets') {
-      return navigate(`/profile/pets/${decodedToken?.id}`);
+    if (hasPet && pathname === `${PROFILE_PET_PATH}`) {
+      if (!decodedToken) return;
+      return navigate(getPathPetProfile(decodedToken?.id.toString()));
     }
 
     if (decodedToken?.id !== Number(pathId)) {
       window.alert('잘못된 접근입니다.');
-      return navigate('/');
+      return navigate(`${HOME_PATH}`);
     }
 
     if (decodedToken?.id === Number(pathId)) {
-      return navigate(`/profile/pets/${pathId}`);
+      if (!pathId) return;
+      return navigate(`${getPathPetProfile(pathId)}`);
     }
   }, [decodedToken, hasPet]);
 
   useEffect(() => {
     // * 수정하기 일 때 펫 정보 초기화
-    get({ endpoint: '/users/pets/detail' })
+    get({ endpoint: `${petsApi.GET_PET_DETAIL}` })
       .then((res) => {
         setProfileImg(() => res.data.data.imagePath);
         setPetProfile(() => {
-          return { ...res.data.data, gender: res.data.data ? '암컷' : '수컷' };
+          return { ...res.data.data, gender: res.data.data.gender ? '암컷' : '수컷' };
         });
         setIsCheckedFemail(() => (res.data.data?.gender ? true : false));
       })
@@ -187,7 +199,7 @@ export default function PetProfileEditor() {
     if (!emptyValues.length && isModification) {
       try {
         const res = await put({
-          endpoint: 'users/pets/update',
+          endpoint: `${petsApi.UPDATE_PET}`,
           body: formData,
           isFormData: true,
         });
@@ -196,7 +208,7 @@ export default function PetProfileEditor() {
         if (res.status === 200) {
           console.log('수정 완료, 전송 데이터 : ', petProfile);
           window.alert('수정을 완료했어요.'); // *임시 메시지
-          navigate('/mypage/pets');
+          navigate(`${MY_PAGE_PET_PATH}`);
         }
       } catch (err) {
         console.error(err);
@@ -213,14 +225,14 @@ export default function PetProfileEditor() {
     if (!emptyValues.length) {
       try {
         const res = await post({
-          endpoint: 'users/pets',
+          endpoint: `${petsApi.POST_CREATE_PET}`,
           body: formData,
           isImage: true,
         });
 
         if (res.status === 201) {
           window.alert('등록을 완료했어요.'); // *임시 메시지
-          navigate('/profile/pets');
+          navigate(`${MY_PAGE_PET_PATH}`);
         }
       } catch (err) {
         console.error(err);
@@ -276,7 +288,11 @@ export default function PetProfileEditor() {
   return (
     <>
       <div className='profile-editor-container'>
-        <CustomHeader onClickLeft={() => navigate('/mypage')} title='펫 프로필 등록' hideIcon />
+        <CustomHeader
+          onClickLeft={() => navigate(`${MY_PAGE_PATH}`)}
+          title='펫 프로필 등록'
+          hideIcon
+        />
 
         {profileImg ? (
           <div
@@ -342,7 +358,7 @@ export default function PetProfileEditor() {
             <InputTitle isRequire>성별</InputTitle>
             <div className='gender-buttons'>
               <RadioButton
-                checked={isModification && isCheckedFemail}
+                checked={isModification ? isCheckedFemail : petProfile.gender === '암컷'}
                 onChange={onChangeInputs('gender')}
                 required
                 name='gender'
@@ -351,7 +367,7 @@ export default function PetProfileEditor() {
                 암컷
               </RadioButton>
               <RadioButton
-                checked={isModification && !isCheckedFemail}
+                checked={isModification ? !isCheckedFemail : petProfile.gender === '수컷'}
                 onChange={onChangeInputs('gender')}
                 required
                 name='gender'

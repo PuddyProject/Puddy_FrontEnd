@@ -4,7 +4,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button, InputBox, Message } from 'components/index';
 
 import { ApiError } from 'types/errorsTypes';
+
 import { KAKAO_LOGIN_URI } from 'constants/kakaoLogin';
+import { loginApi } from 'constants/apiEndpoint';
+import { HOME_PATH } from 'constants/routes';
 
 import { Google, Naver, Kakao } from 'assets/login/symbols';
 import Logo from 'assets/Logo.svg';
@@ -44,7 +47,7 @@ export default function Login() {
 
     try {
       const payload = {
-        endpoint: 'users/login',
+        endpoint: `${loginApi.POST_LOGIN}`,
         body: loginInputValues,
       };
       const res = await post(payload);
@@ -54,7 +57,7 @@ export default function Login() {
         initSessionStorageUserToken(accessToken);
         setToken(accessToken);
         alert('로그인 성공!');
-        navigate('/');
+        navigate(`${HOME_PATH}`);
       }
     } catch (err: unknown) {
       if (err instanceof Error) {
