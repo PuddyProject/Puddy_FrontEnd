@@ -17,9 +17,6 @@ export const getPathWriteAnswer = (id: string = ':id') => {
 /* Q&A 새 게시글 발행  */
 export const QNA_WRITE_POST_PATH = '/qna/newpost';
 
-/* Q&A 답변 작성 */
-// export const QNA_WRITE_ANSWER_PATH = 'write/answer';
-
 /* =========================================================== */
 
 /* 커뮤니티 페이지 */
