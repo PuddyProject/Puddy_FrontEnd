@@ -20,9 +20,15 @@ export default function QnaAnswer() {
     textAreaRef.current?.focus({});
   }, []);
 
+  console.log(location.state);
+
   async function sendData() {
     const res = await post({
-      endpoint: `${answersApi.requestPostAnswer(location.state)}`,
+      endpoint: `${
+        isEditPage
+          ? answersApi.requestPutDeletePatchAnswer(location.state.postId, location.state.comment.id)
+          : answersApi.requestPostAnswer(location.state)
+      }`,
       body: {
         content: answer,
         postCategory: '1',
