@@ -31,7 +31,7 @@ export default function Router() {
           <Routes>
             <Route element={<Layout />}>
               <Route index element={<pages.Main />} />
-              <Route path='qna' element={<pages.Qna />} />
+              <Route path='qna' element={<pages.CardList />} />
               <Route path='community' element={<pages.Community />} />
             </Route>
 
@@ -54,7 +54,7 @@ export default function Router() {
         {/* // ********** 기본 레이아웃 *********** */}
         <Route element={<Layout />}>
           <Route index element={<pages.Main />} />
-          <Route path='qna' element={<pages.Qna />} />
+          <Route path='qna' element={<pages.CardList />} />
           <Route path='community' element={<pages.Community />} />
           <Route path='mypage' element={<pages.MyPage />} />
         </Route>
@@ -63,7 +63,7 @@ export default function Router() {
         {/* // ********** 상단 Nav 없음 *********** */}
         <Route path='/' element={<LayoutWithoutHeader />}>
           {/* //? Q&A 작성/상세 보기 */}
-          <Route path='qna/detail/:id' element={<pages.QnaDetail />} />
+          <Route path='qna/detail/:id' element={<pages.CardDetail />} />
           <Route path='qna/detail/:id/write/answer' element={<pages.QnaAnswer />} />
           <Route path='qna/newpost' element={<pages.NewPost />} />
 
