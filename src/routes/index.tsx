@@ -16,6 +16,7 @@ import {
   Signup,
   PetProfile,
   PetProfileEditor,
+  ExpertCardList,
   ExpertProfile,
   ExpertProfileEditor,
   MyActivityInfo,
@@ -65,6 +66,7 @@ export default function Router() {
         <Route index element={<Main />} />
         <Route path='qna' element={<CardList />} />
         <Route path='community' element={<CardList />} />
+        <Route path='experts' element={<ExpertCardList />} />
         <Route path='mypage' element={<MyPage />} />
       </Route>
       {/* // ************************************ */}
