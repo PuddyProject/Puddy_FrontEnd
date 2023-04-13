@@ -1,6 +1,7 @@
 export { default as Main } from './Main/';
 export { default as Login } from './Login/';
 export { default as CardList } from './CardList';
+export { default as ExpertCardList } from './ExpertCardList';
 export { default as CardDetail } from './CardDetail';
 export { default as NewPost } from './NewPost';
 export { default as CommentAnswer } from './CommentAnswer';
