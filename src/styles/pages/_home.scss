@@ -33,8 +33,7 @@
 }
 
 .list-zero-data {
-  font-size: 18px;
-  color: $color-gray02;
+  @include font-styles(18px, 700, $color-gray02);
   margin-top: 15px;
   text-align: center;
 }
