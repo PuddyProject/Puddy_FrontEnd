@@ -8,6 +8,8 @@ import { useUser } from 'context/UserContext';
 import { post } from 'utils';
 
 import { Profile } from 'types/expertProfileTypes';
+import { expertApi } from 'constants/apiEndpoint';
+import { HOME_PATH } from 'constants/routes';
 
 const MAX_CAREER_COUNT = 5;
 
@@ -34,7 +36,7 @@ export default function ExpertProfileEditor() {
 
   const submitExpertProfile = async () => {
     try {
-      const res = await post({ endpoint: 'users/experts', body: profile });
+      const res = await post({ endpoint: `${expertApi.POST_EXPERT}`, body: profile });
       // 서버에서 이름은 안받음
       if (res.data.resultCode === 'SUCCESS') {
         alert('프로필 등록 완료');
@@ -50,7 +52,7 @@ export default function ExpertProfileEditor() {
 
     if (auth !== 'ROLE_EXPERT') {
       alert('접근 권한이 없습니다.');
-      return navigate('/');
+      return navigate(`${HOME_PATH}`);
     }
   }, [decodedToken, auth]);
 

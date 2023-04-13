@@ -29,7 +29,7 @@ export default function RadioButton({
 
   return (
     <div className='radio-button-container'>
-      <label className={`${readonly && 'read-only'}`}>
+      <label className={`${readonly ? 'read-only' : ''}`}>
         <input
           checked={isChecked}
           onChange={onChange}

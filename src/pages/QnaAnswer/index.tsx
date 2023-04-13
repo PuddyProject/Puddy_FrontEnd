@@ -1,10 +1,10 @@
+import { answersApi } from 'constants/apiEndpoint';
 import { useRef, useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { FooterButton, InputTitle, CustomHeader } from 'components';
 
 import { post } from 'utils';
-import { AxiosResponse } from 'axios';
 
 export default function QnaAnswer() {
   const location = useLocation();
@@ -20,12 +20,14 @@ export default function QnaAnswer() {
     textAreaRef.current?.focus({});
   }, []);
 
-  async function sendData() {
-    let res: AxiosResponse;
+  console.log(location.state);
 
-    res = await post({
-      endpoint: `questions/${isEditPage ? location.state.postId : location.state}/answers/${
-        isEditPage ? comment.id : 'write'
+  async function sendData() {
+    const res = await post({
+      endpoint: `${
+        isEditPage
+          ? answersApi.requestPutDeletePatchAnswer(location.state.postId, location.state.comment.id)
+          : answersApi.requestPostAnswer(location.state)
       }`,
       body: {
         content: answer,

@@ -1,9 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import { MainQnaCardType } from 'types/qnaCardTypes';
-import { ExpertContainer, QnaContainer, Button } from 'components';
+import { ExpertContainer, QnaContainer, Button, Loading } from 'components';
 import { get } from 'utils';
 import dragEvent from 'utils/dragEvent';
+import useLoading from 'hooks/useLoading';
+
+import { homeApi } from 'constants/apiEndpoint';
+import { LOGIN_PATH } from 'constants/routes';
 
 const COLOR = ['red', 'black', 'green', 'gray', 'skyblue', 'yellow', 'pink'];
 const MAX_INDEX = COLOR.length - 1;
@@ -19,9 +24,19 @@ export default function Main() {
   const [mainQnaList, setMainQnaList] = useState<MainQnaList>();
   const nav = useNavigate();
 
+  const { isLoading, hideLoading, showLoading } = useLoading();
+
   const getMainData = async () => {
-    const res = await get({ endpoint: 'home' });
-    setMainQnaList(res.data.data);
+    showLoading();
+
+    try {
+      const res = await get({ endpoint: `${homeApi.GET_HOME}` });
+      setMainQnaList(res.data.data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      hideLoading();
+    }
   };
 
   const buttonOnClick = (movePage: () => void) => {
@@ -29,17 +44,21 @@ export default function Main() {
       movePage();
     } else {
       alert('회원전용 페이지 입니다. 로그인 페이지로 이동합니다.');
-      nav('/auth/login');
+      nav(`${LOGIN_PATH}`);
     }
   };
   useEffect(() => {
     getMainData();
   }, []);
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
-    <>
+    <div className='main-container'>
       {mainQnaList && (
-        <div className='main-container'>
+        <>
           <div className='carousel-div'>
             <div
               className='carousel-container'
@@ -92,8 +111,8 @@ export default function Main() {
           <QnaContainer title={'인기 Q&A'} cardDataList={mainQnaList.popularQuestions} />
           <QnaContainer title={'최근 Q&A'} cardDataList={mainQnaList.recentQuestions} />
           <ExpertContainer />
-        </div>
+        </>
       )}
-    </>
+    </div>
   );
 }

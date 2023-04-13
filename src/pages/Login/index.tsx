@@ -5,6 +5,10 @@ import { Button, InputBox, Message } from 'components/index';
 
 import { ApiError } from 'types/errorsTypes';
 
+import { KAKAO_LOGIN_URI } from 'constants/kakaoLogin';
+import { loginApi } from 'constants/apiEndpoint';
+import { HOME_PATH } from 'constants/routes';
+
 import { Google, Naver, Kakao } from 'assets/login/symbols';
 import Logo from 'assets/Logo.svg';
 
@@ -28,6 +32,8 @@ export default function Login() {
 
   const onChangeLoginForm =
     (target: 'account' | 'password') => (e: ChangeEvent<HTMLInputElement>) => {
+      setShowWarningMessage(() => false);
+
       setLoginInputValues((prev) => {
         return {
           ...prev,
@@ -41,7 +47,7 @@ export default function Login() {
 
     try {
       const payload = {
-        endpoint: 'users/login',
+        endpoint: `${loginApi.POST_LOGIN}`,
         body: loginInputValues,
       };
       const res = await post(payload);
@@ -51,10 +57,15 @@ export default function Login() {
         initSessionStorageUserToken(accessToken);
         setToken(accessToken);
         alert('로그인 성공!');
-        navigate('/');
+        navigate(`${HOME_PATH}`);
       }
     } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error(err.message);
+      }
+
       const error = err as ApiError;
+      console.log(error);
       if (error.response && error.response?.status >= 400) {
         setShowWarningMessage(true);
       }
@@ -102,10 +113,12 @@ export default function Login() {
         <hr className='dividing-line' />
         <h3>SNS 계정으로 간편하게 시작하기</h3>
         <ul className='sns-logins'>
-          <li className='social-login kakao' role='button' tabIndex={0}>
-            <span>카카오 로그인</span>
-            <img src={Kakao} alt='카카오' />
-          </li>
+          <Link to={KAKAO_LOGIN_URI}>
+            <li className='social-login kakao' role='button' tabIndex={0}>
+              <span>카카오 로그인</span>
+              <img src={Kakao} alt='카카오' />
+            </li>
+          </Link>
           <li className='social-login naver' role='button' tabIndex={0}>
             <span>네이버 로그인</span>
             <img src={Naver} alt='네이버' />

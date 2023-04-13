@@ -7,6 +7,7 @@ import { Button, CustomHeader } from 'components';
 import { get } from 'utils/axiosHelper';
 
 import { Profile } from 'types/expertProfileTypes';
+import { expertApi } from 'constants/apiEndpoint';
 
 const TEMP_IMAGE_URL =
   'https://blog.kakaocdn.net/dn/GHYFr/btrsSwcSDQV/UQZxkayGyAXrPACyf0MaV1/img.jpg';
@@ -17,9 +18,10 @@ export default function ExpertProfile() {
   const [profile, setProfile] = useState<Profile>();
 
   // ! 회원 id를 가지고 전문가를 선별하고 있어서 존재하지 않는 전문가 페이지 진입이 가능함
+  // TODO: 404 페이지 처리
   useEffect(() => {
     if (!expertId) return;
-    get({ endpoint: `experts/${expertId}` })
+    get({ endpoint: `${expertApi.requestExpertId(expertId)}` })
       .then((res) => {
         setProfile(res.data.data);
       })

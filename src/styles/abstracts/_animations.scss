@@ -15,3 +15,16 @@
     transform: translateX(0);
   }
 }
+
+@keyframes loading {
+  0% {
+    opacity: 1;
+    backface-visibility: hidden;
+    transform: translateZ(0) scale(0.01, 0.01);
+  }
+  100% {
+    opacity: 0;
+    backface-visibility: hidden;
+    transform: translateZ(0) scale(1, 1);
+  }
+}
