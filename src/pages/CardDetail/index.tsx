@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -7,8 +8,9 @@ import { initQnaDetail } from 'utils/initialValues/qnaDetail';
 import { useUser } from 'context/UserContext';
 
 import { AiOutlineHeart as Heart, AiTwotoneHeart as ClickHeart } from 'react-icons/ai';
-import { del, get } from 'utils';
+import { del, get, patch } from 'utils';
 import { AnswerInfo, PostDataInfo } from 'types/commentTypes';
+import { PET_INFO } from 'constants/cardDetail';
 
 export default function QnaDetail() {
   const nav = useNavigate();
@@ -16,15 +18,18 @@ export default function QnaDetail() {
   const postId = location.pathname.split('/')[3];
   const [answerList, setAnswerList] = useState<AnswerInfo[]>([]);
   const [postDataInfo, setPostDataInfo] = useState<PostDataInfo>(initQnaDetail);
+  const [isLiked, setIsLiked] = useState(false);
   const { decodedToken } = useUser();
   const isPostUser = postDataInfo.nickname === decodedToken?.nickname;
   const isCommunityPage = location.pathname.includes('/community');
 
   useEffect(() => {
-    get({ endpoint: 'questions', params: `/${postId}` }).then((res) => {
-      setPostDataInfo(res.data.data);
-      setAnswerList(res.data.data.answerList);
-    });
+    get({ endpoint: `${isCommunityPage ? 'articles' : 'questions'}`, params: `/${postId}` }).then(
+      (res) => {
+        setPostDataInfo(res.data.data);
+        setAnswerList(isCommunityPage ? res.data.data.commentList : res.data.data.answerList);
+      }
+    );
   }, []);
 
   useEffect(() => {}, [answerList, postDataInfo]);
@@ -39,7 +44,7 @@ export default function QnaDetail() {
         answerData={answer}
         isExport={isExport}
         isPostUser={isPostUser}
-        isSolved={postDataInfo?.isSolved}
+        isSolved={postDataInfo?.isSolved!}
         isCommentWriteUser={isCommentWriteUser}
         setPostDataInfo={setPostDataInfo}
         setAnswerList={setAnswerList}
@@ -48,26 +53,45 @@ export default function QnaDetail() {
   };
 
   const deletePost = async () => {
-    await del({ endpoint: 'questions/', params: postId });
+    await del({ endpoint: `${isCommunityPage ? 'articles/' : 'questions/'}`, params: postId });
     alert('삭제되었습니다.');
     nav(-1);
   };
 
   const IsFirstWriter = () => {
     const isFirstWriter = !answerList.some((answer) => answer.nickname === decodedToken?.nickname);
-    const myComment = answerList.filter((answer) => answer.nickname === decodedToken?.nickname);
-
+    const myComment = answerList.filter((answer) => answer.nickname === decodedToken?.nickname)[0];
+    console.log(myComment);
     return (
-      <FooterButton
-        onClick={() => {
-          isFirstWriter
-            ? nav('write/answer', { state: postId })
-            : nav('write/answer/edit', { state: { comment: myComment[0], postId } });
-        }}
-      >
-        {isFirstWriter ? '답변 작성하기' : '답변 수정하기'}
-      </FooterButton>
+      !myComment?.selected && (
+        <FooterButton
+          onClick={() => {
+            isFirstWriter
+              ? nav('write/answer', { state: postId })
+              : nav('write/answer/edit', { state: { comment: myComment, postId } });
+          }}
+        >
+          {isFirstWriter ? '답변 작성하기' : '답변 수정하기'}
+        </FooterButton>
+      )
     );
+  };
+
+  const choiceTagInfo = (tagInfo: string[]) => {
+    const [key, value] = tagInfo;
+
+    switch (key) {
+      case 'age':
+        return value + ' 살';
+      case 'gender':
+        return value ? '수컷' : '암컷';
+      case 'neutered':
+        return value ? '중성화 O' : '중성화 X';
+      case 'weight':
+        return value + 'KG';
+      default:
+        return value;
+    }
   };
 
   return (
@@ -117,21 +141,45 @@ export default function QnaDetail() {
                   <></>
                 )}
               </div>
-              {/* <div className='tag-container'>
-                <span className='tag-item'>알레스카 말라뮤트</span>
-                <span className='tag-item'>중성화</span>
-                <span className='tag-item'>여아</span>
-                <span className='tag-item'>2.5kg</span>
-                <span className='tag-item'>알레스카 말라뮤트</span>
-              </div> */}
+
+              <div className='tag-container'>
+                {isCommunityPage
+                  ? postDataInfo.tagList?.map((v) => {
+                      return <span className='tag-item'>{v.tag.tagName}</span>;
+                    })
+                  : postDataInfo.pet !== null &&
+                    Object.entries(postDataInfo.pet!).map((tagInfo) => {
+                      return (
+                        PET_INFO.includes(tagInfo[0]) && (
+                          <span className='tag-item'>{choiceTagInfo(tagInfo)}</span>
+                        )
+                      );
+                    })}
+              </div>
+
               {isCommunityPage && (
                 <div className='like-container'>
-                  {/* TODO: 사용자가 좋아요를 눌렸는지에 따른 상태관리로 아이콘 변경 기능 추가 
-                <Heart size='15' /> 
-                */}
-                  <ClickHeart size='15' style={{ color: '#2A60FF' }} />
+                  {isLiked ? (
+                    <ClickHeart
+                      onClick={() => {
+                        setIsLiked(false);
+                        del({ endpoint: `articles/${postId}/unlike` });
+                      }}
+                      size='15'
+                      style={{ color: '#2A60FF' }}
+                    />
+                  ) : (
+                    <Heart
+                      size='15'
+                      onClick={() => {
+                        setIsLiked(true);
+                        patch({ endpoint: `articles/${postId}/like`, isFormData: true });
+                      }}
+                    />
+                  )}
+
                   <span className='like-text'>좋아요</span>
-                  <span className='like-count'>312</span>
+                  <span className='like-count'>{postDataInfo.likeCount}</span>
                 </div>
               )}
             </section>
@@ -178,14 +226,25 @@ export default function QnaDetail() {
             )}
             {isCommunityPage && (
               <section className='community-comment'>
-                <CommunityComment />
-                <CommunityComment />
-                <CommunityComment />
-                <CommunityComment />
+                {answerList.length === 0 ? (
+                  <div className='comment-zero-community'>댓글이 존재하지 않아요.</div>
+                ) : (
+                  <CommunityComment />
+                )}
               </section>
             )}
           </div>
-          {isPostUser ? '' : IsFirstWriter()}
+          {!isPostUser && !isCommunityPage && IsFirstWriter()}
+
+          {isCommunityPage && (
+            <FooterButton
+              onClick={() => {
+                nav('write/answer', { state: postId });
+              }}
+            >
+              댓글 작성하기
+            </FooterButton>
+          )}
         </div>
       )}
     </>
