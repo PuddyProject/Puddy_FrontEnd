@@ -22,19 +22,23 @@ import { ApiError } from 'types/errorsTypes';
 
 import { joinApi, myPageApi } from 'constants/apiEndpoint';
 import { MY_PAGE_PATH } from 'constants/routes';
+import { convertImgToFile } from 'utils/convertImageToFile';
 
 export default function MyProfileEditor() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const navigate = useNavigate();
 
-  const [prevProfieImg, setPrevProfileImg] = useState(''); // 변경 전 이미지
-  const [profileImg, setProfileImg] = useState('');
+  const [userProfile, setUserProfile] = useState({
+    img: '',
+    prevImg: '',
+    nickname: '',
+    prevNickName: '',
+  });
 
-  const [prevNickname, setPrevNickname] = useState('');
-  const [nickname, setNickname] = useState('');
   const [showImgDeleteText, setShowImgDeleteText] = useState(false);
-  const [profileDatas, setProfileDatas] = useState<File | null>();
+
+  const [profileImgFile, setProfileImgFile] = useState<File | null>();
 
   const [showWarningMessage, setShowWarningMessage] = useState(false);
   const [showCorrectMessage, setShowCorrectMessage] = useState(false);
@@ -42,19 +46,31 @@ export default function MyProfileEditor() {
 
   const [isDisabledButton, setIsDisabledButton] = useState(true);
 
-  useEffect(() => {
-    get({ endpoint: '/users/me' }).then((res) => {
-      const userImage = res.data.data.imagePath;
-      const userNickname = res.data.data.nickname;
-      setPrevNickname(() => userNickname);
-      setNickname(() => userNickname);
-      setProfileImg(() => userImage);
-      setPrevProfileImg(() => userImage);
+  console.log(userProfile);
+
+  const fetchUserDatas = async () => {
+    const res = await get({ endpoint: `${myPageApi.GET_MY_PAGE_INFO}` });
+    const resData = res.data.data;
+    const img = resData.imagePath;
+    const nickname = resData.nickname;
+
+    setUserProfile((prev) => {
+      return {
+        ...prev,
+        img,
+        prevImg: img,
+        nickname,
+        prevNickName: nickname,
+      };
     });
+  };
+
+  useEffect(() => {
+    fetchUserDatas();
   }, []);
 
   const fileSelectHandler = (files: FileList) => {
-    setProfileDatas(files?.[0]);
+    setProfileImgFile(files?.[0]);
   };
 
   const onChangeImage = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,21 +84,31 @@ export default function MyProfileEditor() {
       return window.alert('.jpg, .jpeg, .png, .gif 확장자만 업로드 할 수 있어요.');
 
     const url = URL.createObjectURL(files![0]);
-
-    setProfileImg(url);
+    setUserProfile((prev) => {
+      return {
+        ...prev,
+        img: url,
+      };
+    });
   };
 
   const onClickDeleteImg = () => {
-    setProfileImg('');
-    setProfileDatas(null);
+    setUserProfile((prev) => {
+      return {
+        ...prev,
+        img: '',
+      };
+    });
+    setProfileImgFile(null);
   };
-  console.log(prevProfieImg, profileImg, nickname);
 
   const onSubmitProfile = async () => {
     // 파일이 변경된 경우에만 post요청
-    //TODO: 서버에서 payload에 images 키가 없으면 이미지 삭제 시켜주셔야 할듯
 
-    if (prevProfieImg === profileImg && prevNickname === nickname) {
+    if (
+      userProfile.img === userProfile.prevImg &&
+      userProfile.nickname === userProfile.prevNickName
+    ) {
       return window.alert('변경된 사항이 없어요!');
     }
 
@@ -91,12 +117,13 @@ export default function MyProfileEditor() {
     }
 
     const formData = new FormData();
-    if (profileImg) {
-      if (profileDatas) formData.append('images', profileDatas);
+    if (userProfile.img) {
+      if (profileImgFile) formData.append('images', profileImgFile);
     }
+
     formData.append(
       'request',
-      new Blob([JSON.stringify({ nickname })], {
+      new Blob([JSON.stringify({ nickname: userProfile.nickname })], {
         type: 'application/json',
       })
     );
@@ -122,7 +149,7 @@ export default function MyProfileEditor() {
       const res = await post({
         endpoint: `${joinApi.POST_DUPLICATE_NICKNAME}`,
         body: {
-          nickname,
+          nickname: userProfile.nickname,
         },
       });
 
@@ -138,8 +165,6 @@ export default function MyProfileEditor() {
       }
     }
   };
-
-  console.log(nickname);
 
   const onChangeInput = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -159,14 +184,20 @@ export default function MyProfileEditor() {
 
       setInitWarningMessage(() => '');
       setIsDisabledButton(() => false);
-      setNickname(() => e.target.value);
+
+      setUserProfile((prev) => {
+        return {
+          ...prev,
+          nickname: e.target.value,
+        };
+      });
     },
     [isValidNickname]
   );
 
   useEffect(() => {
     if (inputRef.current) {
-      inputRef.current.value = nickname;
+      inputRef.current.value = userProfile.nickname;
       inputRef.current.focus();
     }
   }, [inputRef.current]);
@@ -175,14 +206,14 @@ export default function MyProfileEditor() {
     <div className='profile-editor-container'>
       <CustomHeader title='내 프로필 변경' hideIcon />
 
-      {profileImg ? (
+      {userProfile.img ? (
         <div
           onMouseEnter={() => setShowImgDeleteText(true)}
           onMouseLeave={() => setShowImgDeleteText(false)}
           //TODO: 모바일 화면에서도 지원해야함
           className='img-container'
         >
-          <img className='profile-img' src={profileImg} alt='프로필 사진' />
+          <img className='profile-img' src={userProfile.img} alt='프로필 사진' />
           {showImgDeleteText && (
             <div onClick={onClickDeleteImg} className='delete-container'>
               <CloseIcon className='delete-icon' />
@@ -207,7 +238,7 @@ export default function MyProfileEditor() {
             onChange={onChangeInput}
             inputRef={inputRef}
             placeholder='닉네임을 입력해주세요.'
-            value={nickname}
+            value={userProfile.nickname}
           />
           {/*
               //TODO: 닉네임 변경 유무 확인
