@@ -69,6 +69,17 @@ export default function MyProfileEditor() {
     fetchUserDatas();
   }, []);
 
+  useEffect(() => {
+    const convertImg = async () => {
+      if (userProfile.img) {
+        const imgFile = await convertImgToFile(userProfile.img);
+        setProfileImgFile(() => imgFile);
+      }
+    };
+
+    convertImg();
+  }, [userProfile.img]);
+
   const fileSelectHandler = (files: FileList) => {
     setProfileImgFile(files?.[0]);
   };
