@@ -80,6 +80,9 @@ export const EXPERTS_PROFILE_PATH = '/profile/experts';
 /* 마이페이지 설정 - 계정 */
 export const MY_PAGE_ACCOUNT_PATH = '/mypage/account';
 
+/* 마이페이지 설정 - 회원탈퇴 */
+export const MY_PAGE_WITHDRAWAL_PATH = '/mypage/withdrawal';
+
 /* =========================================================== */
 
 /* 펫 정보 보기 */
