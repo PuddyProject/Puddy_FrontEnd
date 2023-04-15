@@ -11,6 +11,7 @@ import {
   MyPage,
   CardList,
   CardDetail,
+  CardSearch,
   CommentAnswer,
   AuthExpert,
   Signup,
@@ -66,6 +67,7 @@ export default function Router() {
         <Route index element={<Main />} />
         <Route path='qna' element={<CardList />} />
         <Route path='community' element={<CardList />} />
+
         <Route path='experts' element={<ExpertCardList />} />
         <Route path='mypage' element={<MyPage />} />
       </Route>
@@ -88,6 +90,9 @@ export default function Router() {
         <Route path='community/detail/:id/write/answer/edit' element={<CommentAnswer />} />
         <Route path='community/newpost' element={<NewPost />} />
 
+        {/* //? 게시글 검색 페이지 */}
+        <Route path='qna/search' element={<CardSearch />} />
+        <Route path='community/search' element={<CardSearch />} />
         {/* //? 프로필 작성 */}
         {/* //TODO 전문가 프로필 작성 페이지는 전문가 회원 유형만 접근할 수 있도록 추가 필요 */}
         <Route path='profile/pets' element={<PetProfileEditor />} />
