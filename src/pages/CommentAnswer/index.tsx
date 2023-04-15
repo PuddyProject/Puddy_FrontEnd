@@ -21,8 +21,6 @@ export default function CommentAnswer() {
     textAreaRef.current?.focus({});
   }, []);
 
-  console.log(location.state);
-
   async function sendData() {
     const res = await post({
       endpoint: `${
@@ -37,11 +35,12 @@ export default function CommentAnswer() {
       isPost: isEditPage ? false : true,
     });
 
+    const editText = isEditPage ? '수정' : '작성';
     if (res.data.resultCode === 'SUCCESS') {
-      alert(`답변 ${isEditPage ? '수정' : '작성'} 완료`);
+      alert(`답변 ${editText} 완료`);
       nav(-1);
     } else {
-      alert(`답변 ${isEditPage ? '수정' : '작성'} 실패. 잠시 후 다시 시도해주세요`);
+      alert(`답변 ${editText} 실패. 잠시 후 다시 시도해주세요`);
     }
   }
 
