@@ -7,6 +7,7 @@ export const NewPost = lazy(() => import('./NewPost'));
 export const MyPage = lazy(() => import('./MyPage'));
 export const CardList = lazy(() => import('./CardList'));
 export const CardDetail = lazy(() => import('./CardDetail'));
+export const CardSearch = lazy(() => import('./CardSearch'));
 export const CommentAnswer = lazy(() => import('./CommentAnswer'));
 export const AuthExpert = lazy(() => import('./AuthExpert'));
 export const Signup = lazy(() => import('./Signup'));

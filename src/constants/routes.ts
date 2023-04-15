@@ -27,6 +27,8 @@ export const getPathModificationQna = (id: string = ':id') => {
   return `/qna/detail/${id}/edit`;
 };
 
+export const QNA_SEARCH_PATH = 'qna/search';
+
 /* =========================================================== */
 
 /* 커뮤니티 페이지 */
@@ -38,6 +40,11 @@ export const getPathCommunityDetail = (id: string = ':id') => {
   return `/community/detail/${id}`;
 };
 
+export const getPathModificationCommunity = (id: string = ':id') => {
+  return `/community/detail/${id}/edit`;
+};
+
+export const COMMUNITY_SEARCH_PATH = 'community/search';
 /* =========================================================== */
 
 /* 로그인 페이지 */
