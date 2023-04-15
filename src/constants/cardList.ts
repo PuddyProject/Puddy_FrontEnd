@@ -9,7 +9,7 @@ export const TITLE = {
 };
 
 export const END_POINT = {
-  community: articleApi.ARTICLES,
+  community: articleApi.GET_POST_ARTICLES,
   qna: questionsApi.QUESTIONS,
 };
 

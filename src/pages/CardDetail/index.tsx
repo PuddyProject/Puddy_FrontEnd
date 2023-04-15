@@ -182,7 +182,7 @@ export default function QnaDetail() {
                     <ClickHeart
                       onClick={() => {
                         setIsLiked(false);
-                        del({ endpoint: `articles/${postId}/unlike` });
+                        del({ endpoint: articleApi.deleteLike(postId) });
                       }}
                       size='15'
                       style={{ color: '#2A60FF' }}
@@ -192,7 +192,7 @@ export default function QnaDetail() {
                       size='15'
                       onClick={() => {
                         setIsLiked(true);
-                        patch({ endpoint: `articles/${postId}/like`, isFormData: true });
+                        patch({ endpoint: articleApi.patchLike(postId), isFormData: true });
                       }}
                     />
                   )}
