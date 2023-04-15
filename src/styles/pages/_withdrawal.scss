@@ -1,0 +1,32 @@
+@use '../abstracts' as *;
+
+.withdrawal-container {
+  margin: 0 auto;
+
+  @include header-gap;
+  display: flex;
+  width: 300px;
+  flex-direction: column;
+  word-spacing: -1px;
+
+  strong {
+    font-weight: 600;
+  }
+
+  .withdrawal-title {
+    font-size: 1.7rem;
+    word-spacing: -2px;
+    margin-bottom: 1.5rem;
+  }
+
+  .withdrawal-content {
+    line-height: 2rem;
+    margin-bottom: 4rem;
+    font-size: 1.4rem;
+  }
+
+  button {
+    align-self: center;
+    width: 300px;
+  }
+}
