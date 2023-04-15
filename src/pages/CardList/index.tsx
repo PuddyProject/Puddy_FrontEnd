@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-import { useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { InputBox, QnaCard, CommunityCard, WriteButton } from 'components';
@@ -15,10 +15,11 @@ export default function CardList() {
   const [currentFilter, setCurrentFilter] = useState('최신순');
   const [isFirst, setIsFirst] = useState(true);
   const [lastCardRef, inView] = useInView();
+  const [searchWord, setSearchWord] = useState('');
 
+  const searchRef = useRef<HTMLInputElement>(null);
   const nav = useNavigate();
   const location = useLocation();
-
   const CURRENT_PAGE = PAGE_LIST.map((v) => {
     if (location.pathname.includes(v)) return v;
   }).filter((v) => v !== undefined)[0]! as keyof typeof END_POINT;
@@ -41,7 +42,7 @@ export default function CardList() {
     ),
   };
 
-  async function getData(isChangePage: boolean) {
+  const getData = async (isChangePage: boolean) => {
     const res = await get({
       endpoint: END_POINT[CURRENT_PAGE],
       params: `?page=${isChangePage ? 1 : pageNumber}`,
@@ -56,30 +57,38 @@ export default function CardList() {
     isChangePage && setIsFirst(false);
     setHasNextPage(res.data.data.hasNextPage);
     res.data.data.hasNextPage && setPageNumber((prev) => prev + 1);
-  }
+  };
 
-  function choieCardComponent(id: number, data: PostDataInfo) {
+  const choieCardComponent = (id: number, data: PostDataInfo) => {
     switch (CURRENT_PAGE) {
       case 'community':
         return <CommunityCard key={id} articleData={data} />;
       case 'qna':
         return <QnaCard key={id} questionData={data} />;
     }
-  }
+  };
+
+  const onSearchWordChange = (e: FormEvent<HTMLElement>) => {
+    const target = e.target as HTMLInputElement;
+    setSearchWord(target.value);
+  };
+
+  const onSearchBoxKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      nav('search', { state: searchWord });
+    }
+  };
 
   useEffect(() => {
     if (hasNextPage && inView && !isFirst) {
       getData(false);
-    } else if (hasNextPage && inView) {
-      if (!isFirst) {
-        getData(false);
-      }
     }
   }, [inView]);
 
   useEffect(() => {
     getData(true);
     setPageNumber(1);
+    searchRef.current!.value = '';
   }, [location.pathname]);
 
   return (
@@ -89,7 +98,15 @@ export default function CardList() {
         <div className='list-sub-title'>{HEAD_LILE[CURRENT_PAGE]}</div>
       </div>
       <div className='list-search-section'>
-        <InputBox placeholder='검색어를 입력하세요.' width='100%' className='search-box' />
+        <InputBox
+          placeholder='검색어를 입력하세요.'
+          width='100%'
+          className='search-box'
+          inputRef={searchRef}
+          value={searchWord}
+          onChange={onSearchWordChange}
+          onKeyPress={onSearchBoxKeyDown}
+        />
       </div>
 
       <div className='filter-container'>
