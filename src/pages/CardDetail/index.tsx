@@ -61,7 +61,7 @@ export default function QnaDetail() {
   const IsFirstWriter = () => {
     const isFirstWriter = !answerList.some((answer) => answer.nickname === decodedToken?.nickname);
     const myComment = answerList.filter((answer) => answer.nickname === decodedToken?.nickname)[0];
-    console.log(myComment);
+
     return (
       !myComment?.selected && (
         <FooterButton

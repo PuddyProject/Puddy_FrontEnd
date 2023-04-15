@@ -8,7 +8,7 @@ interface CommunityCardProps {
 }
 export default function CommunityCard({ articleData }: CommunityCardProps) {
   const isImg = articleData.imagePath !== '';
-  console.log(articleData);
+
   return (
     <div className='commuinty-card'>
       <div className={`card-img-container  ${isImg ? 'img' : 'no-img'}`}>
