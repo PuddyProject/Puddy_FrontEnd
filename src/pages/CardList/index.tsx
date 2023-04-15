@@ -6,7 +6,8 @@ import { InputBox, QnaCard, CommunityCard, WriteButton } from 'components';
 import { FILTER_ITEM } from 'constants/cardList';
 import { get } from 'utils';
 import { PostDataInfo } from 'types/commentTypes';
-import { PAGE_LIST, NO_POST, CARD_ID, LIST_NAME, TITLE, END_POINT } from 'constants/cardList';
+import { NO_POST, CARD_ID, LIST_NAME, TITLE, END_POINT } from 'constants/cardList';
+import { currentPage } from 'utils/currentPage';
 
 export default function CardList() {
   const [listData, setListData] = useState<Array<PostDataInfo>>([]);
@@ -20,9 +21,8 @@ export default function CardList() {
   const searchRef = useRef<HTMLInputElement>(null);
   const nav = useNavigate();
   const location = useLocation();
-  const CURRENT_PAGE = PAGE_LIST.map((v) => {
-    if (location.pathname.includes(v)) return v;
-  }).filter((v) => v !== undefined)[0]! as keyof typeof END_POINT;
+
+  const CURRENT_PAGE = currentPage(location);
 
   const isCommunityPage = location.pathname.includes('/community');
 
