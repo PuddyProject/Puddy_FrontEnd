@@ -7,6 +7,7 @@ import { get } from 'utils';
 import { PostDataInfo } from 'types/commentTypes';
 import { PAGE_LIST, NO_POST, CARD_ID, LIST_NAME, END_POINT } from 'constants/cardList';
 import { SEARCH_PARAM } from 'constants/cardSearch';
+
 export default function CardSearch() {
   const [listData, setListData] = useState<Array<PostDataInfo>>([]);
   const [hasNextPage, setHasNextPage] = useState(true);
@@ -14,24 +15,22 @@ export default function CardSearch() {
   const [lastCardRef, inView] = useInView();
 
   const location = useLocation();
-  console.log(location);
   const CURRENT_PAGE = PAGE_LIST.map((v) => {
     if (location.pathname.includes(v)) return v;
   }).filter((v) => v !== undefined)[0]! as keyof typeof END_POINT;
 
   const isCommunityPage = location.pathname.includes('/community');
+  const SEARCH_WORD = location.state;
 
   const getData = async (isChangePage: boolean) => {
     const res = await get({
       endpoint: END_POINT[CURRENT_PAGE],
-      params: `?page=${pageNumber}&${SEARCH_PARAM[CURRENT_PAGE]}=${location.state}`,
+      params: `?page=${pageNumber}&${SEARCH_PARAM[CURRENT_PAGE]}=${SEARCH_WORD}`,
     });
 
-    if (isChangePage) {
-      setListData(res.data.data[LIST_NAME[CURRENT_PAGE]]);
-    } else {
-      setListData((prev) => [...prev, ...res.data.data[LIST_NAME[CURRENT_PAGE]]]);
-    }
+    isChangePage
+      ? setListData(res.data.data[LIST_NAME[CURRENT_PAGE]])
+      : setListData((prev) => [...prev, ...res.data.data[LIST_NAME[CURRENT_PAGE]]]);
 
     setHasNextPage(res.data.data.hasNextPage);
     res.data.data.hasNextPage && setPageNumber((prev) => prev + 1);
