@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { ExpertCard } from 'components';
 import { get } from 'utils';
 import { ExpertInfo } from 'types/commentTypes';
+import { expertApi } from 'constants/apiEndpoint';
 
 export default function ExpertCardList() {
   const [listData, setListData] = useState<Array<ExpertInfo>>([]);
@@ -14,7 +15,7 @@ export default function ExpertCardList() {
 
   async function getData() {
     const res = await get({
-      endpoint: 'experts',
+      endpoint: expertApi.GET_PUT_EXPERT,
       params: `?page=${pageNumber}`,
     });
 

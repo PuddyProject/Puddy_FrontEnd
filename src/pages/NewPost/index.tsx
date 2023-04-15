@@ -3,12 +3,12 @@ import { IoMdRemoveCircleOutline } from 'react-icons/io';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { InputBox, InputTitle, FooterButton, CustomHeader } from 'components';
-import { categoryItem } from 'constants/qnaNewPost';
+import { CATEGORY_ITEM } from 'constants/NewPost';
 
 import { checkExtensions, checkFileSize, post } from 'utils';
 import { PostDataInfo } from 'types/commentTypes';
 import { AxiosResponse } from 'axios';
-
+import { articleApi, questionsApi } from 'constants/apiEndpoint';
 interface PostInfo {
   title: string;
   content: string;
@@ -34,9 +34,9 @@ export default function NewPost() {
     postInfo.content.length >= 1 && postInfo.content !== '' && postInfo.title.length >= 1;
 
   const nav = useNavigate();
-
   const isCommunityPage = location.pathname.includes('community');
   const isEditPage = location.pathname.includes('edit');
+  const POST_ID = isCommunityPage ? location.state?.articleId : location.state?.questionId;
 
   const getImageFile = async (imgUrl: string) => {
     const res = await fetch(imgUrl, {
@@ -68,32 +68,25 @@ export default function NewPost() {
   const sendData = async (formData: FormData) => {
     let res: AxiosResponse;
 
-    if (isEditPage) {
-      res = await post({
-        endpoint: `questions/${location.state.questionId}`,
-        body: formData,
-        isImage: true,
-        isPost: false,
-      });
-    } else {
-      res = await post({
-        endpoint: isCommunityPage ? 'articles' : 'questions/write',
-        body: formData,
-        isImage: true,
-      });
-    }
+    res = await post({
+      endpoint: `${
+        isCommunityPage
+          ? articleApi.getArticle(POST_ID || '')
+          : questionsApi.requestQuestionsId(POST_ID || '')
+      }`,
+      body: formData,
+      isImage: true,
+      isPost: isEditPage ? false : true,
+    });
+
+    const page = isCommunityPage ? '커뮤니티' : 'Q&A';
+    const editText = isEditPage ? '수정' : '작성';
 
     if (res.status === 200) {
-      const page = isCommunityPage ? '커뮤니티' : 'Q&A';
-
-      isEditPage
-        ? alert(`${page} 게시글 수정이 완료 되었습니다.`)
-        : alert(`${page} 게시글 작성이 되었습니다.`);
+      alert(`${page} 게시글 ${editText}이 되었습니다.`);
       nav(-1);
     } else {
-      alert(
-        `게시글을 ${isEditPage ? '수정' : '작성'}하지 못하였습니다. 잠시 후 다시 시도해주세요.`
-      );
+      alert(`게시글을 ${editText} 하지 못하였습니다. 잠시 후 다시 시도해주세요.`);
     }
   };
 
@@ -243,7 +236,7 @@ export default function NewPost() {
           <>
             <InputTitle isRequire={true}>카테고리 </InputTitle>
             <div className='category-container'>
-              {categoryItem.map((category, i) => {
+              {CATEGORY_ITEM.map((category, i) => {
                 const isSelected = category === postInfo.category;
 
                 return (

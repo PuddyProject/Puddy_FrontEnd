@@ -11,6 +11,9 @@ import { AiOutlineHeart as Heart, AiTwotoneHeart as ClickHeart } from 'react-ico
 import { del, get, patch } from 'utils';
 import { AnswerInfo, PostDataInfo } from 'types/commentTypes';
 import { PET_INFO } from 'constants/cardDetail';
+import { articleApi, questionsApi } from 'constants/apiEndpoint';
+import { currentPage } from 'utils/currentPage';
+import { ANSWER_LIST } from 'constants/cardDetail';
 
 export default function QnaDetail() {
   const nav = useNavigate();
@@ -23,13 +26,21 @@ export default function QnaDetail() {
   const isPostUser = postDataInfo.nickname === decodedToken?.nickname;
   const isCommunityPage = location.pathname.includes('/community');
 
+  const CURRENT_PAGE = currentPage(location);
+
   useEffect(() => {
-    get({ endpoint: `${isCommunityPage ? 'articles' : 'questions'}`, params: `/${postId}` }).then(
-      (res) => {
+    get({
+      endpoint: isCommunityPage
+        ? articleApi.getArticle(postId)
+        : questionsApi.requestQuestionsId(postId),
+    })
+      .then((res) => {
         setPostDataInfo(res.data.data);
-        setAnswerList(isCommunityPage ? res.data.data.commentList : res.data.data.answerList);
-      }
-    );
+        setAnswerList(res.data.data[ANSWER_LIST[CURRENT_PAGE]]);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }, []);
 
   useEffect(() => {}, [answerList, postDataInfo]);
@@ -53,9 +64,17 @@ export default function QnaDetail() {
   };
 
   const deletePost = async () => {
-    await del({ endpoint: `${isCommunityPage ? 'articles/' : 'questions/'}`, params: postId });
-    alert('삭제되었습니다.');
-    nav(-1);
+    try {
+      await del({
+        endpoint: `${
+          isCommunityPage ? articleApi.getArticle(postId) : questionsApi.requestQuestionsId(postId)
+        }`,
+      });
+      alert('삭제되었습니다.');
+      nav(-1);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const IsFirstWriter = () => {

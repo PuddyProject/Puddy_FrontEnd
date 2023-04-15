@@ -1,5 +1,7 @@
+import { questionsApi, articleApi } from './apiEndpoint';
+
 export const FILTER_ITEM = ['최신순', '오래된순', '인기순'];
-export const PAGE_LIST = ['community', 'qna', 'expert'];
+export const PAGE_LIST = ['community', 'qna'];
 
 export const TITLE = {
   community: '커뮤니티 🐶',
@@ -7,8 +9,8 @@ export const TITLE = {
 };
 
 export const END_POINT = {
-  community: 'articles',
-  qna: 'questions',
+  community: articleApi.ARTICLES,
+  qna: questionsApi.QUESTIONS,
 };
 
 export const LIST_NAME = {
