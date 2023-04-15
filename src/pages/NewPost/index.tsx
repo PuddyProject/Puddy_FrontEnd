@@ -38,18 +38,34 @@ export default function NewPost() {
   const isCommunityPage = location.pathname.includes('community');
   const isEditPage = location.pathname.includes('edit');
 
+  const getImageFile = async (imgUrl: string) => {
+    const res = await fetch(imgUrl, {
+      method: 'GET',
+      headers: {
+        Origin: '*',
+      },
+    });
+
+    const blob = await res.blob();
+    const fileName = imgUrl.split('/').pop()!;
+    const fileExtension = fileName?.split('.').pop();
+    const metaData = { type: `image/${fileExtension}` };
+
+    return new File([blob], fileName, metaData);
+  };
+
   useEffect(() => {
-    // TODO: 현재는 안되는 코드이며 향후 시도 CORS 오류로 인해 일단 보류
-    // fetch(`${editData?.images[0]}`, {
-    //   method: 'GET',
-    //   headers: {
-    //     Origin: '*',
-    //   },
-    // }).then((res) => console.log(res));
+    if (isEditPage) {
+      editData.images.map(async (imgUrl) => {
+        const File = await getImageFile(imgUrl);
+        setImgFile((prev) => [...prev, File]);
+      });
+    }
+
     firstInputBox.current?.focus();
   }, []);
 
-  const sendQnaPage = async (formData: FormData) => {
+  const sendData = async (formData: FormData) => {
     let res: AxiosResponse;
 
     if (isEditPage) {
@@ -60,24 +76,24 @@ export default function NewPost() {
         isPost: false,
       });
     } else {
-      res = await post({ endpoint: 'questions/write', body: formData, isImage: true });
+      res = await post({
+        endpoint: isCommunityPage ? 'articles' : 'questions/write',
+        body: formData,
+        isImage: true,
+      });
     }
 
     if (res.status === 200) {
-      isEditPage ? alert('Q&A 수정이 완료 되었습니다.') : alert('Q&A 작성 완료 되었습니다.');
+      const page = isCommunityPage ? '커뮤니티' : 'Q&A';
+
+      isEditPage
+        ? alert(`${page} 게시글 수정이 완료 되었습니다.`)
+        : alert(`${page} 게시글 작성이 되었습니다.`);
       nav(-1);
     } else {
-      alert('게시글을 작성하지 못하였습니다. 잠시 후 다시 시도해주세요.');
-    }
-  };
-
-  const sendCommunityPage = async (formData: FormData) => {
-    let res: AxiosResponse;
-
-    if (isEditPage) {
-      //TODO: 커뮤니티 수정 페이지에 들어갈 내용
-    } else {
-      res = await post({ endpoint: 'articles', body: formData, isImage: true });
+      alert(
+        `게시글을 ${isEditPage ? '수정' : '작성'}하지 못하였습니다. 잠시 후 다시 시도해주세요.`
+      );
     }
   };
 
@@ -205,11 +221,7 @@ export default function NewPost() {
       formData.append('images', imgFile[i]);
     }
 
-    if (isCommunityPage) {
-      sendCommunityPage(formData);
-    } else {
-      sendQnaPage(formData);
-    }
+    sendData(formData);
   };
 
   return (
@@ -269,7 +281,7 @@ export default function NewPost() {
             .map((_, i) => {
               return filePreview[i] !== undefined ? (
                 <div key={i} className='image-item'>
-                  <img key={i} className='image-item' src={filePreview[i]} alt='error' />
+                  <img key={i} className='image-item' src={filePreview[i]} alt='' />
                   <IoMdRemoveCircleOutline
                     size='25px'
                     className='remove-image'
@@ -277,9 +289,7 @@ export default function NewPost() {
                   />
                 </div>
               ) : (
-                <div key={i} className='image-item'>
-                  <img key={i} className='image-item' />
-                </div>
+                <img key={i} className='image-item' alt='' />
               );
             })}
         </div>
@@ -298,13 +308,14 @@ export default function NewPost() {
             <InputBox
               width='100%'
               placeholder='태그를 등록해보세요.'
+              margin='0px 0px 15px 0px'
               onKeyPress={onTagBoxKeyDown}
               onChange={onTagBoxChange}
             />
-            <div className='tag-container'>
+            <div className='new-post-tag-container'>
               {tagList.map((tag, index) => {
                 return (
-                  <span key={index} className='tag-item' onClick={() => deleteTag(index)}>
+                  <span key={index} className='tag-item-new-post' onClick={() => deleteTag(index)}>
                     {tag}
                   </span>
                 );
