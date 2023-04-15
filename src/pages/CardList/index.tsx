@@ -53,7 +53,7 @@ export default function CardList() {
       setListData((prev) => [...prev, ...res.data.data[LIST_NAME[CURRENT_PAGE]]]);
     }
 
-    !isChangePage && setIsFirst(false);
+    isChangePage && setIsFirst(false);
     setHasNextPage(res.data.data.hasNextPage);
     res.data.data.hasNextPage && setPageNumber((prev) => prev + 1);
   }
@@ -70,11 +70,17 @@ export default function CardList() {
   useEffect(() => {
     if (hasNextPage && inView && !isFirst) {
       getData(false);
-    } else {
-      getData(true);
-      setPageNumber(1);
+    } else if (hasNextPage && inView) {
+      if (!isFirst) {
+        getData(false);
+      }
     }
-  }, [inView, location.pathname]);
+  }, [inView]);
+
+  useEffect(() => {
+    getData(true);
+    setPageNumber(1);
+  }, [location.pathname]);
 
   return (
     <div className='list-container'>
@@ -87,9 +93,10 @@ export default function CardList() {
       </div>
 
       <div className='filter-container'>
-        {FILTER_ITEM.map((filter) => {
+        {FILTER_ITEM.map((filter, i) => {
           return (
             <button
+              key={i}
               className={`filter-item ${filter === currentFilter ? 'select-filter' : ''}`}
               onClick={() => {
                 setCurrentFilter(filter);
