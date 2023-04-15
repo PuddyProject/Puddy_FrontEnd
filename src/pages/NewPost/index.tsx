@@ -226,7 +226,7 @@ export default function NewPost() {
 
   return (
     <div>
-      <CustomHeader title='Q&A 등록' hideIcon />
+      <CustomHeader title={isCommunityPage ? '커뮤니티 등록' : 'Q&A 등록'} hideIcon />
       <div className='qna-newpost-container' onChange={onChangeHandler}>
         <InputTitle isRequire={true}> 제목 </InputTitle>
         <InputBox
