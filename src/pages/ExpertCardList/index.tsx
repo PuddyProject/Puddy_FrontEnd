@@ -1,8 +1,8 @@
 /* eslint-disable indent */
 import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { Link, useNavigate } from 'react-router-dom';
-import { ExpertCard, WriteButton } from 'components';
+import { Link } from 'react-router-dom';
+import { ExpertCard } from 'components';
 import { get } from 'utils';
 import { ExpertInfo } from 'types/commentTypes';
 
@@ -11,8 +11,6 @@ export default function ExpertCardList() {
   const [hasNextPage, setHasNextPage] = useState(true);
   const [pageNumber, setPageNumber] = useState(1);
   const [lastCardRef, inView] = useInView();
-
-  const nav = useNavigate();
 
   async function getData() {
     const res = await get({
@@ -52,11 +50,6 @@ export default function ExpertCardList() {
         </div>
       )}
       <div ref={lastCardRef} />
-      <WriteButton
-        onClick={() => {
-          nav('newpost');
-        }}
-      />
     </div>
   );
 }
