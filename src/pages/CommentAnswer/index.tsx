@@ -15,6 +15,7 @@ export default function CommentAnswer() {
   const [answer, setAnaswer] = useState<string>(comment?.content || '');
 
   const isEditPage = location.pathname.includes('edit');
+  const isCommunityPage = location.pathname.includes('community');
 
   useEffect(() => {
     textAreaRef.current?.focus({});
@@ -24,9 +25,9 @@ export default function CommentAnswer() {
     let res: AxiosResponse;
 
     res = await post({
-      endpoint: `community/${isEditPage ? location.state.postId : location.state}/answers/${
-        isEditPage ? comment.id : 'write'
-      }`,
+      endpoint: `${isCommunityPage ? 'articles' : 'questions'}/${
+        isEditPage ? location.state.postId : location.state
+      }/answers/${isEditPage ? comment.id : 'write'}`,
       body: {
         content: answer,
         postCategory: '1',
@@ -49,7 +50,7 @@ export default function CommentAnswer() {
 
   return (
     <>
-      <CustomHeader title={`${isEditPage ? '커뮤니티' : 'Q&A'} 답변 작성`} hideIcon />
+      <CustomHeader title={`${isCommunityPage ? '커뮤니티 댓글' : 'Q&A 답변'}  작성`} hideIcon />
       <div>
         <InputTitle isRequire={true} margin='50px 0px 10px 0px'>
           답변 내용
