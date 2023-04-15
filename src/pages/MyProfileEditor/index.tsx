@@ -1,4 +1,5 @@
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { IoMdClose as CloseIcon } from 'react-icons/io';
 
 import {
@@ -15,9 +16,12 @@ import checkExtensions from 'utils/checkExtensions';
 import { patch, post } from 'utils/axiosHelper';
 import { warningMessage } from 'utils/initialValues/myProfileEditor';
 import { isValidNickname } from 'utils';
-import { ApiError } from 'types/errorsTypes';
-import { useNavigate } from 'react-router-dom';
 import { get } from 'utils/axiosHelper';
+
+import { ApiError } from 'types/errorsTypes';
+
+import { joinApi, myPageApi } from 'constants/apiEndpoint';
+import { MY_PAGE_PATH } from 'constants/routes';
 
 export default function MyProfileEditor() {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -99,13 +103,13 @@ export default function MyProfileEditor() {
 
     try {
       const res = await patch({
-        endpoint: 'users/update-profile',
+        endpoint: `${myPageApi.PATCH_MY_PROFILE}`,
         body: formData,
         isFormData: true,
       });
       if (res.status === 200) {
         window.alert('변경이 완료되었어요.');
-        navigate('/mypage');
+        navigate(`${MY_PAGE_PATH}`);
       }
     } catch (err) {
       console.error(err);
@@ -116,7 +120,7 @@ export default function MyProfileEditor() {
     // * 닉네임 중복확인 버튼 클릭
     try {
       const res = await post({
-        endpoint: 'users/duplicate-nickname',
+        endpoint: `${joinApi.POST_DUPLICATE_NICKNAME}`,
         body: {
           nickname,
         },

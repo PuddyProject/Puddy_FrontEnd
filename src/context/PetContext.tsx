@@ -20,7 +20,7 @@ export const PetProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    get({ endpoint: '/users/pets/detail' })
+    get({ endpoint: 'users/pets/detail' })
       .then((res) => {
         //TODO: 펫 등록 여부를 확인할 수 없어서 임시 사용중
         // ! 펫 정보 없으면 500 에러 날 거예요

@@ -7,6 +7,8 @@ import checkFileSize from 'utils/checkFileSize';
 import { patch } from 'utils';
 
 import { useUser } from 'context/UserContext';
+import { myPageApi } from 'constants/apiEndpoint';
+import { LOGIN_PATH } from 'constants/routes';
 
 export default function AuthExpert() {
   const navigate = useNavigate();
@@ -47,12 +49,12 @@ export default function AuthExpert() {
     */
 
     try {
-      const res = await patch({ endpoint: 'users/update-auth', isFormData: false });
+      const res = await patch({ endpoint: `${myPageApi.PATCH_USER_AUTH}`, isFormData: false });
       console.log(res);
       if (res.status === 201) {
         window.alert('전문가 권한 부여 완료. 재로그인 해주세요.');
         sessionStorage.removeItem('userToken');
-        navigate('/auth/login');
+        navigate(`${LOGIN_PATH}`);
       }
     } catch (err) {
       console.error(err);

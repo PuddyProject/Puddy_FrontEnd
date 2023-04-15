@@ -1,28 +1,39 @@
 import { Route, Routes, Navigate, useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
+
 import Layout from 'layouts';
 import LayoutWithoutHeader from 'layouts/LayoutWithoutHeader';
 import LayoutWithoutNav from 'layouts/LayoutWithoutNav';
 
+import Loading from 'components/common/Loading';
+
 import {
-  Main,
-  Login,
-  NewPost,
-  MyPage,
-  CardList,
-  CardDetail,
-  CardSearch,
-  CommentAnswer,
-  AuthExpert,
-  Signup,
-  PetProfile,
-  PetProfileEditor,
-  ExpertCardList,
-  ExpertProfile,
-  ExpertProfileEditor,
-  MyActivityInfo,
-  MyProfileEditor,
-} from 'pages';
+  COMMUNITY_PATH,
+  EXPERTS_PROFILE_PATH,
+  EXPERT_PROFILE_PATH,
+  HOME_PATH,
+  JOIN_PATH,
+  KAKAO_AUTH_PATH,
+  LOGIN_PATH,
+  MY_PAGE_ACCOUNT_PATH,
+  MY_PAGE_AUTH_EXPERT_PATH,
+  MY_PAGE_PATH,
+  MY_PAGE_PET_PATH,
+  MY_PAGE_PROFILE_PATH,
+  MY_POSTS_PATH,
+  PROFILE_PET_PATH,
+  QNA_DETAIL_PATH,
+  QNA_WRITE_POST_PATH,
+  QNA_PATH,
+  getPathWriteAnswer,
+  getPathPetProfile,
+  COMMUNITY_WRTIE_POST_PATH,
+  getPathCommunityDetail,
+  getPathModificationQna,
+  getPathModificationAnswer,
+} from 'constants/routes';
+
+import * as pages from 'pages';
 
 const MEMBER_ONLY_PAGES = ['mypage', 'profile', 'expert', 'detail', 'newpost'];
 
@@ -43,78 +54,80 @@ export default function Router() {
 
   if (!isLoggedIn) {
     return (
-      <Routes>
-        <Route element={<Layout />}>
-          <Route index element={<Main />} />
-          <Route path='qna' element={<CardList />} />
-          <Route path='community' element={<CardList />} />
-        </Route>
+      <>
+        <Suspense fallback={<Loading />}>
+          <Routes>
+            <Route element={<Layout />}>
+              <Route index element={<pages.Main />} />
+              <Route path={QNA_PATH} element={<pages.CardList />} />
+              <Route path={COMMUNITY_PATH} element={<pages.Community />} />
+            </Route>
 
-        <Route path='/' element={<LayoutWithoutHeader />}>
-          <Route path='auth/login' element={<Login />} />
-          <Route path='auth/Signup' element={<Signup />} />
-        </Route>
+            <Route path={HOME_PATH} element={<LayoutWithoutHeader />}>
+              <Route path={LOGIN_PATH} element={<pages.Login />} />
+              <Route path={JOIN_PATH} element={<pages.Signup />} />
+              <Route path={KAKAO_AUTH_PATH} element={<pages.KakaoLogin />} />
+            </Route>
 
-        <Route path='*' element={<Navigate to='/' />} />
-      </Routes>
+            <Route path='*' element={<Navigate to={HOME_PATH} />} />
+          </Routes>
+        </Suspense>
+      </>
     );
   }
 
   return (
-    <Routes>
-      {/* // ********** 기본 레이아웃 *********** */}
-      <Route element={<Layout />}>
-        <Route index element={<Main />} />
-        <Route path='qna' element={<CardList />} />
-        <Route path='community' element={<CardList />} />
+    <Suspense fallback={<Loading />}>
+      <Routes>
+        {/* // ********** 기본 레이아웃 *********** */}
+        <Route element={<Layout />}>
+          <Route index element={<pages.Main />} />
+          <Route path={QNA_PATH} element={<pages.CardList />} />
+          <Route path={COMMUNITY_PATH} element={<pages.Community />} />
+          <Route path={MY_PAGE_PATH} element={<pages.MyPage />} />
+        </Route>
+        {/*  ************************************ */}
+        {/* --------------------------------------- */}
+        {/* // ********** 상단 Nav 없음 *********** */}
+        <Route path='/' element={<LayoutWithoutHeader />}>
+          {/* //? Q&A 작성/상세 보기 */}
+          <Route path={QNA_DETAIL_PATH} element={<pages.CardDetail />} />
+          <Route path={getPathWriteAnswer()} element={<pages.QnaAnswer />} />
+          <Route path={getPathModificationAnswer()} element={<pages.QnaAnswer />} />
+          <Route path={QNA_WRITE_POST_PATH} element={<pages.NewPost />} />
+          <Route path={getPathModificationQna()} element={<pages.NewPost />} />
 
-        <Route path='experts' element={<ExpertCardList />} />
-        <Route path='mypage' element={<MyPage />} />
-      </Route>
-      {/* // ************************************ */}
-      {/* --------------------------------------- */}
-      {/* // ********** 상단 Nav 없음 *********** */}
-      <Route path='/' element={<LayoutWithoutHeader />}>
-        {/* //? Q&A 작성/상세 보기 */}
-        <Route path='qna/detail/:id' element={<CardDetail />} />
-        <Route path='qna/detail/:id/edit' element={<NewPost />} />
-        <Route path='qna/detail/:id/write/answer' element={<CommentAnswer />} />
-        <Route path='qna/detail/:id/write/answer/edit' element={<CommentAnswer />} />
-        <Route path='qna/newpost' element={<NewPost />} />
+          <Route path={COMMUNITY_WRTIE_POST_PATH} element={<pages.NewPost />} />
+          <Route path={getPathCommunityDetail()} element={<pages.CardDetail />} />
 
-        {/* //? 커뮤니티 작성/상세 보기 */}
+          {/* //? 프로필 작성 */}
+          {/* //TODO 전문가 프로필 작성 페이지는 전문가 회원 유형만 접근할 수 있도록 추가 필요 */}
+          <Route path={PROFILE_PET_PATH} element={<pages.PetProfileEditor />} />
+          <Route path={getPathPetProfile()} element={<pages.PetProfileEditor />} />
+          <Route path={EXPERTS_PROFILE_PATH} element={<pages.ExpertProfileEditor />} />
 
-        <Route path='community/detail/:id' element={<CardDetail />} />
-        <Route path='community/detail/:id/edit' element={<NewPost />} />
-        <Route path='community/detail/:id/write/answer' element={<CommentAnswer />} />
-        <Route path='community/detail/:id/write/answer/edit' element={<CommentAnswer />} />
-        <Route path='community/newpost' element={<NewPost />} />
+          <Route path={MY_POSTS_PATH} element={<pages.MyActivityInfo />} />
+        </Route>
+        {/* *************************************** */}
+        {/* --------------------------------------- */}
+        {/* // ********** 하단 Nav 없음 *********** */}
+        <Route path='/' element={<LayoutWithoutNav />}>
+          {/* //? 마이페이지 메뉴 */}
+          <Route path={MY_PAGE_AUTH_EXPERT_PATH} element={<pages.AuthExpert />} />
+          <Route path={MY_PAGE_ACCOUNT_PATH} element={<pages.Account />} />
 
-        {/* //? 게시글 검색 페이지 */}
-        <Route path='qna/search' element={<CardSearch />} />
-        <Route path='community/search' element={<CardSearch />} />
-        {/* //? 프로필 작성 */}
-        {/* //TODO 전문가 프로필 작성 페이지는 전문가 회원 유형만 접근할 수 있도록 추가 필요 */}
-        <Route path='profile/pets' element={<PetProfileEditor />} />
-        <Route path='profile/pets/:id' element={<PetProfileEditor />} />
-        <Route path='profile/experts' element={<ExpertProfileEditor />} />
+          {/* //? 내 프로필 수정 */}
+          <Route path={MY_PAGE_PROFILE_PATH} element={<pages.MyProfileEditor />} />
 
-        <Route path='mypage/posts' element={<MyActivityInfo />} />
-      </Route>
-      {/* // ************************************ */}
-      {/* --------------------------------------- */}
-      {/* // ********** 하단 Nav 없음 *********** */}
-      <Route path='/' element={<LayoutWithoutNav />}>
-        {/* //? 마이페이지 메뉴 */}
-        <Route path='mypage/experts' element={<AuthExpert />} />
+          {/* //? 프로필 보기 */}
+          <Route path={EXPERT_PROFILE_PATH} element={<pages.ExpertProfile />} />
+          <Route path={MY_PAGE_PET_PATH} element={<pages.PetProfile />} />
+        </Route>
+        {/* *************************************** */}
+        {/* --------------------------------------- */}
 
-        {/* //? 프로필 보기 */}
-        <Route path='mypage/profile' element={<MyProfileEditor />} />
-        <Route path='experts/:id' element={<ExpertProfile />} />
-        <Route path='mypage/pets' element={<PetProfile />} />
-      </Route>
-
-      <Route path='*' element={<Navigate to='/' />} />
-    </Routes>
+        {/* <Route path='*' element={<Navigate to={HOME_PATH} />} /> */}
+      </Routes>
+    </Suspense>
   );
 }

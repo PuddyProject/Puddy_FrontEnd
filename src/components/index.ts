@@ -18,3 +18,4 @@ export { default as WriteButton } from './common/WriteButton';
 export { default as QnaContainer } from './main/QnaContainer';
 export { default as ExpertContainer } from './main/ExpertContainer';
 export { default as ExpertCard } from './common/ExpertCard';
+export { default as Loading } from './common/Loading';

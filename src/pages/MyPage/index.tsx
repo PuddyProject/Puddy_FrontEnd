@@ -12,6 +12,8 @@ import { get } from 'utils';
 
 import { usePet } from 'context/PetContext';
 import { useUser } from 'context/UserContext';
+import { myPageApi } from 'constants/apiEndpoint';
+import { MY_PAGE_PET_PATH, MY_PAGE_PROFILE_PATH, PROFILE_PET_PATH } from 'constants/routes';
 
 const TEMP_IMAGE_URL =
   'https://blog.kakaocdn.net/dn/GHYFr/btrsSwcSDQV/UQZxkayGyAXrPACyf0MaV1/img.jpg';
@@ -36,20 +38,20 @@ export default function MyPage() {
   };
 
   const onClickSetting = () => {
-    navigate('/mypage/profile');
+    navigate(`${MY_PAGE_PROFILE_PATH}`);
   };
 
   const onClickMyPetInfo = () => {
     // 펫 등록된 유저:  /mypage/pets
     if (hasPet) {
-      return navigate('/mypage/pets');
+      return navigate(`${MY_PAGE_PET_PATH}`);
     }
     // 미등록 유저 : /profile/pets
-    return navigate('/profile/pets');
+    return navigate(`${PROFILE_PET_PATH}`);
   };
 
   useEffect(() => {
-    get({ endpoint: 'users/me' }).then((res) => {
+    get({ endpoint: `${myPageApi.GET_MY_PAGE_INFO}` }).then((res) => {
       setUser(res.data.data);
       setHasPet(() => res.data.data.hasPet);
     });

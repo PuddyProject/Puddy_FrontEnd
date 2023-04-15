@@ -17,6 +17,8 @@ import { initMembershipValues, initWarningMessage } from 'utils/initialValues/si
 
 import { ApiError } from 'types/errorsTypes';
 import { FieldName, SigunupFormRefs, ValidChecker } from 'types/signupTypes';
+import { joinApi } from 'constants/apiEndpoint';
+import { LOGIN_PATH } from 'constants/routes';
 
 /**
  * Signup 페이지
@@ -130,7 +132,7 @@ export default function Signup() {
     if (!registrationMembership[target]) return;
     try {
       const res = await post({
-        endpoint: `users/duplicate-${target}`,
+        endpoint: `${joinApi.requestDuplicate(target)}`,
         body,
       });
 
@@ -172,12 +174,12 @@ export default function Signup() {
       // 유효하면 POST
       try {
         const res = await post({
-          endpoint: 'users/join',
+          endpoint: `${joinApi.POST_JOIN}`,
           body: registrationMembership,
         });
         if (res.status === 201) {
           window.alert('퍼디 회원이 되신 것을 환영해요!'); // *임시 메시지
-          navigate('/auth/login');
+          navigate(`${LOGIN_PATH}`);
         }
       } catch (err: unknown) {
         const error = err as ApiError;
