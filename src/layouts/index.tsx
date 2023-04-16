@@ -1,11 +1,11 @@
 import { Outlet } from 'react-router-dom';
-import Header from 'components/common/Header';
 import NavBar from 'components/common/NavBar';
+import { CustomHeader } from 'components';
 
 export default function Layout() {
   return (
     <>
-      <Header />
+      <CustomHeader isLogoHeader />
       <Outlet />
       <NavBar />
     </>

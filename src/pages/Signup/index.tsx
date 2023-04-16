@@ -1,5 +1,6 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { GrFormPrevious as PrevIcon } from 'react-icons/gr';
 
 import { Button, Checkbox, FooterButton } from 'components';
 import InputField from 'components/signup/InputField';
@@ -18,7 +19,7 @@ import { initMembershipValues, initWarningMessage } from 'utils/initialValues/si
 import { ApiError } from 'types/errorsTypes';
 import { FieldName, SigunupFormRefs, ValidChecker } from 'types/signupTypes';
 import { joinApi } from 'constants/apiEndpoint';
-import { LOGIN_PATH } from 'constants/routes';
+import { HOME_PATH, LOGIN_PATH } from 'constants/routes';
 
 /**
  * Signup 페이지
@@ -299,106 +300,116 @@ export default function Signup() {
   }, [registrationMembership.password]);
 
   return (
-    <div className='signup-container'>
-      <h2 className='signup-title'>
-        PUDDY 서비스는
-        <br />
-        <strong className='bold'>회원가입 후 이용</strong>하실 수 있어요. 😊
-      </h2>
-      <div className='signup-datas'>
-        <InputField
-          inputRef={formRefs.current.account}
-          className={`duplicate-check-container ${
-            inputsToShake.includes('account') ? 'shake' : ''
-          }`}
-          onChange={onChangeInput}
-          placeholder='아이디를 입력해주세요.'
-          target='account'
-          title='아이디'
-          registrationMembership={registrationMembership}
-          initWarningMessage={initWarningMessage}
-          warningMessage={warningMessage}
-          showCorrectMessage={showCorrectMessage}
-        >
-          <Button
-            disabled={disabledDuplicationButton.account}
-            onClick={onClickCheckDuplicate('account')}
+    <>
+      <div className='signup-container'>
+        <PrevIcon
+          className='prev-icon'
+          onClick={() => {
+            navigate(`${HOME_PATH}`);
+          }}
+        />
+        <h2 className='signup-title'>
+          PUDDY 서비스는
+          <br />
+          <strong className='bold'>회원가입 후 이용</strong>하실 수 있어요. 😊
+        </h2>
+        <div className='signup-datas'>
+          <InputField
+            inputRef={formRefs.current.account}
+            className={`duplicate-check-container ${
+              inputsToShake.includes('account') ? 'shake' : ''
+            }`}
+            onChange={onChangeInput}
+            placeholder='아이디를 입력해주세요.'
+            target='account'
+            title='아이디'
+            registrationMembership={registrationMembership}
+            initWarningMessage={initWarningMessage}
+            warningMessage={warningMessage}
+            showCorrectMessage={showCorrectMessage}
           >
-            중복 확인
-          </Button>
-        </InputField>
+            <Button
+              disabled={disabledDuplicationButton.account}
+              onClick={onClickCheckDuplicate('account')}
+            >
+              중복 확인
+            </Button>
+          </InputField>
 
-        <InputField
-          inputRef={formRefs.current.password}
-          onChange={onChangeInput}
-          className={`${inputsToShake.includes('password') ? 'shake' : ''}`}
-          placeholder='비밀번호를 입력해주세요.'
-          type='password'
-          target='password'
-          title='비밀번호'
-          registrationMembership={registrationMembership}
-          initWarningMessage={initWarningMessage}
-          warningMessage={warningMessage}
-        />
-
-        <InputField
-          inputRef={formRefs.current.reEnterPassword}
-          onChange={onChangeInput}
-          className={`${inputsToShake.includes('reEnterPassword') ? 'shake' : ''}`}
-          placeholder='비밀번호를 다시 입력해주세요.'
-          type='password'
-          target='reEnterPassword'
-          title='비밀번호 확인'
-          registrationMembership={registrationMembership}
-          initWarningMessage={initWarningMessage}
-          warningMessage={warningMessage}
-        />
-
-        <InputField
-          inputRef={formRefs.current.username}
-          onChange={onChangeInput}
-          className={`${inputsToShake.includes('username') ? 'shake' : ''}`}
-          placeholder='이름을 입력해주세요.'
-          target='username'
-          title='이름'
-          registrationMembership={registrationMembership}
-          initWarningMessage={initWarningMessage}
-          warningMessage={warningMessage}
-        />
-
-        <InputField
-          inputRef={formRefs.current.email}
-          className={`duplicate-check-container ${inputsToShake.includes('email') ? 'shake' : ''}`}
-          onChange={onChangeInput}
-          placeholder='이메일을 입력해주세요.'
-          target='email'
-          title='이메일'
-          registrationMembership={registrationMembership}
-          initWarningMessage={initWarningMessage}
-          warningMessage={warningMessage}
-          showCorrectMessage={showCorrectMessage}
-        >
-          <Button
-            disabled={disabledDuplicationButton.email}
-            onClick={onClickCheckDuplicate('email')}
-          >
-            중복 확인
-          </Button>
-        </InputField>
-
-        <div className='notification'>
-          <Checkbox
-            requestOnChange={onChangeCheckbox}
-            checked={initMembershipValues.isNotificated}
-            text='알림 수신 여부 동의'
+          <InputField
+            inputRef={formRefs.current.password}
+            onChange={onChangeInput}
+            className={`${inputsToShake.includes('password') ? 'shake' : ''}`}
+            placeholder='비밀번호를 입력해주세요.'
+            type='password'
+            target='password'
+            title='비밀번호'
+            registrationMembership={registrationMembership}
+            initWarningMessage={initWarningMessage}
+            warningMessage={warningMessage}
           />
-        </div>
 
-        <span className='notification-message'>
-          수신에 동의하면 퍼디의 다양한 소식을 받아보실 수 있어요.
-        </span>
+          <InputField
+            inputRef={formRefs.current.reEnterPassword}
+            onChange={onChangeInput}
+            className={`${inputsToShake.includes('reEnterPassword') ? 'shake' : ''}`}
+            placeholder='비밀번호를 다시 입력해주세요.'
+            type='password'
+            target='reEnterPassword'
+            title='비밀번호 확인'
+            registrationMembership={registrationMembership}
+            initWarningMessage={initWarningMessage}
+            warningMessage={warningMessage}
+          />
+
+          <InputField
+            inputRef={formRefs.current.username}
+            onChange={onChangeInput}
+            className={`${inputsToShake.includes('username') ? 'shake' : ''}`}
+            placeholder='이름을 입력해주세요.'
+            target='username'
+            title='이름'
+            registrationMembership={registrationMembership}
+            initWarningMessage={initWarningMessage}
+            warningMessage={warningMessage}
+          />
+
+          <InputField
+            inputRef={formRefs.current.email}
+            className={`duplicate-check-container ${
+              inputsToShake.includes('email') ? 'shake' : ''
+            }`}
+            onChange={onChangeInput}
+            placeholder='이메일을 입력해주세요.'
+            target='email'
+            title='이메일'
+            registrationMembership={registrationMembership}
+            initWarningMessage={initWarningMessage}
+            warningMessage={warningMessage}
+            showCorrectMessage={showCorrectMessage}
+          >
+            <Button
+              disabled={disabledDuplicationButton.email}
+              onClick={onClickCheckDuplicate('email')}
+            >
+              중복 확인
+            </Button>
+          </InputField>
+
+          <div className='notification'>
+            <Checkbox
+              requestOnChange={onChangeCheckbox}
+              checked={initMembershipValues.isNotificated}
+              text='알림 수신 여부 동의'
+            />
+          </div>
+
+          <span className='notification-message'>
+            수신에 동의하면 퍼디의 다양한 소식을 받아보실 수 있어요.
+          </span>
+        </div>
+        <FooterButton onClick={onSubmitRegister}>회원가입</FooterButton>
       </div>
-      <FooterButton onClick={onSubmitRegister}>회원가입</FooterButton>
-    </div>
+    </>
   );
 }

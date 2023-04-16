@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState, ChangeEvent, FormEvent } from 'react';
+import { GrFormPrevious as PrevIcon } from 'react-icons/gr';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { Button, InputBox, Message } from 'components/index';
@@ -13,13 +14,15 @@ import { Google, Naver, Kakao } from 'assets/login/symbols';
 import Logo from 'assets/Logo.svg';
 
 import { post } from 'utils';
+import { encryptRefreshToken } from 'utils/cryptoRefreshToken';
+
 import { useUser } from 'context/UserContext';
 import { useAuth } from 'hooks/useAuth';
 
 export default function Login() {
   const navigate = useNavigate();
 
-  const { initSessionStorageUserToken } = useAuth();
+  const { initSessionStorageUserToken, initSessionStorageRefeshToken } = useAuth();
   const { setToken } = useUser();
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -53,9 +56,15 @@ export default function Login() {
       const res = await post(payload);
 
       if (res.status === 200) {
-        const accessToken = res.data.data.accessToken;
+        const resData = res.data.data;
+        const accessToken = resData.accessToken;
+        const refreshToken = encryptRefreshToken(resData.refreshToken);
+
         initSessionStorageUserToken(accessToken);
+        initSessionStorageRefeshToken(refreshToken);
+
         setToken(accessToken);
+
         alert('로그인 성공!');
         navigate(`${HOME_PATH}`);
       }
@@ -79,6 +88,12 @@ export default function Login() {
   return (
     <>
       <form className='login-container' onSubmit={onSubmitForm}>
+        <PrevIcon
+          className='prev-icon'
+          onClick={() => {
+            navigate(`${HOME_PATH}`);
+          }}
+        />
         <img src={Logo} className='logo' alt='puddy_logo' />
         <div className='inputs'>
           {showWarningMessage && (

@@ -87,6 +87,9 @@ export const EXPERTS_PROFILE_PATH = '/profile/experts';
 /* 마이페이지 설정 - 계정 */
 export const MY_PAGE_ACCOUNT_PATH = '/mypage/account';
 
+/* 마이페이지 설정 - 회원탈퇴 */
+export const MY_PAGE_WITHDRAWAL_PATH = '/mypage/withdrawal';
+
 /* =========================================================== */
 
 /* 펫 정보 보기 */
@@ -97,3 +100,8 @@ export const PET_PROFILE_PATH = '/users/pets/detail';
 /* 전문가 프로필 보기 */
 export const EXPERT_PATH = '/experts';
 export const EXPERT_PROFILE_PATH = '/experts/:id';
+
+/* =========================================================== */
+
+/* 404 페이지 */
+export const NOT_FOUND_PATH = '/not-found';

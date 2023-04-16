@@ -20,18 +20,18 @@ export const PetProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    get({ endpoint: 'users/pets/detail' })
-      .then((res) => {
-        //TODO: 펫 등록 여부를 확인할 수 없어서 임시 사용중
-        // ! 펫 정보 없으면 500 에러 날 거예요
-        console.log('pet context', hasPet);
-        if (res.data.data.age) {
-          setHasPet(() => true);
-        }
-      })
-      .catch((err) => {
-        console.log(err, 'PetContext에서 에러 발생.');
-      });
+    // get({ endpoint: 'users/pets/detail' })
+    //   .then((res) => {
+    //     //TODO: 펫 등록 여부를 확인할 수 없어서 임시 사용중
+    //     // ! 펫 정보 없으면 500 에러 날 거예요
+    //     console.log('pet context', hasPet);
+    //     if (res.data.data.age) {
+    //       setHasPet(() => true);
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log(err, 'PetContext에서 에러 발생.');
+    //   });
   }, [hasPet]);
 
   return <PetContext.Provider value={contextValue}>{children}</PetContext.Provider>;

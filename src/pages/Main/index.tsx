@@ -8,9 +8,9 @@ import dragEvent from 'utils/dragEvent';
 import useLoading from 'hooks/useLoading';
 
 import { homeApi } from 'constants/apiEndpoint';
-import { LOGIN_PATH } from 'constants/routes';
+import { PROFILE_PET_PATH, QNA_WRITE_POST_PATH } from 'constants/routes';
 
-const COLOR = ['red', 'black', 'green', 'gray', 'skyblue', 'yellow', 'pink'];
+const COLOR = Array(5).fill('lightGray');
 const MAX_INDEX = COLOR.length - 1;
 
 interface MainQnaList {
@@ -39,14 +39,10 @@ export default function Main() {
     }
   };
 
-  const buttonOnClick = (movePage: () => void) => {
-    if (sessionStorage.getItem('userToken')) {
-      movePage();
-    } else {
-      alert('회원전용 페이지 입니다. 로그인 페이지로 이동합니다.');
-      nav(`${LOGIN_PATH}`);
-    }
+  const buttonOnClick = (path: string) => {
+    nav(path);
   };
+
   useEffect(() => {
     getMainData();
   }, []);
@@ -101,10 +97,10 @@ export default function Main() {
           </div>
 
           <div className='button-container'>
-            <Button onClick={() => buttonOnClick(() => nav('/auth/login'))} width='160px'>
+            <Button onClick={() => buttonOnClick(`${QNA_WRITE_POST_PATH}`)} width='160px'>
               Q&A 질문하기
             </Button>
-            <Button onClick={() => buttonOnClick(() => nav('/profile/pets'))} outline width='160px'>
+            <Button onClick={() => buttonOnClick(`${PROFILE_PET_PATH}`)} outline width='160px'>
               내 펫 등록하기
             </Button>
           </div>

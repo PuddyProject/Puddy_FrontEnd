@@ -1,5 +1,11 @@
 @use '../abstracts' as *;
 
+.my-posts-container {
+  .filter-container {
+    width: 95%;
+  }
+}
+
 .tab-titles {
   @include center;
   width: 100vw;
@@ -39,4 +45,9 @@
     width: 100%;
     border-bottom: 2px solid $primary-color;
   }
+}
+
+.my-post-list {
+  width: 90%;
+  margin: 0 auto;
 }

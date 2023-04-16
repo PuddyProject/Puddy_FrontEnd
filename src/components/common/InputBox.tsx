@@ -9,10 +9,12 @@ interface InputBoxProps {
   placeholderAlignRight?: boolean;
   value?: string;
   id?: string;
-  min?: string;
-  max?: string;
   readonly?: boolean;
   className?: string;
+  minLength?: number;
+  maxLength?: number;
+  min?: string;
+  max?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onKeyPress?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
@@ -30,8 +32,10 @@ export default function InputBox({
   placeholderAlignRight,
   value,
   id,
-  max,
   min,
+  max,
+  maxLength,
+  minLength,
   readonly,
   required = false,
   type = 'text',
@@ -46,12 +50,14 @@ export default function InputBox({
 
   return (
     <input
+      min={min}
+      max={max}
       onChange={onChange}
       onKeyDown={onKeyPress}
       onFocus={onFocus}
       readOnly={readonly}
-      min={min}
-      max={max}
+      minLength={minLength}
+      maxLength={maxLength}
       ref={inputRef}
       required={required}
       className={`input-box ${placeholderAlignRight ? 'ph-align-right' : ''} ${className}`}

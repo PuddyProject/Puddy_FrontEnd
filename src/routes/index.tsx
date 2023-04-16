@@ -1,5 +1,5 @@
-import { Route, Routes, Navigate, useLocation } from 'react-router-dom';
-import { Suspense, useEffect } from 'react';
+import { Route, Routes, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { Suspense, useEffect, useState } from 'react';
 
 import Layout from 'layouts';
 import LayoutWithoutHeader from 'layouts/LayoutWithoutHeader';
@@ -33,17 +33,24 @@ import {
   getPathCommunityDetail,
   getPathModificationQna,
   getPathModificationAnswer,
+  MY_PAGE_WITHDRAWAL_PATH,
+  NOT_FOUND_PATH,
   getPathModificationCommunity,
   EXPERT_PATH,
 } from 'constants/routes';
 
 import * as pages from 'pages';
+import ButtonModal from 'components/common/ButtonModal';
+import { useUser } from 'context/UserContext';
 
 const MEMBER_ONLY_PAGES = ['mypage', 'profile', 'expert', 'detail', 'newpost'];
 
 export default function Router() {
   const isLoggedIn = sessionStorage.getItem('userToken');
   // TODO: 로그인에 따른 페이지 라우트 수정 필요
+  const { decodedToken } = useUser();
+  console.log(decodedToken);
+
   const location = useLocation();
 
   useEffect(() => {
@@ -51,14 +58,34 @@ export default function Router() {
       const memberOnly = MEMBER_ONLY_PAGES.filter((page) => location.pathname.includes(page));
 
       if (memberOnly.length) {
-        window.alert('회원전용 페이지입니다.');
+        setShowModal(true);
       }
     }
-  }, [location]);
+  }, [isLoggedIn, location]);
+
+  const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
 
   if (!isLoggedIn) {
     return (
       <>
+        {showModal && (
+          <ButtonModal
+            closeModal={() => setShowModal(false)}
+            text='회원 전용 서비스 🐶'
+            subText='지금 퍼디 회원가입 후 이용해보세요!'
+            cancleText='로그인'
+            confirmText='회원가입'
+            onConfirm={() => {
+              setShowModal(false);
+              navigate(`${JOIN_PATH}`);
+            }}
+            onCancle={() => {
+              navigate(`${LOGIN_PATH}`);
+              setShowModal(false);
+            }}
+          />
+        )}
         <Suspense fallback={<Loading />}>
           <Routes>
             <Route element={<Layout />}>
@@ -122,9 +149,13 @@ export default function Router() {
         {/* --------------------------------------- */}
         {/* // ********** 하단 Nav 없음 *********** */}
         <Route path='/' element={<LayoutWithoutNav />}>
+          {/* //? 404 페이지 */}
+          <Route path={NOT_FOUND_PATH} element={<pages.NotFound />} />
+
           {/* //? 마이페이지 메뉴 */}
           <Route path={MY_PAGE_AUTH_EXPERT_PATH} element={<pages.AuthExpert />} />
           <Route path={MY_PAGE_ACCOUNT_PATH} element={<pages.Account />} />
+          <Route path={MY_PAGE_WITHDRAWAL_PATH} element={<pages.Withdrawal />} />
 
           {/* //? 내 프로필 수정 */}
           <Route path={MY_PAGE_PROFILE_PATH} element={<pages.MyProfileEditor />} />

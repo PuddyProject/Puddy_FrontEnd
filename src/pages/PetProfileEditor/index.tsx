@@ -15,6 +15,7 @@ import {
 
 import checkExtensions from 'utils/checkExtensions';
 import { get, post, put } from 'utils/axiosHelper';
+import { convertImgToFile } from 'utils/convertImageToFile';
 
 import { MyPetFormRefs, PetInfo, RequiredValues } from 'types/petProfileTypes';
 
@@ -54,7 +55,7 @@ export default function PetProfileEditor() {
   const [profileImg, setProfileImg] = useState('');
   const [showImgDeleteText, setShowImgDeleteText] = useState(false);
 
-  const [isCheckedFemail, setIsCheckedFemail] = useState(false);
+  const [isCheckedFemale, setIsCheckedFemale] = useState(false);
   // 성별 체크박스에서 사용
 
   const [emptyValues, setEmptyValues] = useState<RequiredValues[]>([]);
@@ -79,14 +80,11 @@ export default function PetProfileEditor() {
 
   useEffect(() => {
     // * 등록/수정 구분
-    if (hasPet) {
-      setIsModification(() => true);
-    } else setIsModification(() => false);
+    if (hasPet) setIsModification(() => true);
+    else setIsModification(() => false);
 
-    // * 수정하기 페이지 진입 시 토큰의 id와 경로 id가 일치하는지 확인
-    // TODO: 수정하기 기능 추가하기
+    // * 수정하기 페이지 진입 시 토큰의 id와 경로 id가 일치하는지 확인 * //
     // 펫 등록 여부에 따라 라우팅 분기
-
     if (!hasPet) return navigate(`${PROFILE_PET_PATH}`);
 
     if (hasPet && pathname === `${PROFILE_PET_PATH}`) {
@@ -103,21 +101,29 @@ export default function PetProfileEditor() {
       if (!pathId) return;
       return navigate(`${getPathPetProfile(pathId)}`);
     }
-  }, [decodedToken, hasPet]);
+  }, [decodedToken, hasPet, pathname, pathId]);
 
   useEffect(() => {
-    // * 수정하기 일 때 펫 정보 초기화
-    get({ endpoint: `${petsApi.GET_PET_DETAIL}` })
-      .then((res) => {
+    // * 펫 프로필 수정: 에디터 init * //
+    if (!isModification) return;
+
+    const getPetProfileData = async () => {
+      try {
+        const res = await get({ endpoint: `${petsApi.GET_PET_DETAIL}` });
         setProfileImg(() => res.data.data.imagePath);
         setPetProfile(() => {
           return { ...res.data.data, gender: res.data.data.gender ? '암컷' : '수컷' };
         });
-        setIsCheckedFemail(() => (res.data.data?.gender ? true : false));
-      })
-      .catch((err) => {
+        setIsCheckedFemale(() => (res.data.data?.gender ? true : false));
+
+        const imgFile = await convertImgToFile(res.data.data?.imagePath!);
+        setImgFile(() => imgFile);
+      } catch (err) {
         console.error(err);
-      });
+      }
+    };
+
+    getPetProfileData();
   }, [isModification, hasPet]);
 
   const onChangeImage = ({ target }: ChangeEvent<HTMLInputElement>) => {
@@ -139,21 +145,23 @@ export default function PetProfileEditor() {
 
   const onChangeInputs =
     (target: keyof PetInfo) => (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      setPetProfile((prev) => {
-        const hasClassNameAgeOrWeight =
-          e.target.className.includes('age') || e.target.className.includes('weight');
+      // * 나이, 체중 음수인 경우 절대값으로 변경 * //
+      const hasClassNameAgeOrWeight =
+        e.target.className.includes('age') || e.target.className.includes('weight');
 
-        // * 나이, 체중 음수인 경우 절대값으로 변경
-        if (hasClassNameAgeOrWeight) {
+      if (hasClassNameAgeOrWeight) {
+        setPetProfile((prev) => {
           return { ...prev, [target]: Math.abs(Number(e.target.value)).toString() };
-        }
-
-        return { ...prev, [target]: e.target.value };
-      });
+        });
+      }
 
       if (target === 'gender') {
-        setIsCheckedFemail(() => !isCheckedFemail);
+        setIsCheckedFemale((prev) => !prev);
       }
+
+      setPetProfile((prev) => {
+        return { ...prev, [target]: e.target.value };
+      });
     };
 
   const onClickNeutered = () => {
@@ -164,7 +172,7 @@ export default function PetProfileEditor() {
 
   /**
    * * 펫 프로필
-   * 서버 POST 요청
+   * * 서버 POST 요청
    */
   const onSubmitPetProfile = async () => {
     const emptyValues = Object.entries(petProfile)
@@ -176,17 +184,15 @@ export default function PetProfileEditor() {
 
     const convertProfileData = {
       ...petProfile,
-      age: Number(petProfile.age),
-      weight: Number(petProfile.weight),
+      age: Number(petProfile.age.toString().slice(0, 3)),
+      weight: Number(petProfile.weight.toString().slice(0, 3)),
       gender: petProfile.gender === '암컷' ? true : false,
     };
 
     const formData = new FormData();
     if (imgFile) {
-      formData.append('file', imgFile);
+      formData.append('images', imgFile);
     }
-
-    console.log({ imgFile });
 
     formData.append(
       'request',
@@ -244,46 +250,45 @@ export default function PetProfileEditor() {
   useEffect(() => {
     setIsMounted(true);
 
-    if (inputRefs.current.name.current) {
-      inputRefs.current.name.current.value = petProfile?.name;
-      inputRefs.current.name.current?.focus();
+    const nameRef = inputRefs.current.name.current;
+    if (nameRef) {
+      nameRef.value = petProfile?.name;
+      nameRef.focus();
     }
-  }, [petProfile.name, inputRefs.current]);
+  }, []);
+
+  const focusInput = (inputName: RequiredValues) => {
+    if (inputsToShake.includes(inputName)) return;
+
+    if (inputName !== 'gender') inputRefs.current[inputName].current?.focus();
+    return setInputsToShake((prev) => [...prev, inputName]);
+  };
 
   useEffect(() => {
     if (!isMounted) return;
 
     if (!petProfile.name) {
-      if (inputsToShake.includes('name')) return;
-      inputRefs.current.name.current?.focus();
-      return setInputsToShake((prev) => [...prev, 'name']);
+      return focusInput('name');
     }
 
     if (!petProfile.breed) {
-      if (inputsToShake.includes('breed')) return;
-      inputRefs.current.breed.current?.focus();
-      return setInputsToShake((prev) => [...prev, 'breed']);
+      return focusInput('breed');
     }
 
     if (!petProfile.age) {
-      if (inputsToShake.includes('age')) return;
-      inputRefs.current.age.current?.focus();
-      return setInputsToShake((prev) => [...prev, 'age']);
+      return focusInput('age');
     }
 
     if (!petProfile.gender) {
-      if (inputsToShake.includes('gender')) return;
-      return setInputsToShake((prev) => [...prev, 'gender']);
+      return focusInput('gender');
     }
 
     if (!petProfile.weight) {
-      if (inputsToShake.includes('weight')) return;
-      inputRefs.current.weight.current?.focus();
-      return setInputsToShake((prev) => [...prev, 'weight']);
+      return focusInput('weight');
     }
   }, [inputsToShake, emptyValues]);
 
-  console.log({ petProfile });
+  console.log(petProfile);
 
   return (
     <>
@@ -317,6 +322,7 @@ export default function PetProfileEditor() {
           <div className={`${inputsToShake.includes('name') ? 'shake' : ''}`}>
             <InputTitle isRequire>이름</InputTitle>
             <InputBox
+              maxLength={20}
               value={isModification ? petProfile?.name : ''}
               onChange={onChangeInputs('name')}
               required
@@ -329,6 +335,7 @@ export default function PetProfileEditor() {
           <div className={`${inputsToShake.includes('breed') ? 'shake' : ''}`}>
             <InputTitle isRequire>품종</InputTitle>
             <InputBox
+              maxLength={20}
               value={isModification ? petProfile?.breed : ''}
               onChange={onChangeInputs('breed')}
               required
@@ -358,7 +365,7 @@ export default function PetProfileEditor() {
             <InputTitle isRequire>성별</InputTitle>
             <div className='gender-buttons'>
               <RadioButton
-                checked={isModification ? isCheckedFemail : petProfile.gender === '암컷'}
+                checked={isModification ? isCheckedFemale : petProfile.gender === '암컷'}
                 onChange={onChangeInputs('gender')}
                 required
                 name='gender'
@@ -367,7 +374,7 @@ export default function PetProfileEditor() {
                 암컷
               </RadioButton>
               <RadioButton
-                checked={isModification ? !isCheckedFemail : petProfile.gender === '수컷'}
+                checked={isModification ? !isCheckedFemale : petProfile.gender === '수컷'}
                 onChange={onChangeInputs('gender')}
                 required
                 name='gender'
@@ -401,6 +408,7 @@ export default function PetProfileEditor() {
 
           <InputTitle>특이사항</InputTitle>
           <TextArea
+            maxLength={200}
             onChange={onChangeInputs('note')}
             placeholder='먹는 사료, 영양제, 간식, 건강상태 등'
             value={isModification ? petProfile?.note : ''}

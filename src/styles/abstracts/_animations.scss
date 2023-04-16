@@ -28,3 +28,13 @@
     transform: translateZ(0) scale(1, 1);
   }
 }
+
+@keyframes move-up-and-down {
+  0% {
+    transform: translateY(0px);
+  }
+
+  100% {
+    transform: translateY(10px);
+  }
+}

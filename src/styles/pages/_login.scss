@@ -4,6 +4,20 @@
   @include center;
   flex-direction: column;
   font-size: 1.1rem;
+  position: relative;
+
+  .prev-icon {
+    position: absolute;
+    left: -8vw;
+    top: -3vh;
+    font-size: 2.5rem;
+    cursor: pointer;
+    animation: move-up-and-down infinite 1s ease-in alternate;
+
+    polyline {
+      stroke: $color-gray02;
+    }
+  }
 
   .logo {
     width: 200px;
