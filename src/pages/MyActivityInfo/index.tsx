@@ -55,7 +55,7 @@ export default function MyActivityInfo() {
     <>
       <CustomHeader title='내 게시글/댓글' />
 
-      <div>
+      <div className='my-posts-container'>
         <ul className='tab-titles'>
           {TAB_MENU_TITLES.map((title, i) => (
             <li
@@ -98,7 +98,7 @@ export default function MyActivityInfo() {
 
 function QnaList(myQnaList: QnaData[]): ReactNode {
   return (
-    <div>
+    <div className='my-post-list'>
       {myQnaList?.map((qna) => {
         return (
           <Link to={`/qna/detail/${qna.questionId}`}>
@@ -112,7 +112,7 @@ function QnaList(myQnaList: QnaData[]): ReactNode {
 
 function AnswerList(answerList: AnswerInfo[]): ReactNode {
   return (
-    <div>
+    <div className='my-post-list'>
       {answerList?.map((answer) => {
         return (
           <div className='comment-card'>
