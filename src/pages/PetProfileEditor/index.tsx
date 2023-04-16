@@ -184,8 +184,8 @@ export default function PetProfileEditor() {
 
     const convertProfileData = {
       ...petProfile,
-      age: Number(petProfile.age),
-      weight: Number(petProfile.weight),
+      age: Number(petProfile.age.toString().slice(0, 3)),
+      weight: Number(petProfile.weight.toString().slice(0, 3)),
       gender: petProfile.gender === '암컷' ? true : false,
     };
 
@@ -287,6 +287,8 @@ export default function PetProfileEditor() {
     }
   }, []);
 
+  console.log(petProfile);
+
   return (
     <>
       <div className='profile-editor-container'>
@@ -319,6 +321,7 @@ export default function PetProfileEditor() {
           <div className={`${inputsToShake.includes('name') ? 'shake' : ''}`}>
             <InputTitle isRequire>이름</InputTitle>
             <InputBox
+              maxLength={20}
               value={isModification ? petProfile?.name : ''}
               onChange={onChangeInputs('name')}
               required
@@ -331,6 +334,7 @@ export default function PetProfileEditor() {
           <div className={`${inputsToShake.includes('breed') ? 'shake' : ''}`}>
             <InputTitle isRequire>품종</InputTitle>
             <InputBox
+              maxLength={20}
               value={isModification ? petProfile?.breed : ''}
               onChange={onChangeInputs('breed')}
               required
@@ -403,6 +407,7 @@ export default function PetProfileEditor() {
 
           <InputTitle>특이사항</InputTitle>
           <TextArea
+            maxLength={200}
             onChange={onChangeInputs('note')}
             placeholder='먹는 사료, 영양제, 간식, 건강상태 등'
             value={isModification ? petProfile?.note : ''}
