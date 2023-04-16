@@ -255,11 +255,12 @@ export default function PetProfileEditor() {
       nameRef.value = petProfile?.name;
       nameRef.focus();
     }
-  }, [petProfile.name, inputRefs.current]);
+  }, []);
 
   const focusInput = (inputName: RequiredValues) => {
     if (inputsToShake.includes(inputName)) return;
-    if (inputName !== 'gender') inputRefs.current.name.current?.focus();
+
+    if (inputName !== 'gender') inputRefs.current[inputName].current?.focus();
     return setInputsToShake((prev) => [...prev, inputName]);
   };
 
@@ -285,7 +286,7 @@ export default function PetProfileEditor() {
     if (!petProfile.weight) {
       return focusInput('weight');
     }
-  }, []);
+  }, [inputsToShake, emptyValues]);
 
   console.log(petProfile);
 
