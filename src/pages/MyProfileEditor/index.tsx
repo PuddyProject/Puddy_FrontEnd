@@ -12,19 +12,25 @@ import {
   Message,
 } from 'components';
 
-import checkExtensions from 'utils/checkExtensions';
-import { patch, post } from 'utils/axiosHelper';
-import { warningMessage } from 'utils/initialValues/myProfileEditor';
 import { isValidNickname } from 'utils';
-import { get } from 'utils/axiosHelper';
+import checkExtensions from 'utils/checkExtensions';
+import { patch, post, get } from 'utils/axiosHelper';
+import { warningMessage } from 'utils/initialValues/myProfileEditor';
+import { convertImgToFile } from 'utils/convertImageToFile';
+import { decryptRefreshToken, encryptRefreshToken } from 'utils/cryptoRefreshToken';
 
 import { ApiError } from 'types/errorsTypes';
 
-import { joinApi, myPageApi } from 'constants/apiEndpoint';
-import { MY_PAGE_PATH } from 'constants/routes';
-import { convertImgToFile } from 'utils/convertImageToFile';
+import { joinApi, loginApi, myPageApi } from 'constants/apiEndpoint';
+import { HOME_PATH, MY_PAGE_PATH } from 'constants/routes';
+
+import { useAuth } from 'hooks/useAuth';
+import { useUser } from 'context/UserContext';
 
 export default function MyProfileEditor() {
+  const { initSessionStorageUserToken, initSessionStorageRefeshToken } = useAuth();
+  const { setToken } = useUser();
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   const navigate = useNavigate();
@@ -45,8 +51,6 @@ export default function MyProfileEditor() {
   const [initWarningMessage, setInitWarningMessage] = useState('');
 
   const [isDisabledButton, setIsDisabledButton] = useState(true);
-
-  console.log(userProfile);
 
   const fetchUserDatas = async () => {
     const res = await get({ endpoint: `${myPageApi.GET_MY_PAGE_INFO}` });
@@ -145,9 +149,33 @@ export default function MyProfileEditor() {
         body: formData,
         isFormData: true,
       });
+
       if (res.status === 200) {
         window.alert('변경이 완료되었어요.');
         navigate(`${MY_PAGE_PATH}`);
+
+        // * 액세스 토큰 재발급 * //
+        const ciphertextRefreshToken = sessionStorage.getItem('refreshToken');
+        if (!ciphertextRefreshToken) {
+          window.alert('잘못된 요청입니다.');
+          return navigate(`${HOME_PATH}`);
+        }
+
+        const decryptToken = decryptRefreshToken(ciphertextRefreshToken).split('Bearer ').pop();
+        const reissueRes = await post({
+          endpoint: `${loginApi.POST_TOKEN_REISSUE}`,
+          body: {
+            accessToken: sessionStorage.getItem('userToken')?.split('Bearer ').pop(),
+            refreshToken: decryptToken,
+          },
+        });
+
+        const { accessToken, refreshToken } = reissueRes.data;
+        const encryptRefreshUserToken = encryptRefreshToken(refreshToken);
+
+        initSessionStorageUserToken(accessToken);
+        initSessionStorageRefeshToken(encryptRefreshUserToken);
+        setToken(accessToken);
       }
     } catch (err) {
       console.error(err);
@@ -155,7 +183,7 @@ export default function MyProfileEditor() {
   };
 
   const onCheckDuplicateNickname = async () => {
-    // * 닉네임 중복확인 버튼 클릭
+    // * 닉네임 중복확인 버튼 클릭 * //
     try {
       const res = await post({
         endpoint: `${joinApi.POST_DUPLICATE_NICKNAME}`,
@@ -179,7 +207,7 @@ export default function MyProfileEditor() {
 
   const onChangeInput = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      // * 닉네임 인풋 값 변경 시 Valid 체크
+      // * 닉네임 인풋 값 변경 시 Valid 체크 * //
       setShowWarningMessage(() => true);
       setShowCorrectMessage(() => false);
 
@@ -231,8 +259,6 @@ export default function MyProfileEditor() {
               <span className='delete-text'>삭제하기</span>
             </div>
           )}
-          {/* //TODO: 삭제하기 버튼 누르면 이미지 삭제 */}
-          {/* //TODO: 이미지 수정하기인 경우 이미지 미리보기 필요 */}
         </div>
       ) : (
         <ImageUploader onChangeImage={onChangeImage} />
@@ -251,11 +277,6 @@ export default function MyProfileEditor() {
             placeholder='닉네임을 입력해주세요.'
             value={userProfile.nickname}
           />
-          {/*
-              //TODO: 닉네임 변경 유무 확인
-              - 닉네임이 변경되지 않았을 경우
-              - 닉네임이 변경되었을 경우
-          */}
           <Button disabled={isDisabledButton} onClick={onCheckDuplicateNickname}>
             중복확인
           </Button>
