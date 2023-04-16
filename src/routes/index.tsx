@@ -25,12 +25,16 @@ import {
   QNA_DETAIL_PATH,
   QNA_WRITE_POST_PATH,
   QNA_PATH,
+  QNA_SEARCH_PATH,
   getPathWriteAnswer,
   getPathPetProfile,
   COMMUNITY_WRTIE_POST_PATH,
+  COMMUNITY_SEARCH_PATH,
   getPathCommunityDetail,
   getPathModificationQna,
   getPathModificationAnswer,
+  getPathModificationCommunity,
+  EXPERT_PATH,
 } from 'constants/routes';
 
 import * as pages from 'pages';
@@ -85,6 +89,7 @@ export default function Router() {
           <Route path={QNA_PATH} element={<pages.CardList />} />
           <Route path={COMMUNITY_PATH} element={<pages.Community />} />
           <Route path={MY_PAGE_PATH} element={<pages.MyPage />} />
+          <Route path={EXPERT_PATH} element={<pages.ExpertList />} />
         </Route>
         {/*  ************************************ */}
         {/* --------------------------------------- */}
@@ -92,13 +97,18 @@ export default function Router() {
         <Route path='/' element={<LayoutWithoutHeader />}>
           {/* //? Q&A 작성/상세 보기 */}
           <Route path={QNA_DETAIL_PATH} element={<pages.CardDetail />} />
-          <Route path={getPathWriteAnswer()} element={<pages.QnaAnswer />} />
-          <Route path={getPathModificationAnswer()} element={<pages.QnaAnswer />} />
+          <Route path={getPathWriteAnswer()} element={<pages.CommentAnswer />} />
+          <Route path={getPathModificationAnswer()} element={<pages.CommentAnswer />} />
           <Route path={QNA_WRITE_POST_PATH} element={<pages.NewPost />} />
           <Route path={getPathModificationQna()} element={<pages.NewPost />} />
+          <Route path={QNA_SEARCH_PATH} element={<pages.CardSearch />} />
+
+          {/* //? 커뮤니티 작성/상세 보기 */}
 
           <Route path={COMMUNITY_WRTIE_POST_PATH} element={<pages.NewPost />} />
           <Route path={getPathCommunityDetail()} element={<pages.CardDetail />} />
+          <Route path={getPathModificationCommunity()} element={<pages.NewPost />} />
+          <Route path={COMMUNITY_SEARCH_PATH} element={<pages.CardSearch />} />
 
           {/* //? 프로필 작성 */}
           {/* //TODO 전문가 프로필 작성 페이지는 전문가 회원 유형만 접근할 수 있도록 추가 필요 */}

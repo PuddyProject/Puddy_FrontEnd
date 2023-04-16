@@ -1,0 +1,66 @@
+@use '../abstracts' as *;
+
+.search-container {
+  margin: 0 auto;
+  @include header-gap;
+  @include footer-gap;
+  display: flex;
+  flex-direction: column;
+  width: 90vw;
+
+  .search-title-section {
+    margin-bottom: 15px;
+    text-align: center;
+
+    .search-title {
+      @include font-styles(14px, 700, $color-gray01);
+      padding-left: 10px;
+      line-height: 16px;
+
+      span {
+        color: $primary-color;
+      }
+    }
+
+    .search-sub-title {
+      @include font-styles(14px, 400, $color-gray01);
+      padding-left: 10px;
+      margin-top: 8px;
+      margin-bottom: 15px;
+
+      span {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .filter-container {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+
+    .filter-item {
+      background-color: #ffffff;
+      padding: 3px 12px;
+      border-radius: 10px;
+      border: 1px solid $icon-color;
+      color: $icon-color;
+
+      &.select-filter {
+        color: $primary-color;
+        border: 1px solid $primary-color;
+      }
+    }
+  }
+
+  .card-list {
+    &.community {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      row-gap: 20px;
+      padding: 0px 5px;
+    }
+  }
+}
