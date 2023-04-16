@@ -31,17 +31,11 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    setToken(() => sessionStorage.getItem(TOKEN_KEY));
-  }, []);
-
-  useEffect(() => {
     const storedToken = sessionStorage.getItem(TOKEN_KEY);
     if (storedToken) {
       setToken(storedToken);
     }
-  }, [token]);
 
-  useEffect(() => {
     if (token) {
       const decoded = decodeJWT(token);
       setDecodedToken(() => decoded);
