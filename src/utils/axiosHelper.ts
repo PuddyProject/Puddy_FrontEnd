@@ -111,11 +111,12 @@ instance.interceptors.response.use(
   },
   async (err) => {
     console.error(err);
-    if (err.response.status === 400) {
-      sessionStorage.removeItem('userToken');
-      window.alert('다시 로그인해주세요.');
-      window.location.href = `${LOGIN_PATH}`;
-    }
+    // TODO: 상태코드 400만 가지고 확인하면 안됨
+    // if (err.response.status === 400) {
+    //   sessionStorage.removeItem('userToken');
+    //   window.alert('다시 로그인해주세요.');
+    //   window.location.href = `${LOGIN_PATH}`;
+    // }
 
     return Promise.reject(err);
   }
