@@ -9,6 +9,7 @@ import { get } from 'utils/axiosHelper';
 import { Profile } from 'types/expertProfileTypes';
 import { expertApi } from 'constants/apiEndpoint';
 import { ApiError } from 'types/errorsTypes';
+import { NOT_FOUND_PATH } from 'constants/routes';
 
 const TEMP_IMAGE_URL =
   'https://blog.kakaocdn.net/dn/GHYFr/btrsSwcSDQV/UQZxkayGyAXrPACyf0MaV1/img.jpg';
@@ -28,6 +29,9 @@ export default function ExpertProfile() {
       } catch (err) {
         const error = err as ApiError;
         console.error(error.response?.status);
+        if (error.response?.status === 404) {
+          window.location.href = `${NOT_FOUND_PATH}`;
+        }
       }
     };
 
