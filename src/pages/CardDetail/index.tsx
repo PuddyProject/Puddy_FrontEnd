@@ -78,19 +78,19 @@ export default function QnaDetail() {
   };
 
   const IsFirstWriter = () => {
-    const isFirstWriter = !answerList.some((answer) => answer.nickname === decodedToken?.nickname);
+    const isFirstAnswer = !answerList.some((answer) => answer.nickname === decodedToken?.nickname);
     const myComment = answerList.filter((answer) => answer.nickname === decodedToken?.nickname)[0];
 
     return (
       !myComment?.selected && (
         <FooterButton
           onClick={() => {
-            isFirstWriter
+            isFirstAnswer
               ? nav('write/answer', { state: postId })
               : nav('write/answer/edit', { state: { comment: myComment, postId } });
           }}
         >
-          {isFirstWriter ? '답변 작성하기' : '답변 수정하기'}
+          {isFirstAnswer ? '답변 작성하기' : '답변 수정하기'}
         </FooterButton>
       )
     );
@@ -168,6 +168,7 @@ export default function QnaDetail() {
                     })
                   : postDataInfo.pet !== null &&
                     Object.entries(postDataInfo.pet!).map((tagInfo) => {
+                      console.log(tagInfo);
                       return (
                         PET_INFO.includes(tagInfo[0]) && (
                           <span className='tag-item'>{choiceTagInfo(tagInfo)}</span>
