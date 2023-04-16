@@ -34,6 +34,7 @@ import {
   getPathModificationQna,
   getPathModificationAnswer,
   getPathModificationCommunity,
+  EXPERT_PATH,
 } from 'constants/routes';
 
 import * as pages from 'pages';
@@ -88,6 +89,7 @@ export default function Router() {
           <Route path={QNA_PATH} element={<pages.CardList />} />
           <Route path={COMMUNITY_PATH} element={<pages.Community />} />
           <Route path={MY_PAGE_PATH} element={<pages.MyPage />} />
+          <Route path={EXPERT_PATH} element={<pages.ExpertList />} />
         </Route>
         {/*  ************************************ */}
         {/* --------------------------------------- */}

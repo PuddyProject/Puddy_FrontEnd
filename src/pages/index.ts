@@ -15,6 +15,7 @@ export const PetProfile = lazy(() => import('./PetProfile'));
 export const PetProfileEditor = lazy(() => import('./PetProfileEditor'));
 export const ExpertProfile = lazy(() => import('./ExpertProfile'));
 export const ExpertProfileEditor = lazy(() => import('./ExpertProfileEditor'));
+export const ExpertList = lazy(() => import('./ExpertCardList'));
 export const MyActivityInfo = lazy(() => import('./MyActivityInfo'));
 export const MyProfileEditor = lazy(() => import('./MyProfileEditor'));
 export const KakaoLogin = lazy(() => import('./Login/Kakao'));

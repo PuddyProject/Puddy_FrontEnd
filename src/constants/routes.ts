@@ -95,4 +95,5 @@ export const PET_PROFILE_PATH = '/users/pets/detail';
 /* =========================================================== */
 
 /* 전문가 프로필 보기 */
+export const EXPERT_PATH = '/experts';
 export const EXPERT_PROFILE_PATH = '/experts/:id';
