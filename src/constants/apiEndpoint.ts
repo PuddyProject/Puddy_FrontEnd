@@ -32,7 +32,7 @@ export const questionsApi = Object.freeze({
   QUESTIONS: `${QUESTIONS_API}/`,
 
   /* Q&A 게시글 등록 */
-  POST_CREATE_QUESTION: `${QUESTIONS_API}/write`,
+  POST_CREATE_QUESTION: `${QUESTIONS_API}`,
 
   /* Q&A 게시글 리스트 조회 */
   GET_QUESTION_LIST: `${QUESTIONS_API}`,
