@@ -129,6 +129,7 @@
     ]
   },
   "devDependencies": {
+    "@types/crypto-js": "^4.1.1",
     "sass": "^1.59.3",
     "sass-loader": "^13.2.1"
   }
