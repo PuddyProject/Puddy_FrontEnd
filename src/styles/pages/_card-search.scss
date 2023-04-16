@@ -11,6 +11,7 @@
   .search-title-section {
     margin-bottom: 15px;
     text-align: center;
+
     .search-title {
       @include font-styles(14px, 700, $color-gray01);
       padding-left: 10px;
