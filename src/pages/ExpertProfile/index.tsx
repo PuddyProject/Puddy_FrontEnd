@@ -8,6 +8,7 @@ import { get } from 'utils/axiosHelper';
 
 import { Profile } from 'types/expertProfileTypes';
 import { expertApi } from 'constants/apiEndpoint';
+import { ApiError } from 'types/errorsTypes';
 
 const TEMP_IMAGE_URL =
   'https://blog.kakaocdn.net/dn/GHYFr/btrsSwcSDQV/UQZxkayGyAXrPACyf0MaV1/img.jpg';
@@ -17,20 +18,21 @@ export default function ExpertProfile() {
   const expertId = location.pathname.split('/').pop();
   const [profile, setProfile] = useState<Profile>();
 
-  // ! 회원 id를 가지고 전문가를 선별하고 있어서 존재하지 않는 전문가 페이지 진입이 가능함
-  // TODO: 404 페이지 처리
   useEffect(() => {
     if (!expertId) return;
-    get({ endpoint: `${expertApi.requestExpertId(expertId)}` })
-      .then((res) => {
-        setProfile(res.data.data);
-      })
-      .catch((err) => {
-        console.error(err.resultCode);
-      });
-  }, [expertId]);
 
-  console.log(profile?.careerList);
+    const getExpertProfile = async () => {
+      try {
+        const res = await get({ endpoint: `${expertApi.requestExpertId(expertId)}` });
+        setProfile(res.data.data);
+      } catch (err) {
+        const error = err as ApiError;
+        console.error(error.response?.status);
+      }
+    };
+
+    getExpertProfile();
+  }, [expertId]);
 
   return (
     <>
@@ -52,8 +54,12 @@ export default function ExpertProfile() {
             <ul className='profile-expert_educations'>
               {profile?.careerList && profile?.careerList.length > 0 && (
                 <>
-                  {profile?.careerList.map((career) => {
-                    return <li className='profile-expert_content'>{career}</li>;
+                  {profile?.careerList.map((career, i) => {
+                    return (
+                      <li key={`${career} ${i}`} className='profile-expert_content'>
+                        {career}
+                      </li>
+                    );
                   })}
                 </>
               )}
