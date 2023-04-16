@@ -19,3 +19,4 @@ export const MyProfileEditor = lazy(() => import('./MyProfileEditor'));
 export const KakaoLogin = lazy(() => import('./Login/Kakao'));
 export const Account = lazy(() => import('./MyPage/Account'));
 export const Withdrawal = lazy(() => import('./MyPage/Withdrawal'));
+export const NotFound = lazy(() => import('./NotFound'));
