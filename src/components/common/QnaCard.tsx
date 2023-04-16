@@ -1,7 +1,8 @@
 import { PostDataInfo } from 'types/commentTypes';
+import { QnaData } from 'types/qnaCardTypes';
 
 interface QnaCardProps {
-  questionData: PostDataInfo;
+  questionData: PostDataInfo | QnaData;
 }
 export default function QnaCard({ questionData }: QnaCardProps) {
   return (
