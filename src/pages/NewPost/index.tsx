@@ -3,12 +3,12 @@ import { IoMdRemoveCircleOutline } from 'react-icons/io';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { InputBox, InputTitle, FooterButton, CustomHeader } from 'components';
-import { categoryItem } from 'constants/qnaNewPost';
+import { CATEGORY_ITEM } from 'constants/NewPost';
 
 import { checkExtensions, checkFileSize, post } from 'utils';
 import { PostDataInfo } from 'types/commentTypes';
 import { AxiosResponse } from 'axios';
-
+import { articleApi, questionsApi } from 'constants/apiEndpoint';
 interface PostInfo {
   title: string;
   content: string;
@@ -34,50 +34,59 @@ export default function NewPost() {
     postInfo.content.length >= 1 && postInfo.content !== '' && postInfo.title.length >= 1;
 
   const nav = useNavigate();
-
   const isCommunityPage = location.pathname.includes('community');
   const isEditPage = location.pathname.includes('edit');
+  const POST_ID = isCommunityPage ? location.state?.articleId : location.state?.questionId;
+
+  const getImageFile = async (imgUrl: string) => {
+    const res = await fetch(imgUrl, {
+      method: 'GET',
+      headers: {
+        Origin: '*',
+      },
+    });
+
+    const blob = await res.blob();
+    const fileName = imgUrl.split('/').pop()!;
+    const fileExtension = fileName?.split('.').pop();
+    const metaData = { type: `image/${fileExtension}` };
+
+    return new File([blob], fileName, metaData);
+  };
 
   useEffect(() => {
-    // TODO: 현재는 안되는 코드이며 향후 시도 CORS 오류로 인해 일단 보류
-    // fetch(`${editData?.images[0]}`, {
-    //   method: 'GET',
-    //   headers: {
-    //     Origin: '*',
-    //   },
-    // }).then((res) => console.log(res));
+    if (isEditPage) {
+      editData.images.map(async (imgUrl) => {
+        const File = await getImageFile(imgUrl);
+        setImgFile((prev) => [...prev, File]);
+      });
+    }
+
     firstInputBox.current?.focus();
   }, []);
 
-  const sendQnaPage = async (formData: FormData) => {
+  const sendData = async (formData: FormData) => {
     let res: AxiosResponse;
 
-    if (isEditPage) {
-      res = await post({
-        endpoint: `questions/${location.state.questionId}`,
-        body: formData,
-        isImage: true,
-        isPost: false,
-      });
-    } else {
-      res = await post({ endpoint: 'questions/write', body: formData, isImage: true });
-    }
+    res = await post({
+      endpoint: `${
+        isCommunityPage
+          ? articleApi.getArticle(POST_ID || '')
+          : questionsApi.requestQuestionsId(POST_ID || '')
+      }`,
+      body: formData,
+      isImage: true,
+      isPost: isEditPage ? false : true,
+    });
+
+    const page = isCommunityPage ? '커뮤니티' : 'Q&A';
+    const editText = isEditPage ? '수정' : '작성';
 
     if (res.status === 200) {
-      isEditPage ? alert('Q&A 수정이 완료 되었습니다.') : alert('Q&A 작성 완료 되었습니다.');
+      alert(`${page} 게시글 ${editText}이 되었습니다.`);
       nav(-1);
     } else {
-      alert('게시글을 작성하지 못하였습니다. 잠시 후 다시 시도해주세요.');
-    }
-  };
-
-  const sendCommunityPage = async (formData: FormData) => {
-    let res: AxiosResponse;
-
-    if (isEditPage) {
-      //TODO: 커뮤니티 수정 페이지에 들어갈 내용
-    } else {
-      res = await post({ endpoint: 'articles', body: formData, isImage: true });
+      alert(`게시글을 ${editText} 하지 못하였습니다. 잠시 후 다시 시도해주세요.`);
     }
   };
 
@@ -205,16 +214,12 @@ export default function NewPost() {
       formData.append('images', imgFile[i]);
     }
 
-    if (isCommunityPage) {
-      sendCommunityPage(formData);
-    } else {
-      sendQnaPage(formData);
-    }
+    sendData(formData);
   };
 
   return (
     <div>
-      <CustomHeader title='Q&A 등록' hideIcon />
+      <CustomHeader title={isCommunityPage ? '커뮤니티 등록' : 'Q&A 등록'} hideIcon />
       <div className='qna-newpost-container' onChange={onChangeHandler}>
         <InputTitle isRequire={true}> 제목 </InputTitle>
         <InputBox
@@ -231,7 +236,7 @@ export default function NewPost() {
           <>
             <InputTitle isRequire={true}>카테고리 </InputTitle>
             <div className='category-container'>
-              {categoryItem.map((category, i) => {
+              {CATEGORY_ITEM.map((category, i) => {
                 const isSelected = category === postInfo.category;
 
                 return (
@@ -269,7 +274,7 @@ export default function NewPost() {
             .map((_, i) => {
               return filePreview[i] !== undefined ? (
                 <div key={i} className='image-item'>
-                  <img key={i} className='image-item' src={filePreview[i]} alt='error' />
+                  <img key={i} className='image-item' src={filePreview[i]} alt='' />
                   <IoMdRemoveCircleOutline
                     size='25px'
                     className='remove-image'
@@ -277,9 +282,7 @@ export default function NewPost() {
                   />
                 </div>
               ) : (
-                <div key={i} className='image-item'>
-                  <img key={i} className='image-item' />
-                </div>
+                <img key={i} className='image-item' alt='' />
               );
             })}
         </div>
@@ -298,13 +301,14 @@ export default function NewPost() {
             <InputBox
               width='100%'
               placeholder='태그를 등록해보세요.'
+              margin='0px 0px 15px 0px'
               onKeyPress={onTagBoxKeyDown}
               onChange={onTagBoxChange}
             />
-            <div className='tag-container'>
+            <div className='new-post-tag-container'>
               {tagList.map((tag, index) => {
                 return (
-                  <span key={index} className='tag-item' onClick={() => deleteTag(index)}>
+                  <span key={index} className='tag-item-new-post' onClick={() => deleteTag(index)}>
                     {tag}
                   </span>
                 );

@@ -48,8 +48,11 @@
 
   .card-list {
     &.community {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      row-gap: 20px;
+      padding: 0px 5px;
     }
   }
 }

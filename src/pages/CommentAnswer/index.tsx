@@ -6,7 +6,7 @@ import { FooterButton, InputTitle, CustomHeader } from 'components';
 
 import { post } from 'utils';
 
-export default function QnaAnswer() {
+export default function CommentAnswer() {
   const location = useLocation();
   const nav = useNavigate();
   const { comment } = location.state;
@@ -15,12 +15,11 @@ export default function QnaAnswer() {
   const [answer, setAnaswer] = useState<string>(comment?.content || '');
 
   const isEditPage = location.pathname.includes('edit');
+  const isCommunityPage = location.pathname.includes('community');
 
   useEffect(() => {
     textAreaRef.current?.focus({});
   }, []);
-
-  console.log(location.state);
 
   async function sendData() {
     const res = await post({
@@ -36,11 +35,12 @@ export default function QnaAnswer() {
       isPost: isEditPage ? false : true,
     });
 
+    const editText = isEditPage ? '수정' : '작성';
     if (res.data.resultCode === 'SUCCESS') {
-      alert(`답변 ${isEditPage ? '수정' : '작성'} 완료`);
+      alert(`답변 ${editText} 완료`);
       nav(-1);
     } else {
-      alert(`답변 ${isEditPage ? '수정' : '작성'} 실패. 잠시 후 다시 시도해주세요`);
+      alert(`답변 ${editText} 실패. 잠시 후 다시 시도해주세요`);
     }
   }
 
@@ -51,7 +51,7 @@ export default function QnaAnswer() {
 
   return (
     <>
-      <CustomHeader title='Q&A 답변 작성' hideIcon />
+      <CustomHeader title={`${isCommunityPage ? '커뮤니티 댓글' : 'Q&A 답변'}  작성`} hideIcon />
       <div>
         <InputTitle isRequire={true} margin='50px 0px 10px 0px'>
           답변 내용

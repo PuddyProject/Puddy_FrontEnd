@@ -56,14 +56,18 @@ export default function QnaComment({
 
   const deleteComment = async () => {
     let res = await del({
-      endpoint: `questions/${location.pathname.split('/')[3]}/answers/${answerData.id}`,
+      endpoint: `questions/${postId}/answers/${answerData.id}`,
     });
 
     if (res.status === 200) {
       alert('답변을 삭제했습니다.');
-      setAnswerList((answerList: AnswerInfo[]) => {
-        return answerList.filter((answer) => answer.id !== answerData.id);
-      });
+      if (answerData.selected) {
+        setPostDataInfo((prev) => ({ ...prev, isSolved: false }));
+      } else {
+        setAnswerList((answerList: AnswerInfo[]) => {
+          return answerList.filter((answer) => answer.id !== answerData.id);
+        });
+      }
     }
   };
 
@@ -80,7 +84,7 @@ export default function QnaComment({
 
         <div className='comment-user-role-container'>
           <div className='user-role'>{isExport ? '전문가 답변' : '사용자 답변'}</div>
-          {isCommentWriteUser && (
+          {isCommentWriteUser && answerData.selected !== true && (
             <div className='user-role'>
               <span
                 onClick={() => nav('write/answer/edit', { state: { comment: answerData, postId } })}
