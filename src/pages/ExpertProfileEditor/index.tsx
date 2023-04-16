@@ -9,7 +9,7 @@ import { post } from 'utils';
 
 import { Profile } from 'types/expertProfileTypes';
 import { expertApi } from 'constants/apiEndpoint';
-import { HOME_PATH } from 'constants/routes';
+import { HOME_PATH, MY_PAGE_PATH } from 'constants/routes';
 
 const MAX_CAREER_COUNT = 5;
 
@@ -34,12 +34,14 @@ export default function ExpertProfileEditor() {
 
   const [isDisabled, setIsDisabled] = useState(true);
 
+  // TODO: 이미 프로필을 등록한 전문가 유저는 프로필 보기 페이지로 라우팅 해야할듯
+
   const submitExpertProfile = async () => {
     try {
       const res = await post({ endpoint: `${expertApi.POST_EXPERT}`, body: profile });
-      // 서버에서 이름은 안받음
       if (res.data.resultCode === 'SUCCESS') {
         alert('프로필 등록 완료');
+        navigate(`${MY_PAGE_PATH}`);
         // TODO: 전문가 프로필 수정은 ?
       }
     } catch (err) {
@@ -107,6 +109,7 @@ export default function ExpertProfileEditor() {
       <div className='expert-profile-container'>
         <InputTilte isRequire>이름</InputTilte>
         <InputBox
+          maxLength={20}
           onChange={onChangeInput('username')}
           inputRef={inputRef}
           width='250px'
@@ -116,6 +119,7 @@ export default function ExpertProfileEditor() {
 
         <InputTilte isRequire>학력</InputTilte>
         <InputBox
+          maxLength={20}
           onChange={onChangeInput('education')}
           width='250px'
           required
@@ -127,6 +131,7 @@ export default function ExpertProfileEditor() {
           {careerInputs.map((careerInput, i) => {
             return (
               <InputBox
+                maxLength={20}
                 width='250px'
                 required
                 placeholder='경력을 입력해주세요.'
@@ -143,12 +148,14 @@ export default function ExpertProfileEditor() {
 
         <InputTilte>소개</InputTilte>
         <TextArea
+          maxLength={200}
           onChange={onChangeInput('introduce')}
           placeholder='자유롭게 소개를 작성해주세요.'
         ></TextArea>
 
         <InputTilte>근무지/매장 위치</InputTilte>
         <InputBox
+          maxLength={20}
           onChange={onChangeInput('location')}
           width='250px'
           placeholder='근무지 또는 매장 위치를 홍보해보세요.'
