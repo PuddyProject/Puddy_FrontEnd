@@ -117,10 +117,6 @@ instance.interceptors.response.use(
       window.location.href = `${LOGIN_PATH}`;
     }
 
-    if (err.response.status === 404) {
-      window.location.href = `${NOT_FOUND_PATH}`;
-    }
-
     return Promise.reject(err);
   }
 );
