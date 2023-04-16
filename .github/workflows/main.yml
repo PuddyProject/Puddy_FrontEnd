@@ -22,6 +22,12 @@ jobs:
             ${{ runner.OS }}-build-
             ${{ runner.OS }}-
 
+      - name: Setting .env
+        run: |
+          echo "REACT_APP_API_URL=${{secrets.REACT_APP_API_URL}}" >> .env
+          echo "REACT_APP_API_PORT=${{secrets.REACT_APP_API_PORT}}" >> .env
+          cat .env
+
       - name: Install Dependencies
         run: yarn
 
