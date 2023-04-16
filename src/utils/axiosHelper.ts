@@ -4,7 +4,7 @@ import decodeJWT from './decodeJWT';
 import { decryptRefreshToken, encryptRefreshToken } from './cryptoRefreshToken';
 
 import { loginApi } from 'constants/apiEndpoint';
-import { LOGIN_PATH } from 'constants/routes';
+import { LOGIN_PATH, NOT_FOUND_PATH } from 'constants/routes';
 
 const SERVER_URL = `${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/`;
 
@@ -111,10 +111,14 @@ instance.interceptors.response.use(
   },
   async (err) => {
     console.error(err);
-    if (err.res.status === 400) {
+    if (err.response.status === 400) {
       sessionStorage.removeItem('userToken');
       window.alert('다시 로그인해주세요.');
       window.location.href = `${LOGIN_PATH}`;
+    }
+
+    if (err.response.status === 404) {
+      window.location.href = `${NOT_FOUND_PATH}`;
     }
 
     return Promise.reject(err);
