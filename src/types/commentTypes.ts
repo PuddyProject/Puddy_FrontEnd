@@ -39,7 +39,7 @@ export interface PostDataInfo {
   postCategory: number;
   title: string;
   viewCount: number;
-  images: string[];
+  images?: string[];
 
   articleId?: number;
   likeCount?: number;

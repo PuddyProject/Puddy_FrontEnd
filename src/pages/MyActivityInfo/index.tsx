@@ -102,7 +102,7 @@ function QnaList(myQnaList: QnaData[]): ReactNode {
       {myQnaList?.map((qna) => {
         return (
           <Link to={`/qna/detail/${qna.questionId}`}>
-            <QnaCard qnaData={qna} />
+            <QnaCard questionData={qna} />
           </Link>
         );
       })}
