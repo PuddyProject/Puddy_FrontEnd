@@ -1,0 +1,13 @@
+@use '../abstracts' as *;
+
+.not-found-text {
+  @include header-gap;
+  align-items: center;
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+
+  strong {
+    font-weight: 600;
+  }
+}
