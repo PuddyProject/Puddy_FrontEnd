@@ -26,6 +26,7 @@ jobs:
         run: |
           echo "REACT_APP_API_URL=${{secrets.REACT_APP_API_URL}}" >> .env
           echo "REACT_APP_API_PORT=${{secrets.REACT_APP_API_PORT}}" >> .env
+          echo "TOKEN_SECRET_KEY=${{secrets.TOKEN_SECRET_KEY}}" >> .env
           cat .env
 
       - name: Install Dependencies
