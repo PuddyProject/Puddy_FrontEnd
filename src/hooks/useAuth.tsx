@@ -5,12 +5,19 @@ import decodeJWT from 'utils/decodeJWT';
 export function useAuth() {
   const [userToken, setUserToken] = useState<string | null>(null);
 
-  // * 토큰 설정
+  // * 액세스 토큰 세션 스토리지에 세팅 * //
   const initSessionStorageUserToken = (token: string | null) => {
     if (!token) return null;
 
     sessionStorage.setItem('userToken', token);
     setUserToken(token);
+  };
+
+  // * 암호화된 리프레시 토큰 세션 스토리지에 세팅 * //
+  const initSessionStorageRefeshToken = (encryptRefreshToken: string) => {
+    if (!encryptRefreshToken) return;
+
+    sessionStorage.setItem('refreshToken', encryptRefreshToken);
   };
 
   // * 토큰 삭제
@@ -27,5 +34,11 @@ export function useAuth() {
     return decodedToken && decodedToken.exp > Date.now() / 1_000;
   };
 
-  return { userToken, initSessionStorageUserToken, removeSessionStorageUserToken, isTokenExpired };
+  return {
+    userToken,
+    initSessionStorageUserToken,
+    initSessionStorageRefeshToken,
+    removeSessionStorageUserToken,
+    isTokenExpired,
+  };
 }
