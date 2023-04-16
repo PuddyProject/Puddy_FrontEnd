@@ -1,6 +1,10 @@
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+
 import decodeJWT from './decodeJWT';
+import { decryptRefreshToken, encryptRefreshToken } from './cryptoRefreshToken';
+
+import { loginApi } from 'constants/apiEndpoint';
+import { LOGIN_PATH } from 'constants/routes';
 
 const SERVER_URL = `${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/`;
 
@@ -48,14 +52,51 @@ const instance = axios.create({
 
 const isTokenExpired = (token: string) => {
   const decodedToken = decodeJWT(token);
-  return decodedToken && decodedToken.exp > Date.now() / 1000;
+  return decodedToken && decodedToken.exp > Date.now() / 1000 - 5 * 60;
 };
 
-instance.interceptors.request.use((config) => {
+const getNewToken = async () => {
+  const oldRefreshToken = sessionStorage.getItem('refreshToken');
+  const oldAccessToken = sessionStorage.getItem('accessToken');
+
+  if (!oldRefreshToken) return;
+  const encryptRefreshUserToken = encryptRefreshToken(oldRefreshToken);
+  try {
+    const res = await post({
+      endpoint: loginApi.POST_TOKEN_REISSUE,
+      body: {
+        refreshToken: encryptRefreshUserToken,
+        accessToken: oldAccessToken,
+      },
+    });
+
+    const { accessToken, refreshToken } = res.data;
+    sessionStorage.setItem('userToken', accessToken);
+    const newDecryptRefreshToken = decryptRefreshToken(refreshToken);
+    sessionStorage.setItem('refreshToken', newDecryptRefreshToken);
+
+    return accessToken;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+instance.interceptors.request.use(async (config) => {
   const userToken = sessionStorage.getItem('userToken');
 
   if (userToken) {
-    if (userToken && isTokenExpired(userToken)) {
+    // * 액세스 토큰 만료 확인 후 응답코드 400인 경우 서버로부터 새 토큰 발급 * //
+    if (!isTokenExpired(userToken)) {
+      window.alert('액세스 토큰이 만료되었습니다. test 콘솔');
+      // TODO: 정상동작하는지 확인 필요
+      try {
+        const newToken = await getNewToken();
+        config.headers.Authorization = newToken;
+      } catch (err) {
+        console.error(err);
+      }
+    } else {
+      // * 액세스 토큰을 헤더에 실어보내용 :9 * //
       config.headers.Authorization = userToken;
     }
   }
@@ -64,38 +105,21 @@ instance.interceptors.request.use((config) => {
 });
 
 // ! 아래 코드는 테스트가 필요합니당..!
-// instance.interceptors.response.use(
-//   (res) => {
-//     return res;
-//   },
-//   async (err) => {
-//     const originalRequest = err.config;
-//     const navigate = useNavigate();
-//     const userToken = sessionStorage.getItem('userToken');
-//     if (userToken) {
-//       if (err.response.status === 401 && !originalRequest._retry && isTokenExpired(userToken)) {
-//         originalRequest._retry = true;
+instance.interceptors.response.use(
+  (res) => {
+    return res;
+  },
+  async (err) => {
+    console.error(err);
+    if (err.res.status === 400) {
+      sessionStorage.removeItem('userToken');
+      window.alert('다시 로그인해주세요.');
+      window.location.href = `${LOGIN_PATH}`;
+    }
 
-//         try {
-//           const getNewAccessToken = () => {
-//             get({ endpoint: 'users/login/reissue' });
-//           };
-
-//           const newAccessToken = await getNewAccessToken();
-//           originalRequest.headers.Authorization = newAccessToken;
-//           return axios(originalRequest);
-//         } catch (err) {
-//           // * 리프레시 토큰 만료, 기타 에러
-//           console.error(err);
-//           window.alert('로그인 시간이 만료되었어요.');
-//           navigate('/auth/login');
-//         }
-//       }
-//     }
-
-//     return Promise.reject(err);
-//   }
-// );
+    return Promise.reject(err);
+  }
+);
 
 export async function get({ endpoint, params = '' }: GET) {
   const URL = `${endpoint}${params}`;
