@@ -45,10 +45,10 @@ export interface PostDataInfo {
   likeCount?: number;
   tagList?: Tag[];
   imagePath?: string;
+  isLike?: boolean;
 
   category?: string;
   isSolved?: boolean;
   questionId?: number;
-
   pet?: Pet | null;
 }
