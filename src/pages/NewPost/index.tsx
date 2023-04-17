@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { InputBox, InputTitle, FooterButton, CustomHeader } from 'components';
 import { CATEGORY_ITEM } from 'constants/NewPost';
 
-import { checkExtensions, checkFileSize, post } from 'utils';
+import { checkExtensions, checkFileSize, post, trimBody } from 'utils';
 import { PostDataInfo } from 'types/commentTypes';
 import { AxiosResponse } from 'axios';
 import { articleApi, questionsApi } from 'constants/apiEndpoint';
@@ -166,7 +166,9 @@ export default function NewPost() {
   const onSendData = async () => {
     const formData = new FormData();
 
-    const commonData = { title: postInfo.title, content: postInfo.content };
+    const content = trimBody(postInfo.content);
+    const commonData = { title: postInfo.title, content };
+
     if (isCommunityPage) {
       formData.append(
         'request',

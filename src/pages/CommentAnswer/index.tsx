@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import { FooterButton, InputTitle, CustomHeader } from 'components';
 
-import { post } from 'utils';
+import { post, trimBody } from 'utils';
 
 export default function CommentAnswer() {
   const location = useLocation();
@@ -22,6 +22,8 @@ export default function CommentAnswer() {
   }, []);
 
   async function sendData() {
+    let postAnswer = trimBody(answer);
+
     const res = await post({
       endpoint: `${
         isEditPage
@@ -29,7 +31,7 @@ export default function CommentAnswer() {
           : answersApi.requestPostAnswer(location.state)
       }`,
       body: {
-        content: answer,
+        content: postAnswer,
         postCategory: '1',
       },
       isPost: isEditPage ? false : true,
