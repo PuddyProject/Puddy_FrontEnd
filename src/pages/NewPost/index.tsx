@@ -9,6 +9,8 @@ import { checkExtensions, checkFileSize, post } from 'utils';
 import { PostDataInfo } from 'types/commentTypes';
 import { AxiosResponse } from 'axios';
 import { articleApi, questionsApi } from 'constants/apiEndpoint';
+import { convertImgToFile } from 'utils';
+
 interface PostInfo {
   title: string;
   content: string;
@@ -33,32 +35,18 @@ export default function NewPost() {
   const isVaildForm =
     postInfo.content.length >= 1 && postInfo.content !== '' && postInfo.title.length >= 1;
 
+  const isQnaVaildForm = isVaildForm && postInfo.category !== '';
   const nav = useNavigate();
   const isCommunityPage = location.pathname.includes('community');
   const isEditPage = location.pathname.includes('edit');
   const POST_ID = isCommunityPage ? location.state?.articleId : location.state?.questionId;
 
-  const getImageFile = async (imgUrl: string) => {
-    const res = await fetch(imgUrl, {
-      method: 'GET',
-      headers: {
-        Origin: '*',
-      },
-    });
-
-    const blob = await res.blob();
-    const fileName = imgUrl.split('/').pop()!;
-    const fileExtension = fileName?.split('.').pop();
-    const metaData = { type: `image/${fileExtension}` };
-
-    return new File([blob], fileName, metaData);
-  };
-
   useEffect(() => {
     if (isEditPage) {
       editData.images.map(async (imgUrl) => {
-        const File = await getImageFile(imgUrl);
-        setImgFile((prev) => [...prev, File]);
+        const File = await convertImgToFile(imgUrl);
+
+        setImgFile((prev) => [...prev, File!]);
       });
     }
 
@@ -317,7 +305,10 @@ export default function NewPost() {
           </>
         )}
       </div>
-      <FooterButton onClick={onSendData} disabled={!isVaildForm}>
+      <FooterButton
+        onClick={onSendData}
+        disabled={isCommunityPage ? !isVaildForm : !isQnaVaildForm}
+      >
         {isEditPage ? '수정하기' : '등록하기'}
       </FooterButton>
     </div>
