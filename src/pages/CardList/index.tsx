@@ -108,58 +108,62 @@ export default function CardList() {
   }
 
   return (
-    <div className='list-container'>
-      <div className='list-title-section'>
-        <div className='list-title'>{TITLE[CURRENT_PAGE]}</div>
-        <div className='list-sub-title'>{HEAD_LILE[CURRENT_PAGE]}</div>
-      </div>
-      <div className='list-search-section'>
-        <InputBox
-          placeholder='검색어를 입력하세요.'
-          width='100%'
-          className='search-box'
-          inputRef={searchRef}
-          value={searchWord}
-          onChange={onSearchWordChange}
-          onKeyPress={onSearchBoxKeyDown}
-        />
-      </div>
+    <>
+      {!isLoading && (
+        <div className='list-container'>
+          <div className='list-title-section'>
+            <div className='list-title'>{TITLE[CURRENT_PAGE]}</div>
+            <div className='list-sub-title'>{HEAD_LILE[CURRENT_PAGE]}</div>
+          </div>
+          <div className='list-search-section'>
+            <InputBox
+              placeholder='검색어를 입력하세요.'
+              width='100%'
+              className='search-box'
+              inputRef={searchRef}
+              value={searchWord}
+              onChange={onSearchWordChange}
+              onKeyPress={onSearchBoxKeyDown}
+            />
+          </div>
 
-      <div className='filter-container'>
-        {FILTER_ITEM.map((filter, i) => {
-          return (
-            <button
-              key={i}
-              className={`filter-item ${filter === currentFilter ? 'select-filter' : ''}`}
-              onClick={() => {
-                setCurrentFilter(filter);
-              }}
-            >
-              {filter}
-            </button>
-          );
-        })}
-      </div>
-      {listData?.length === 0 ? (
-        <div className='list-zero-data'>{NO_POST[CURRENT_PAGE]}게시글이 없습니다</div>
-      ) : (
-        <div className={`card-list ${isCommunityPage ? 'community' : ''}`}>
-          {listData?.map((data, i) => {
-            const id = data[CARD_ID[CURRENT_PAGE] as 'articleId' | 'questionId'];
-            return (
-              <Link key={i} to={`detail/${id}`}>
-                {choieCardComponent(id!, data)}
-              </Link>
-            );
-          })}
+          <div className='filter-container'>
+            {FILTER_ITEM.map((filter, i) => {
+              return (
+                <button
+                  key={i}
+                  className={`filter-item ${filter === currentFilter ? 'select-filter' : ''}`}
+                  onClick={() => {
+                    setCurrentFilter(filter);
+                  }}
+                >
+                  {filter}
+                </button>
+              );
+            })}
+          </div>
+          {listData?.length === 0 ? (
+            <div className='list-zero-data'>{NO_POST[CURRENT_PAGE]}게시글이 없습니다</div>
+          ) : (
+            <div className={`card-list ${isCommunityPage ? 'community' : ''}`}>
+              {listData?.map((data, i) => {
+                const id = data[CARD_ID[CURRENT_PAGE] as 'articleId' | 'questionId'];
+                return (
+                  <Link key={i} to={`detail/${id}`}>
+                    {choieCardComponent(id!, data)}
+                  </Link>
+                );
+              })}
+            </div>
+          )}
+          <div ref={lastCardRef} />
+          <WriteButton
+            onClick={() => {
+              nav('newpost');
+            }}
+          />
         </div>
       )}
-      <div ref={lastCardRef} />
-      <WriteButton
-        onClick={() => {
-          nav('newpost');
-        }}
-      />
-    </div>
+    </>
   );
 }
