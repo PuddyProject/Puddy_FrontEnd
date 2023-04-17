@@ -8,6 +8,8 @@ import { get } from 'utils';
 import { PostDataInfo } from 'types/commentTypes';
 import { NO_POST, CARD_ID, LIST_NAME, TITLE, END_POINT } from 'constants/cardList';
 import { currentPage } from 'utils/currentPage';
+import useLoading from 'hooks/useLoading';
+import { Loading } from 'components';
 
 export default function CardList() {
   const [listData, setListData] = useState<Array<PostDataInfo>>([]);
@@ -26,6 +28,8 @@ export default function CardList() {
 
   const isCommunityPage = location.pathname.includes('/community');
 
+  const { isLoading, hideLoading, showLoading } = useLoading();
+
   const HEAD_LILE = {
     community: (
       <>
@@ -43,20 +47,28 @@ export default function CardList() {
   };
 
   const getData = async (isChangePage: boolean) => {
-    const res = await get({
-      endpoint: END_POINT[CURRENT_PAGE],
-      params: `?page=${isChangePage ? 1 : pageNumber}`,
-    });
+    showLoading();
 
-    if (isChangePage) {
-      setListData(res.data.data[LIST_NAME[CURRENT_PAGE]]);
-    } else {
-      setListData((prev) => [...prev, ...res.data.data[LIST_NAME[CURRENT_PAGE]]]);
+    try {
+      const res = await get({
+        endpoint: END_POINT[CURRENT_PAGE],
+        params: `?page=${isChangePage ? 1 : pageNumber}`,
+      });
+
+      if (isChangePage) {
+        setListData(res.data.data[LIST_NAME[CURRENT_PAGE]]);
+      } else {
+        setListData((prev) => [...prev, ...res.data.data[LIST_NAME[CURRENT_PAGE]]]);
+      }
+
+      isChangePage && setIsFirst(false);
+      setHasNextPage(res.data.data.hasNextPage);
+      res.data.data.hasNextPage && setPageNumber((prev) => prev + 1);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      hideLoading();
     }
-
-    isChangePage && setIsFirst(false);
-    setHasNextPage(res.data.data.hasNextPage);
-    res.data.data.hasNextPage && setPageNumber((prev) => prev + 1);
   };
 
   const choieCardComponent = (id: number, data: PostDataInfo) => {
@@ -90,6 +102,10 @@ export default function CardList() {
     setPageNumber(1);
     searchRef.current!.value = '';
   }, [location.pathname]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className='list-container'>
