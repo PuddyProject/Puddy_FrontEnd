@@ -43,16 +43,34 @@ export default function NewPost() {
 
   useEffect(() => {
     if (isEditPage) {
-      editData.images.map(async (imgUrl) => {
-        const File = await convertImgToFile(imgUrl);
+      const covertFile = async () => {
+        const prevFileList: File[] = [];
 
-        setImgFile((prev) => [...prev, File!]);
+        for (let imgUrl of editData.images) {
+          const file = await convertImgToFile(imgUrl);
+          prevFileList.push(file!);
+        }
+        return prevFileList;
+      };
+      const prevFile = covertFile();
+      prevFile.then((res) => setImgFile(() => [...res]));
+    }
+
+    if (isEditPage && isCommunityPage) {
+      const prevTagList: string[] = [];
+      editData.tagList!.map((tagObject) => {
+        const { tag } = tagObject;
+        prevTagList.push(tag.tagName);
       });
+      setTagList(() => [...prevTagList]);
     }
 
     firstInputBox.current?.focus();
   }, []);
 
+  useEffect(() => {
+    console.log(imgFile);
+  }, [imgFile]);
   const sendData = async (formData: FormData) => {
     let res: AxiosResponse;
 
@@ -138,7 +156,7 @@ export default function NewPost() {
     if (e.key === 'Enter') {
       let currentHashTag = target.value;
 
-      if (currentHashTag === '') return;
+      if (currentHashTag.trim() === '') return;
       setTagList((prev) => Array.from(new Set([...prev, currentHashTag])));
 
       target.value = '';
