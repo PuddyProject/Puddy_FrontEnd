@@ -4,4 +4,5 @@ export interface Profile {
   careerList?: string[];
   introduce?: string;
   location?: string;
+  imagePath?: string;
 }
