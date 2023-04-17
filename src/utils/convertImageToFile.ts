@@ -8,7 +8,7 @@ export const convertImgToFile = async (imgUrl: string) => {
   });
 
   const blob = res.data;
-  const fileName = imgUrl.split('/').pop();
+  const fileName = imgUrl.split('/').pop()?.slice(36);
   const fileExtension = blob.type;
   const metaData = { type: `${fileExtension}` };
 
