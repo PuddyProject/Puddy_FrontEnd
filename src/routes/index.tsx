@@ -38,11 +38,14 @@ import {
   NOT_FOUND_PATH,
   getPathModificationCommunity,
   EXPERT_PATH,
+  getPathModificationExpertProfile,
+  BOOKMARK,
 } from 'constants/routes';
+import { TOKEN_KEY } from 'constants/token';
 
 import * as pages from 'pages';
 
-import { TOKEN_KEY, useUser } from 'context/UserContext';
+import { useUser } from 'context/UserContext';
 
 const MEMBER_ONLY_PAGES = ['mypage', 'profile', 'expert', 'detail', 'newpost'];
 
@@ -57,12 +60,15 @@ function isValidLoggedInUser(user: string) {
 }
 
 export default function Router() {
-  const { decodedToken } = useUser();
+  const { decodedToken, setDecodedToken } = useUser();
 
   const sessionToken = sessionStorage.getItem('userToken');
   const [isMounted, setIsMounted] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(isValidLoggedInUser(decodedToken?.auth || ''));
   const [userRole, setUserRole] = useState(decodedToken?.auth || '');
+
+  const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
 
   const location = useLocation();
   useEffect(() => {
@@ -71,7 +77,8 @@ export default function Router() {
 
       const userToken = e.newValue;
       if (!userToken) {
-        setIsLoggedIn(false);
+        setIsLoggedIn(() => false);
+        setDecodedToken(() => null);
       }
     };
 
@@ -90,8 +97,6 @@ export default function Router() {
     setUserRole(() => decodedToken.auth);
   }, [isMounted, decodedToken]);
 
-  console.log({ decodedToken });
-
   useEffect(() => {
     if (!isLoggedIn) {
       const memberOnly = MEMBER_ONLY_PAGES.filter((page) => location.pathname.includes(page));
@@ -100,10 +105,11 @@ export default function Router() {
         setShowModal(true);
       }
     }
-  }, [isLoggedIn, location]);
 
-  const [showModal, setShowModal] = useState(false);
-  const navigate = useNavigate();
+    if (!sessionToken) {
+      setIsLoggedIn(false);
+    }
+  }, [isLoggedIn, location]);
 
   if (!isLoggedIn && !sessionToken) {
     return (
@@ -187,19 +193,27 @@ export default function Router() {
               userRole === 'ROLE_EXPERT' ? (
                 <pages.ExpertProfileEditor />
               ) : (
-                <ButtonModal
-                  cancleText='메인으로'
-                  confirmText='이전 페이지'
-                  closeModal={() => navigate(`${HOME_PATH}`)}
-                  onCancle={() => navigate(`${HOME_PATH}`)}
-                  onConfirm={() => navigate(-1)}
-                  children={
-                    <>
-                      <h2 className='modal-title'>잘못된 접근</h2>
-                      <p className='modal-content'>전문가 회원 전용 페이지입니다.</p>
-                    </>
-                  }
-                />
+                ShowModalExpertOnly({
+                  closeModal: () => navigate(`${HOME_PATH}`),
+                  onCancle: () => navigate(`${HOME_PATH}`),
+                  onConfirm: () => navigate(-1),
+                })
+              )
+            }
+          />
+
+          {/* 전문가 프로필 수정 페이지 */}
+          <Route
+            path={getPathModificationExpertProfile()}
+            element={
+              userRole === 'ROLE_EXPERT' ? (
+                <pages.ExpertProfileEditor />
+              ) : (
+                ShowModalExpertOnly({
+                  closeModal: () => navigate(`${HOME_PATH}`),
+                  onCancle: () => navigate(`${HOME_PATH}`),
+                  onConfirm: () => navigate(-1),
+                })
               )
             }
           />
@@ -214,6 +228,7 @@ export default function Router() {
           <Route path={NOT_FOUND_PATH} element={<pages.NotFound />} />
 
           {/* 마이페이지 메뉴 */}
+          <Route path={BOOKMARK} element={<pages.Bookmark />} />
 
           <Route
             path={MY_PAGE_AUTH_EXPERT_PATH}
@@ -252,5 +267,31 @@ export default function Router() {
         {/* <Route path='*' element={<Navigate to={HOME_PATH} />} /> */}
       </Routes>
     </Suspense>
+  );
+}
+
+function ShowModalExpertOnly({
+  closeModal,
+  onCancle,
+  onConfirm,
+}: {
+  closeModal: () => void;
+  onCancle: () => void;
+  onConfirm: () => void;
+}) {
+  return (
+    <ButtonModal
+      cancleText='메인으로'
+      confirmText='이전 페이지'
+      closeModal={() => closeModal}
+      onCancle={() => onCancle}
+      onConfirm={() => onConfirm}
+      children={
+        <>
+          <h2 className='modal-title'>잘못된 접근</h2>
+          <p className='modal-content'>전문가 회원 전용 페이지입니다.</p>
+        </>
+      }
+    />
   );
 }
