@@ -5,4 +5,5 @@ export interface Profile {
   introduce?: string;
   location?: string;
   imagePath?: string;
+  expertId?: number;
 }
