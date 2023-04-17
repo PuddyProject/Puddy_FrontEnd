@@ -47,7 +47,7 @@ export default function CardList() {
   };
 
   const getData = async (isChangePage: boolean) => {
-    showLoading();
+    isFirst && showLoading();
 
     try {
       const res = await get({
@@ -67,7 +67,7 @@ export default function CardList() {
     } catch (err) {
       console.log(err);
     } finally {
-      hideLoading();
+      isFirst && hideLoading();
     }
   };
 
