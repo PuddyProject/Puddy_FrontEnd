@@ -4,21 +4,24 @@ import { useNavigate } from 'react-router-dom';
 import { CustomHeader, FileInput, FooterButton } from 'components';
 
 import checkFileSize from 'utils/checkFileSize';
-import { patch } from 'utils';
+import { checkExtensions, patch, post } from 'utils';
 
 import { useUser } from 'context/UserContext';
-import { myPageApi } from 'constants/apiEndpoint';
+import { expertApi, myPageApi } from 'constants/apiEndpoint';
 import { LOGIN_PATH } from 'constants/routes';
 import Modal from 'components/common/Modal';
+
+const ALLOWED_FILE_EXTENSIONS = ['pdf', 'doc', 'docx', 'hwp', 'jpg', 'jpeg', 'png'];
 
 export default function AuthExpert() {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
 
-  const { decodedToken } = useUser();
+  const { decodedToken, setDecodedToken } = useUser();
   const auth = decodedToken?.auth;
 
   const [fileUploaderText, setFileUploaderText] = useState('파일 첨부');
+  const [uploadFile, setUploadFile] = useState<File>();
 
   useEffect(() => {
     if (!decodedToken) return;
@@ -29,33 +32,31 @@ export default function AuthExpert() {
     }
   }, [auth]);
 
-  const checkAllowedExtensions = (files: FileList) => {
-    const ALLOWED_FILE_EXTENSIONS = ['pdf', 'doc', 'docx', 'hwp', 'jpg', 'jpeg', 'png'];
-
-    for (const file of [...files]) {
-      const extension = file.name.split('.').pop();
-      if (ALLOWED_FILE_EXTENSIONS.includes(extension!)) return true;
-      return false;
-    }
-
-    return true;
-  };
-
   const onClickSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
 
-    /* 
-    ! 임시 코드
-    ! 제출하기 버튼을 누르면 강제로 전문가 권한 부여 
-    TODO: 파일 제출 서버 통신 코드 추가 필요
-    */
-
     try {
+      // const res = await post({
+      //   endpoint: `${expertApi.POST_EXPERT_DOCS}`,
+      //   body: { file: uploadFile },
+      //   isImage: true,
+      // });
+      // * 현재는 보내면 가입 시 적은 이메일에 담겨 보내집니다.
+      // TODO: 어드민 페이지로 파일을 보내고 파일 검토 후
+      // TODO: 전문가가 적합할 경우 role을 변경시킨 후 메일을 전송하는 로직으로 변경해야 합니다.
+      // if (res.status === 200) {
+      //   window.alert('서류 제출이 완료되었어요.');
+      //   navigate('/');
+      // }
+
+      // ! 임시 코드 (테스트용)
+      // ! 제출하기 버튼을 누르면 강제로 전문가 권한 부여
       const res = await patch({ endpoint: `${myPageApi.PATCH_USER_AUTH}`, isFormData: false });
       console.log(res);
       if (res.status === 201) {
         setShowModal(true);
         sessionStorage.removeItem('userToken');
+        setDecodedToken(null);
       }
     } catch (err) {
       console.error(err);
@@ -63,9 +64,11 @@ export default function AuthExpert() {
   };
 
   const onChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+
     const files = e.target.files;
-    const isAllowed = checkAllowedExtensions(files!);
-    const isRightSize = checkFileSize(files!);
+    const isAllowed = checkExtensions(files, ALLOWED_FILE_EXTENSIONS);
+    const isRightSize = checkFileSize(files);
 
     if (!isAllowed) {
       return window.alert(
@@ -76,6 +79,8 @@ export default function AuthExpert() {
     if (!isRightSize) {
       return window.alert('최대 10MB까지 업로드할 수 있어요.');
     }
+
+    setUploadFile(() => files[0]);
 
     setFileUploaderText(() => {
       if (isAllowed && files && files.length) {
