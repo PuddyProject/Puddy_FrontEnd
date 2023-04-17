@@ -47,11 +47,12 @@
       @include ellipsis-text();
       @include font-styles(12px, 400, $color-gray01);
       line-height: 14px;
+      padding-top: 8px;
     }
 
     .card-info {
       @include font-styles(8px, 700, $icon-color);
-      margin-top: 10px;
+      margin-top: 7px;
       display: flex;
       justify-content: space-between;
       align-items: center;
