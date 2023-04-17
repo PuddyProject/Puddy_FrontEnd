@@ -283,9 +283,9 @@ function ShowModalExpertOnly({
     <ButtonModal
       cancleText='메인으로'
       confirmText='이전 페이지'
-      closeModal={() => closeModal}
-      onCancle={() => onCancle}
-      onConfirm={() => onConfirm}
+      closeModal={() => closeModal()}
+      onCancle={() => onCancle()}
+      onConfirm={() => onConfirm()}
       children={
         <>
           <h2 className='modal-title'>잘못된 접근</h2>
