@@ -64,8 +64,6 @@ export default function Login() {
         initSessionStorageRefeshToken(refreshToken);
 
         setToken(accessToken);
-
-        alert('로그인 성공!');
         navigate(`${HOME_PATH}`);
       }
     } catch (err: unknown) {
