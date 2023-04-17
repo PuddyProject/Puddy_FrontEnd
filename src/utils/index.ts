@@ -8,3 +8,6 @@ export { get, post, patch, del } from './axiosHelper';
 /** VALIDATE */
 export { isValidId, isValidPw, isValidName, isValidEmail } from './validate/checkSignup';
 export { isValidNickname } from './validate/checkNickname';
+
+export { convertImgToFile } from './convertImageToFile';
+export { trimBody } from './trimBody';
