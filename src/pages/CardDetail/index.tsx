@@ -6,6 +6,7 @@ import { CustomHeader, FooterButton, QnaComment, CommunityComment } from 'compon
 
 import { initQnaDetail } from 'utils/initialValues/qnaDetail';
 import { useUser } from 'context/UserContext';
+import ButtonModal from 'components/common/ButtonModal';
 
 import { AiOutlineHeart as Heart, AiTwotoneHeart as ClickHeart } from 'react-icons/ai';
 import { del, get, patch } from 'utils';
@@ -14,6 +15,8 @@ import { PET_INFO } from 'constants/cardDetail';
 import { articleApi, questionsApi } from 'constants/apiEndpoint';
 import { currentPage } from 'utils/currentPage';
 import { ANSWER_LIST } from 'constants/cardDetail';
+import useLoading from 'hooks/useLoading';
+import { Loading } from 'components';
 
 export default function QnaDetail() {
   const nav = useNavigate();
@@ -21,14 +24,18 @@ export default function QnaDetail() {
   const postId = location.pathname.split('/')[3];
   const [answerList, setAnswerList] = useState<AnswerInfo[]>([]);
   const [postDataInfo, setPostDataInfo] = useState<PostDataInfo>(initQnaDetail);
-  const [isLiked, setIsLiked] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [isLiked, setIsLiked] = useState(postDataInfo.isLike);
+  const [isButtonShow, setIsButtonShow] = useState(false);
   const { decodedToken } = useUser();
   const isPostUser = postDataInfo.nickname === decodedToken?.nickname;
   const isCommunityPage = location.pathname.includes('/community');
+  const { isLoading, hideLoading, showLoading } = useLoading();
 
   const CURRENT_PAGE = currentPage(location);
 
   useEffect(() => {
+    showLoading();
     get({
       endpoint: isCommunityPage
         ? articleApi.getArticle(postId)
@@ -37,9 +44,14 @@ export default function QnaDetail() {
       .then((res) => {
         setPostDataInfo(res.data.data);
         setAnswerList(res.data.data[ANSWER_LIST[CURRENT_PAGE]]);
+        setIsLiked(res.data.data.isLike);
+        setIsButtonShow(() => true);
       })
       .catch((err) => {
         console.error(err);
+      })
+      .finally(() => {
+        hideLoading();
       });
   }, []);
 
@@ -62,6 +74,10 @@ export default function QnaDetail() {
       />
     );
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   const deletePost = async () => {
     try {
@@ -99,6 +115,7 @@ export default function QnaDetail() {
   const choiceTagInfo = (tagInfo: string[]) => {
     const [key, value] = tagInfo;
 
+    if (value === '') return;
     switch (key) {
       case 'age':
         return value + ' 살';
@@ -117,6 +134,22 @@ export default function QnaDetail() {
     <>
       {postDataInfo && (
         <div>
+          {showModal && (
+            <ButtonModal
+              cancleText={'취소'}
+              confirmText={'삭제'}
+              text={'게시글을 삭제하시겠습니까?'}
+              subText={'한번만 더 생각을....'}
+              closeModal={() => {
+                setShowModal(false);
+              }}
+              onCancle={() => {
+                setShowModal(false);
+              }}
+              onConfirm={deletePost}
+            />
+          )}
+
           <CustomHeader title={isCommunityPage ? '커뮤니티' : 'Q&A'} />
           <div className='qna-detail-container'>
             <section className='title'>
@@ -142,7 +175,7 @@ export default function QnaDetail() {
                     <div className={`${isPostUser ? 'post-user' : ''}`}>
                       <span className={`user-role ${isPostUser ? 'post-user' : ''}`}>
                         <span onClick={() => nav('edit', { state: postDataInfo })}>수정하기</span> |
-                        <span onClick={deletePost}> 삭제하기</span>
+                        <span onClick={() => setShowModal(true)}> 삭제하기</span>
                       </span>
                     </div>
                   )}
@@ -167,11 +200,12 @@ export default function QnaDetail() {
                       return <span className='tag-item'>{v.tag.tagName}</span>;
                     })
                   : postDataInfo.pet !== null &&
-                    Object.entries(postDataInfo.pet!).map((tagInfo) => {
-                      console.log(tagInfo);
+                    Object.entries(postDataInfo.pet!).map((tagInfo, i) => {
                       return (
                         PET_INFO.includes(tagInfo[0]) && (
-                          <span className='tag-item'>{choiceTagInfo(tagInfo)}</span>
+                          <span className='tag-item' key={i}>
+                            {choiceTagInfo(tagInfo)}
+                          </span>
                         )
                       );
                     })}
@@ -184,6 +218,7 @@ export default function QnaDetail() {
                       onClick={() => {
                         setIsLiked(false);
                         del({ endpoint: articleApi.deleteLike(postId) });
+                        setPostDataInfo((prev) => ({ ...prev, likeCount: prev.likeCount! - 1 }));
                       }}
                       size='15'
                       style={{ color: '#2A60FF' }}
@@ -193,6 +228,7 @@ export default function QnaDetail() {
                       size='15'
                       onClick={() => {
                         setIsLiked(true);
+                        setPostDataInfo((prev) => ({ ...prev, likeCount: prev.likeCount! + 1 }));
                         patch({ endpoint: articleApi.patchLike(postId), isFormData: true });
                       }}
                     />
@@ -254,9 +290,9 @@ export default function QnaDetail() {
               </section>
             )}
           </div>
-          {!isPostUser && !isCommunityPage && IsFirstWriter()}
+          {isButtonShow && !isPostUser && !isCommunityPage && IsFirstWriter()}
 
-          {isCommunityPage && (
+          {isButtonShow && isCommunityPage && (
             <FooterButton
               onClick={() => {
                 nav('write/answer', { state: postId });
