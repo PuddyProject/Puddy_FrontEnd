@@ -84,6 +84,11 @@ export const MY_PAGE_AUTH_EXPERT_PATH = '/mypage/experts';
 /* 마이페이지 전문가 프로필 작성 */
 export const EXPERTS_PROFILE_PATH = '/profile/experts';
 
+/* 전문가 프로필 수정 */
+export const getPathModificationExpertProfile = (userId: string = ':id') => {
+  return `/profile/experts/${userId}`;
+};
+
 /* 마이페이지 설정 - 계정 */
 export const MY_PAGE_ACCOUNT_PATH = '/mypage/account';
 
