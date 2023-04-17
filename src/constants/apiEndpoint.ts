@@ -81,8 +81,14 @@ export const answersApi = Object.freeze({
 */
 const EXPERT_API = 'experts';
 export const expertApi = Object.freeze({
+  /* 전문가 프로필 GET, PUT */
   GET_PUT_EXPERT: `${EXPERT_API}`,
+
+  /* 전문가 프로필 POST */
   POST_EXPERT: `users/${EXPERT_API}`,
+
+  /* 전문가 서류 제출 */
+  POST_EXPERT_DOCS: `${EXPERT_API}/send-docs`,
 
   /* 전문가 프로필 조회 시 */
   requestExpertId: (userId: string) => {
