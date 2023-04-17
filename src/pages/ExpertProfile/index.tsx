@@ -43,7 +43,11 @@ export default function ExpertProfile() {
       <CustomHeader title={`${profile?.username ? profile.username : ''} 전문가 프로필`} />
       <div className='expert-profile-container'>
         <section className='profile expert'>
-          <img className='profile-image' src={TEMP_IMAGE_URL} alt='프로필 이미지' />
+          <img
+            className='profile-image'
+            src={profile?.imagePath || TEMP_IMAGE_URL}
+            alt='프로필 이미지'
+          />
           <div className='profile-expert_header'>
             <h3 className='profile-expert_name'>{profile?.username}</h3>
             <OutlineStar className='outline-star' />
