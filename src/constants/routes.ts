@@ -64,6 +64,9 @@ export const MY_PAGE_PATH = '/mypage';
 /* 마이페이지 내가 쓴 게시글/댓글 */
 export const MY_POSTS_PATH = 'mypage/posts';
 
+/* 마이페이지 즐겨찾기 */
+export const BOOKMARK = 'mypage/bookmarks';
+
 /* 마이페이지 내 프로필 수정 */
 export const MY_PAGE_PROFILE_PATH = '/mypage/profile';
 
