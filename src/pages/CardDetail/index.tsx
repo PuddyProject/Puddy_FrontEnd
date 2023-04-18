@@ -18,7 +18,7 @@ import { ANSWER_LIST } from 'constants/cardDetail';
 import useLoading from 'hooks/useLoading';
 import { Loading } from 'components';
 
-export default function QnaDetail() {
+export default function CardDetail() {
   const nav = useNavigate();
   const location = useLocation();
   const postId = location.pathname.split('/')[3];
@@ -285,7 +285,18 @@ export default function QnaDetail() {
                 {answerList.length === 0 ? (
                   <div className='comment-zero-community'>댓글이 존재하지 않아요.</div>
                 ) : (
-                  <CommunityComment />
+                  answerList.map((comment, i) => {
+                    const isMyComment = comment.nickname === decodedToken?.nickname;
+
+                    return (
+                      <CommunityComment
+                        key={i}
+                        setAnswerList={setAnswerList}
+                        commentData={comment}
+                        isMyComment={isMyComment}
+                      />
+                    );
+                  })
                 )}
               </section>
             )}
@@ -295,7 +306,7 @@ export default function QnaDetail() {
           {isButtonShow && isCommunityPage && (
             <FooterButton
               onClick={() => {
-                nav('write/answer', { state: postId });
+                nav('write/comment', { state: postId });
               }}
             >
               댓글 작성하기
