@@ -27,12 +27,14 @@
   .bottom-section {
     position: fixed;
     bottom: 0px;
+    width: 110px;
     max-width: 120px;
     margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
     @include ellipsis-text();
 
     .answer-text {
-      margin-right: 30px;
       @include font-styles(10px, 800, $color-gray01);
 
       &.solved {
@@ -41,7 +43,9 @@
     }
 
     .writer-text {
+      @include ellipsis-text();
       @include font-styles(10px, 300, $color-gray02);
+      max-width: 60px;
     }
   }
 }
