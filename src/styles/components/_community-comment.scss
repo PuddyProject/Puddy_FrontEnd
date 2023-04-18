@@ -10,6 +10,10 @@
 
     .user-nickname {
       @include font-styles(12px, 700, $color-gray01);
+
+      &.post-user {
+        color: $primary-color;
+      }
     }
 
     .user-role {
@@ -20,6 +24,8 @@
   .body {
     @include font-styles(12px, 400, $color-gray01);
     margin: 10px 0px;
+    white-space: pre-wrap;
+    line-height: 23px;
   }
 
   .date {
