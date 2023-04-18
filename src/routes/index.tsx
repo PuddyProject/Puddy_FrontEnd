@@ -40,6 +40,7 @@ import {
   EXPERT_PATH,
   getPathModificationExpertProfile,
   BOOKMARK,
+  MY_PAGE_CHANGE_PW,
 } from 'constants/routes';
 import { TOKEN_KEY } from 'constants/token';
 
@@ -254,6 +255,7 @@ export default function Router() {
           />
 
           <Route path={MY_PAGE_ACCOUNT_PATH} element={<pages.Account />} />
+          <Route path={MY_PAGE_CHANGE_PW} element={<pages.ChangeMyPassword />} />
           <Route path={MY_PAGE_WITHDRAWAL_PATH} element={<pages.Withdrawal />} />
 
           {/* 내 프로필 수정 */}
