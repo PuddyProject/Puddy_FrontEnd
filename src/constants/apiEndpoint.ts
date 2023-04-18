@@ -209,9 +209,13 @@ export const myPageApi = Object.freeze({
 
   /* 유저 권한 변경 */
   PATCH_USER_AUTH: `${MY_PAGE_API}/update-auth`,
+
   GET_MY_POSTS: `${MY_PAGE_API}/posts`,
   GET_MY_PAGE_INFO: `${MY_PAGE_API}/me`,
   DELETE_LOGOUT: `${MY_PAGE_API}/logout`,
+
+  /* 비밀번호 변경 */
+  PATCH_MY_PASSWORD: `${MY_PAGE_API}/change-password`,
 });
 
 /* ------------------------------------- */
