@@ -46,7 +46,7 @@ export default function NewPost() {
       const covertFile = async () => {
         const prevFileList: File[] = [];
 
-        for (let imgUrl of editData.images) {
+        for (let imgUrl of editData.images!) {
           const file = await convertImgToFile(imgUrl);
           prevFileList.push(file!);
         }

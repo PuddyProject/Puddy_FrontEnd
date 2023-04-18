@@ -183,9 +183,9 @@ export default function CardDetail() {
               </div>
               <div className='body-text'>{postDataInfo.content}</div>
               <div className='img-box'>
-                {postDataInfo.images.length !== 0 ? (
+                {postDataInfo.images!.length !== 0 ? (
                   <>
-                    {postDataInfo.images.map((v, i) => {
+                    {postDataInfo.images!.map((v, i) => {
                       return <img key={i} className='qna-image' src={v} alt={''} />;
                     })}
                   </>

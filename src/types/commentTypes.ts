@@ -31,6 +31,8 @@ export interface ExpertInfo {
   introduce: string;
   location: string;
   username: string;
+  imagePath: string;
+  expertId: number;
 }
 
 export interface PostDataInfo {
@@ -40,8 +42,8 @@ export interface PostDataInfo {
   postCategory: number;
   title: string;
   viewCount: number;
-  images: string[];
 
+  images?: string[];
   articleId?: number;
   likeCount?: number;
   tagList?: Tag[];

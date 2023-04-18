@@ -1,4 +1,4 @@
-import { MainQnaCardType } from 'types/qnaCardTypes';
+import { MainQnaCardType } from 'types/mainCardTyeps';
 
 interface MainQnaCardProps {
   cardData: MainQnaCardType;
