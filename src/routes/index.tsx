@@ -33,6 +33,7 @@ import {
   getPathCommunityDetail,
   getPathModificationQna,
   getPathModificationAnswer,
+  getPathModificationCommunity,
   MY_PAGE_WITHDRAWAL_PATH,
   NOT_FOUND_PATH,
   getPathModificationComment,
@@ -137,7 +138,7 @@ export default function Router() {
           <Route path={getPathCommunityDetail()} element={<pages.CardDetail />} />
           <Route path={getPathModificationComment()} element={<pages.CommentAnswer />} />
           <Route path={getPathWriteComment()} element={<pages.CommentAnswer />} />
-
+          <Route path={getPathModificationCommunity()} element={<pages.NewPost />} />
           <Route path={COMMUNITY_SEARCH_PATH} element={<pages.CardSearch />} />
 
           {/* //? 프로필 작성 */}
