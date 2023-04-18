@@ -134,6 +134,9 @@ export const articlesApi = Object.freeze({
   requestArticleId: (articleId: string) => {
     return `${COMMENT_API}/${articleId}/comments`;
   },
+  requestPutDeletePatchArticleId: (articelId: string, commentId: number) => {
+    return `${COMMENT_API}/${articelId}/comments/${commentId}`;
+  },
 });
 
 /* ------------------------------------- */
