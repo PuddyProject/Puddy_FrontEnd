@@ -24,3 +24,4 @@ export const Withdrawal = lazy(() => import('./MyPage/Withdrawal'));
 export const NotFound = lazy(() => import('./NotFound'));
 export const Notification = lazy(() => import('./Notification'));
 export const Bookmark = lazy(() => import('./Bookmark'));
+export const ChangeMyPassword = lazy(() => import('./MyPage/ChangePassword'));
