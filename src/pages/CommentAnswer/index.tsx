@@ -1,4 +1,4 @@
-import { answersApi } from 'constants/apiEndpoint';
+import { answersApi, articlesApi } from 'constants/apiEndpoint';
 import { useRef, useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -21,15 +21,30 @@ export default function CommentAnswer() {
     textAreaRef.current?.focus({});
   }, []);
 
+  const choieApi = () => {
+    if (isCommunityPage) {
+      if (isEditPage) {
+        return articlesApi.requestPutDeletePatchArticleId(
+          location.state.postId,
+          location.state.comment.id
+        );
+      }
+      return articlesApi.requestArticleId(location.state);
+    } else {
+      if (isEditPage) {
+        return answersApi.requestPutDeletePatchAnswer(
+          location.state.postId,
+          location.state.comment.id
+        );
+      }
+      return answersApi.requestPostAnswer(location.state);
+    }
+  };
   async function sendData() {
     let postAnswer = trimBody(answer);
 
     const res = await post({
-      endpoint: `${
-        isEditPage
-          ? answersApi.requestPutDeletePatchAnswer(location.state.postId, location.state.comment.id)
-          : answersApi.requestPostAnswer(location.state)
-      }`,
+      endpoint: `${choieApi()}`,
       body: {
         content: postAnswer,
         postCategory: '1',
