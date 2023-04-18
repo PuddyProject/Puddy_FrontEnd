@@ -95,6 +95,9 @@ export const getPathModificationExpertProfile = (userId: string = ':id') => {
 /* 마이페이지 설정 - 계정 */
 export const MY_PAGE_ACCOUNT_PATH = '/mypage/account';
 
+/* 마이페이지 설정 - 비밀번호 변경 */
+export const MY_PAGE_CHANGE_PW = '/users/password';
+
 /* 마이페이지 설정 - 회원탈퇴 */
 export const MY_PAGE_WITHDRAWAL_PATH = '/mypage/withdrawal';
 
