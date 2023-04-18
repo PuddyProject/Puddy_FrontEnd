@@ -1,4 +1,5 @@
 import { InputBox, InputTitle, Message } from 'components';
+import { ChangeAccountInterface } from 'pages/MyPage/ChangePassword';
 
 import { FieldName, Membership } from 'types/signupTypes';
 
@@ -9,7 +10,7 @@ interface InputFieldProps {
   placeholder: string;
   target: FieldName;
   title: string;
-  registrationMembership: Membership;
+  registrationMembership: Membership | ChangeAccountInterface;
   initWarningMessage: Membership;
   warningMessage: Membership;
   showCorrectMessage?: { account: boolean; email: boolean };
