@@ -1,0 +1,8 @@
+@use '../abstracts' as *;
+
+.find-account-container {
+  @include header-gap;
+  @include center;
+  flex-direction: column;
+  gap: 2rem;
+}
