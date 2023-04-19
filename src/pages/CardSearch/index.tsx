@@ -6,7 +6,6 @@ import { QnaCard, CommunityCard, CustomHeader } from 'components';
 import { get } from 'utils';
 import { PostDataInfo } from 'types/commentTypes';
 import { PAGE_LIST, NO_POST, CARD_ID, LIST_NAME, END_POINT } from 'constants/cardList';
-import { SEARCH_PARAM } from 'constants/cardSearch';
 
 export default function CardSearch() {
   const [listData, setListData] = useState<Array<PostDataInfo>>([]);
@@ -25,7 +24,7 @@ export default function CardSearch() {
   const getData = async (isChangePage: boolean) => {
     const res = await get({
       endpoint: END_POINT[CURRENT_PAGE],
-      params: `?page=${pageNumber}&${SEARCH_PARAM[CURRENT_PAGE]}=${SEARCH_WORD}`,
+      params: `?page=${pageNumber}&keyword=${SEARCH_WORD}`,
     });
 
     isChangePage
@@ -33,7 +32,11 @@ export default function CardSearch() {
       : setListData((prev) => [...prev, ...res.data.data[LIST_NAME[CURRENT_PAGE]]]);
 
     setHasNextPage(res.data.data.hasNextPage);
-    res.data.data.hasNextPage && setPageNumber((prev) => prev + 1);
+    if (res.data.data.hasNextPage && isChangePage) {
+      setPageNumber(() => 2);
+    } else {
+      setPageNumber((prev) => prev + 1);
+    }
   };
 
   const choieCardComponent = (id: number, data: PostDataInfo) => {
