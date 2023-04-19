@@ -8,7 +8,7 @@ import { ApiError } from 'types/errorsTypes';
 
 import { KAKAO_LOGIN_URI } from 'constants/kakaoLogin';
 import { loginApi } from 'constants/apiEndpoint';
-import { HOME_PATH } from 'constants/routes';
+import { FIND_ID_PW_PATH, HOME_PATH } from 'constants/routes';
 
 import { Google, Naver, Kakao } from 'assets/login/symbols';
 import Logo from 'assets/Logo.svg';
@@ -79,6 +79,10 @@ export default function Login() {
     }
   };
 
+  const onClickFindIdPw = () => {
+    navigate(`${FIND_ID_PW_PATH}`);
+  };
+
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
@@ -114,7 +118,9 @@ export default function Login() {
           <Button>로그인</Button>
         </div>
         <div className='find-and-join-container'>
-          <span tabIndex={0}>아이디/비밀번호 찾기</span>
+          <span tabIndex={0} onClick={onClickFindIdPw}>
+            아이디/비밀번호 찾기
+          </span>
           <span className='vertical-bar'>|</span>
           <span className='join' tabIndex={0}>
             <Link to='/auth/signup'>회원가입</Link>
