@@ -41,6 +41,9 @@ import {
   getPathModificationExpertProfile,
   BOOKMARK,
   MY_PAGE_CHANGE_PW,
+  FIND_ID_PW_PATH,
+  FIND_ID_PATH,
+  FIND_PW_PATH,
 } from 'constants/routes';
 import { TOKEN_KEY } from 'constants/token';
 
@@ -144,6 +147,9 @@ export default function Router() {
               <Route path={LOGIN_PATH} element={<pages.Login />} />
               <Route path={JOIN_PATH} element={<pages.Signup />} />
               <Route path={KAKAO_AUTH_PATH} element={<pages.KakaoLogin />} />
+              <Route path={FIND_ID_PW_PATH} element={<pages.FindIdPw />} />
+              <Route path={FIND_ID_PATH} element={<pages.FindId />} />
+              <Route path={FIND_PW_PATH} element={<pages.FindPw />} />
             </Route>
 
             <Route path='*' element={<Navigate to={HOME_PATH} />} />
