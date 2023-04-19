@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { MainQnaCardType } from 'types/qnaCardTypes';
-import { ExpertContainer, QnaContainer, Button, Loading } from 'components';
+import { MainQnaCardType, MainCommunityCardType, MainExpertCardType } from 'types/mainCardTyeps';
+import { MainCardContainer, Button, Loading } from 'components';
 import { get } from 'utils';
 import dragEvent from 'utils/dragEvent';
 import useLoading from 'hooks/useLoading';
@@ -16,6 +16,9 @@ const MAX_INDEX = COLOR.length - 1;
 interface MainQnaList {
   popularQuestions: MainQnaCardType[];
   recentQuestions: MainQnaCardType[];
+  recentArticles: MainCommunityCardType[];
+  popularArticles: MainCommunityCardType[];
+  recentExperts: MainExpertCardType[];
 }
 
 export default function Main() {
@@ -104,9 +107,31 @@ export default function Main() {
               내 펫 등록하기
             </Button>
           </div>
-          <QnaContainer title={'인기 Q&A'} cardDataList={mainQnaList.popularQuestions} />
-          <QnaContainer title={'최근 Q&A'} cardDataList={mainQnaList.recentQuestions} />
-          <ExpertContainer />
+          <MainCardContainer
+            title={'인기 Q&A'}
+            cardDataList={mainQnaList.popularQuestions}
+            cardType='qna'
+          />
+          <MainCardContainer
+            title={'최근 Q&A'}
+            cardDataList={mainQnaList.recentQuestions}
+            cardType='qna'
+          />
+          <MainCardContainer
+            title={'퍼디 신규 등록 전문가'}
+            cardDataList={mainQnaList.recentExperts}
+            cardType='experts'
+          />
+          <MainCardContainer
+            title={'커뮤니티 HOT'}
+            cardDataList={mainQnaList.popularArticles}
+            cardType='community'
+          />
+          <MainCardContainer
+            title={'커뮤니티 NEW'}
+            cardDataList={mainQnaList.recentArticles}
+            cardType='community'
+          />
         </>
       )}
     </div>

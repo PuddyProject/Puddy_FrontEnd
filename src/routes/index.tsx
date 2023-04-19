@@ -33,9 +33,11 @@ import {
   getPathCommunityDetail,
   getPathModificationQna,
   getPathModificationAnswer,
+  getPathModificationCommunity,
   MY_PAGE_WITHDRAWAL_PATH,
   NOT_FOUND_PATH,
-  getPathModificationCommunity,
+  getPathModificationComment,
+  getPathWriteComment,
   EXPERT_PATH,
 } from 'constants/routes';
 
@@ -134,6 +136,8 @@ export default function Router() {
 
           <Route path={COMMUNITY_WRTIE_POST_PATH} element={<pages.NewPost />} />
           <Route path={getPathCommunityDetail()} element={<pages.CardDetail />} />
+          <Route path={getPathModificationComment()} element={<pages.CommentAnswer />} />
+          <Route path={getPathWriteComment()} element={<pages.CommentAnswer />} />
           <Route path={getPathModificationCommunity()} element={<pages.NewPost />} />
           <Route path={COMMUNITY_SEARCH_PATH} element={<pages.CardSearch />} />
 

@@ -8,6 +8,8 @@ import { get } from 'utils';
 import { PostDataInfo } from 'types/commentTypes';
 import { NO_POST, CARD_ID, LIST_NAME, TITLE, END_POINT } from 'constants/cardList';
 import { currentPage } from 'utils/currentPage';
+import useLoading from 'hooks/useLoading';
+import { Loading } from 'components';
 
 export default function CardList() {
   const [listData, setListData] = useState<Array<PostDataInfo>>([]);
@@ -26,6 +28,8 @@ export default function CardList() {
 
   const isCommunityPage = location.pathname.includes('/community');
 
+  const { isLoading, hideLoading, showLoading } = useLoading();
+
   const HEAD_LILE = {
     community: (
       <>
@@ -43,20 +47,28 @@ export default function CardList() {
   };
 
   const getData = async (isChangePage: boolean) => {
-    const res = await get({
-      endpoint: END_POINT[CURRENT_PAGE],
-      params: `?page=${isChangePage ? 1 : pageNumber}`,
-    });
+    isFirst && showLoading();
 
-    if (isChangePage) {
-      setListData(res.data.data[LIST_NAME[CURRENT_PAGE]]);
-    } else {
-      setListData((prev) => [...prev, ...res.data.data[LIST_NAME[CURRENT_PAGE]]]);
+    try {
+      const res = await get({
+        endpoint: END_POINT[CURRENT_PAGE],
+        params: `?page=${isChangePage ? 1 : pageNumber}`,
+      });
+
+      if (isChangePage) {
+        setListData(res.data.data[LIST_NAME[CURRENT_PAGE]]);
+      } else {
+        setListData((prev) => [...prev, ...res.data.data[LIST_NAME[CURRENT_PAGE]]]);
+      }
+
+      isChangePage && setIsFirst(false);
+      setHasNextPage(res.data.data.hasNextPage);
+      res.data.data.hasNextPage && setPageNumber((prev) => prev + 1);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      isFirst && hideLoading();
     }
-
-    isChangePage && setIsFirst(false);
-    setHasNextPage(res.data.data.hasNextPage);
-    res.data.data.hasNextPage && setPageNumber((prev) => prev + 1);
   };
 
   const choieCardComponent = (id: number, data: PostDataInfo) => {
@@ -91,59 +103,67 @@ export default function CardList() {
     searchRef.current!.value = '';
   }, [location.pathname]);
 
-  return (
-    <div className='list-container'>
-      <div className='list-title-section'>
-        <div className='list-title'>{TITLE[CURRENT_PAGE]}</div>
-        <div className='list-sub-title'>{HEAD_LILE[CURRENT_PAGE]}</div>
-      </div>
-      <div className='list-search-section'>
-        <InputBox
-          placeholder='검색어를 입력하세요.'
-          width='100%'
-          className='search-box'
-          inputRef={searchRef}
-          value={searchWord}
-          onChange={onSearchWordChange}
-          onKeyPress={onSearchBoxKeyDown}
-        />
-      </div>
+  if (isLoading) {
+    return <Loading />;
+  }
 
-      <div className='filter-container'>
-        {FILTER_ITEM.map((filter, i) => {
-          return (
-            <button
-              key={i}
-              className={`filter-item ${filter === currentFilter ? 'select-filter' : ''}`}
-              onClick={() => {
-                setCurrentFilter(filter);
-              }}
-            >
-              {filter}
-            </button>
-          );
-        })}
-      </div>
-      {listData?.length === 0 ? (
-        <div className='list-zero-data'>{NO_POST[CURRENT_PAGE]}게시글이 없습니다</div>
-      ) : (
-        <div className={`card-list ${isCommunityPage ? 'community' : ''}`}>
-          {listData?.map((data, i) => {
-            const id = data[CARD_ID[CURRENT_PAGE] as 'articleId' | 'questionId'];
-            return (
-              <Link key={i} to={`detail/${id}`}>
-                {choieCardComponent(id!, data)}
-              </Link>
-            );
-          })}
+  return (
+    <>
+      {!isLoading && (
+        <div className='list-container'>
+          <div className='list-title-section'>
+            <div className='list-title'>{TITLE[CURRENT_PAGE]}</div>
+            <div className='list-sub-title'>{HEAD_LILE[CURRENT_PAGE]}</div>
+          </div>
+          <div className='list-search-section'>
+            <InputBox
+              placeholder='검색어를 입력하세요.'
+              width='100%'
+              className='search-box'
+              inputRef={searchRef}
+              value={searchWord}
+              onChange={onSearchWordChange}
+              onKeyPress={onSearchBoxKeyDown}
+            />
+          </div>
+
+          <div className='filter-container'>
+            {FILTER_ITEM.map((filter, i) => {
+              return (
+                <button
+                  key={i}
+                  className={`filter-item ${filter === currentFilter ? 'select-filter' : ''}`}
+                  onClick={() => {
+                    setCurrentFilter(filter);
+                  }}
+                >
+                  {filter}
+                </button>
+              );
+            })}
+          </div>
+          {listData?.length === 0 ? (
+            <div className='list-zero-data'>{NO_POST[CURRENT_PAGE]}게시글이 없습니다</div>
+          ) : (
+            <div className={`card-list ${isCommunityPage ? 'community' : ''}`}>
+              {listData?.map((data, i) => {
+                const id = data[CARD_ID[CURRENT_PAGE] as 'articleId' | 'questionId'];
+                return (
+                  <Link key={i} to={`detail/${id}`}>
+                    {choieCardComponent(id!, data)}
+                  </Link>
+                );
+              })}
+            </div>
+          )}
+          <div ref={lastCardRef} />
+          <WriteButton
+            onClick={() => {
+              nav('newpost');
+            }}
+          />
         </div>
       )}
-      <div ref={lastCardRef} />
-      <WriteButton
-        onClick={() => {
-          nav('newpost');
-        }}
-      />
-    </div>
+    </>
   );
 }

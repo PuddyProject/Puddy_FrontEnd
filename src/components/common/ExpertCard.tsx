@@ -5,15 +5,21 @@ interface CommunityCardProps {
   expertData: ExpertInfo;
 }
 export default function ExpertCard({ expertData }: CommunityCardProps) {
+  const isImg = expertData.imagePath !== '';
+
   return (
     <div className='commuinty-card'>
-      <div className={'card-img-container no-img'}>
-        <img className={'card-img no-img'} alt='' src={Community_no_img} />
+      <div className={`card-img-container  ${isImg ? 'img' : 'no-img'}`}>
+        <img
+          className={`card-img  ${isImg ? 'expert-img' : 'no-img'}`}
+          alt=''
+          src={isImg ? expertData.imagePath : Community_no_img}
+        />
       </div>
 
       <div className='card-text-container'>
-        <div className='card-title'>전문가 이름 또한 처리 되어 있습니다.</div>
-        <div className='card-sub-title'>서울대 수의학과 탑 수석 졸업 했습니다.</div>
+        <div className='card-title'>{expertData.username}</div>
+        <div className='card-sub-title'>{expertData.education}</div>
         <div className='card-info'>리뷰 1,000 개</div>
       </div>
     </div>

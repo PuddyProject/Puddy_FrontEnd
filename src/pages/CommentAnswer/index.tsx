@@ -1,10 +1,10 @@
-import { answersApi } from 'constants/apiEndpoint';
+import { answersApi, articlesApi } from 'constants/apiEndpoint';
 import { useRef, useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { FooterButton, InputTitle, CustomHeader } from 'components';
 
-import { post } from 'utils';
+import { post, trimBody } from 'utils';
 
 export default function CommentAnswer() {
   const location = useLocation();
@@ -21,15 +21,32 @@ export default function CommentAnswer() {
     textAreaRef.current?.focus({});
   }, []);
 
+  const choieApi = () => {
+    if (isCommunityPage) {
+      if (isEditPage) {
+        return articlesApi.requestPutDeletePatchArticleId(
+          location.state.postId,
+          location.state.comment.id
+        );
+      }
+      return articlesApi.requestArticleId(location.state);
+    } else {
+      if (isEditPage) {
+        return answersApi.requestPutDeletePatchAnswer(
+          location.state.postId,
+          location.state.comment.id
+        );
+      }
+      return answersApi.requestPostAnswer(location.state);
+    }
+  };
   async function sendData() {
+    let postAnswer = trimBody(answer);
+
     const res = await post({
-      endpoint: `${
-        isEditPage
-          ? answersApi.requestPutDeletePatchAnswer(location.state.postId, location.state.comment.id)
-          : answersApi.requestPostAnswer(location.state)
-      }`,
+      endpoint: `${choieApi()}`,
       body: {
-        content: answer,
+        content: postAnswer,
         postCategory: '1',
       },
       isPost: isEditPage ? false : true,

@@ -44,5 +44,6 @@
     @include font-styles(14px, 300, #000000);
     line-height: 23px;
     margin-top: 20px;
+    white-space: pre-wrap;
   }
 }

@@ -40,6 +40,14 @@ export const getPathCommunityDetail = (id: string = ':id') => {
   return `/community/detail/${id}`;
 };
 
+export const getPathWriteComment = (id: string = ':id') => {
+  return `/community/detail/${id}/write/comment`;
+};
+
+export const getPathModificationComment = (id: string = ':id') => {
+  return `/community/detail/${id}/write/comment/edit`;
+};
+
 export const getPathModificationCommunity = (id: string = ':id') => {
   return `/community/detail/${id}/edit`;
 };

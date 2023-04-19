@@ -43,7 +43,7 @@ export default function ExpertCardList() {
         <div className={'card-list community'}>
           {listData?.map((data, i) => {
             return (
-              <Link key={i} to={`detail/${1}`}>
+              <Link key={i} to={`${data.expertId}`}>
                 <ExpertCard key={i} expertData={data} />
               </Link>
             );

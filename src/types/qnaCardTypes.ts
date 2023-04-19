@@ -9,11 +9,3 @@ export interface QnaData {
   title: string;
   viewCount: number;
 }
-
-export interface MainQnaCardType {
-  title: string;
-  content: string;
-  isSolved: boolean;
-  nickname: string;
-  questionId: number;
-}

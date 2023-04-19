@@ -5,10 +5,12 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { InputBox, InputTitle, FooterButton, CustomHeader } from 'components';
 import { CATEGORY_ITEM } from 'constants/NewPost';
 
-import { checkExtensions, checkFileSize, post } from 'utils';
+import { checkExtensions, checkFileSize, post, trimBody } from 'utils';
 import { PostDataInfo } from 'types/commentTypes';
 import { AxiosResponse } from 'axios';
 import { articleApi, questionsApi } from 'constants/apiEndpoint';
+import { convertImgToFile } from 'utils';
+
 interface PostInfo {
   title: string;
   content: string;
@@ -33,38 +35,42 @@ export default function NewPost() {
   const isVaildForm =
     postInfo.content.length >= 1 && postInfo.content !== '' && postInfo.title.length >= 1;
 
+  const isQnaVaildForm = isVaildForm && postInfo.category !== '';
   const nav = useNavigate();
   const isCommunityPage = location.pathname.includes('community');
   const isEditPage = location.pathname.includes('edit');
   const POST_ID = isCommunityPage ? location.state?.articleId : location.state?.questionId;
 
-  const getImageFile = async (imgUrl: string) => {
-    const res = await fetch(imgUrl, {
-      method: 'GET',
-      headers: {
-        Origin: '*',
-      },
-    });
-
-    const blob = await res.blob();
-    const fileName = imgUrl.split('/').pop()!;
-    const fileExtension = fileName?.split('.').pop();
-    const metaData = { type: `image/${fileExtension}` };
-
-    return new File([blob], fileName, metaData);
-  };
-
   useEffect(() => {
     if (isEditPage) {
-      editData.images.map(async (imgUrl) => {
-        const File = await getImageFile(imgUrl);
-        setImgFile((prev) => [...prev, File]);
+      const covertFile = async () => {
+        const prevFileList: File[] = [];
+
+        for (let imgUrl of editData.images!) {
+          const file = await convertImgToFile(imgUrl);
+          prevFileList.push(file!);
+        }
+        return prevFileList;
+      };
+      const prevFile = covertFile();
+      prevFile.then((res) => setImgFile(() => [...res]));
+    }
+
+    if (isEditPage && isCommunityPage) {
+      const prevTagList: string[] = [];
+      editData.tagList!.map((tagObject) => {
+        const { tag } = tagObject;
+        prevTagList.push(tag.tagName);
       });
+      setTagList(() => [...prevTagList]);
     }
 
     firstInputBox.current?.focus();
   }, []);
 
+  useEffect(() => {
+    console.log(imgFile);
+  }, [imgFile]);
   const sendData = async (formData: FormData) => {
     let res: AxiosResponse;
 
@@ -150,7 +156,7 @@ export default function NewPost() {
     if (e.key === 'Enter') {
       let currentHashTag = target.value;
 
-      if (currentHashTag === '') return;
+      if (currentHashTag.trim() === '') return;
       setTagList((prev) => Array.from(new Set([...prev, currentHashTag])));
 
       target.value = '';
@@ -178,7 +184,9 @@ export default function NewPost() {
   const onSendData = async () => {
     const formData = new FormData();
 
-    const commonData = { title: postInfo.title, content: postInfo.content };
+    const content = trimBody(postInfo.content);
+    const commonData = { title: postInfo.title, content };
+
     if (isCommunityPage) {
       formData.append(
         'request',
@@ -317,7 +325,10 @@ export default function NewPost() {
           </>
         )}
       </div>
-      <FooterButton onClick={onSendData} disabled={!isVaildForm}>
+      <FooterButton
+        onClick={onSendData}
+        disabled={isCommunityPage ? !isVaildForm : !isQnaVaildForm}
+      >
         {isEditPage ? '수정하기' : '등록하기'}
       </FooterButton>
     </div>
