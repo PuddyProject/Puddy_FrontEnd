@@ -56,6 +56,15 @@ export const KAKAO_AUTH_PATH = '/oauth/authorize';
 /* 회원가입 페이지 */
 export const JOIN_PATH = '/auth/Signup';
 
+/* 아이디/비밀번호 찾기 */
+export const FIND_ID_PW_PATH = '/account/recovery';
+
+/* 아이디 찾기 */
+export const FIND_ID_PATH = '/account/recovery/id';
+
+/* 비밀번호 찾기 */
+export const FIND_PW_PATH = '/account/recovery/password';
+
 /* =========================================================== */
 
 /* 마이페이지 */
