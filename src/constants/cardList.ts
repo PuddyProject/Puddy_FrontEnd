@@ -1,6 +1,11 @@
 import { questionsApi, articleApi } from './apiEndpoint';
 
 export const FILTER_ITEM = ['최신순', '오래된순', '인기순'];
+export const FILTER_SEND_DATA = {
+  최신순: 'desc',
+  오래된순: 'asc',
+  인기순: 'viewCount',
+};
 export const PAGE_LIST = ['community', 'qna'];
 
 export const TITLE = {
