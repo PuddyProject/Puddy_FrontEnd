@@ -25,3 +25,6 @@ export const NotFound = lazy(() => import('./NotFound'));
 export const Notification = lazy(() => import('./Notification'));
 export const Bookmark = lazy(() => import('./Bookmark'));
 export const ChangeMyPassword = lazy(() => import('./MyPage/ChangePassword'));
+export const FindIdPw = lazy(() => import('./FindAccount'));
+export const FindId = lazy(() => import('./FindAccount/Id'));
+export const FindPw = lazy(() => import('./FindAccount/Password'));
