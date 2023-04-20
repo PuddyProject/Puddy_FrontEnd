@@ -52,22 +52,27 @@ export default function ChangePassword() {
     reEnterPassword: useRef(null),
   });
 
+  /* 비밀번호 변경 PATCH 요청 */
   const submitChangePassword = async () => {
-    try {
-      const res = await patch({
-        endpoint: myPageApi.PATCH_MY_PASSWORD,
-        isFormData: false,
-        body: {
-          password: inputPassword.password,
-        },
-      });
+    const isCorrectInputValues = Object.entries(isCorrectFormData).every(([_, value]) => value);
 
-      if (res.status === 200) {
-        setShowModal(true);
+    if (isCorrectInputValues) {
+      try {
+        const res = await patch({
+          endpoint: myPageApi.PATCH_MY_PASSWORD,
+          isFormData: false,
+          body: {
+            password: inputPassword.password,
+          },
+        });
+
+        if (res.status === 200) {
+          setShowModal(true);
+        }
+      } catch (err) {
+        console.error(err);
       }
-    } catch (err) {
-      console.error(err);
-    }
+    } else setInputsToShake(() => []);
   };
 
   const onChangeInput = (target: FieldName) => (e: ChangeEvent<HTMLInputElement>) => {
@@ -112,6 +117,8 @@ export default function ChangePassword() {
   }, []);
 
   useEffect(() => {
+    if (!inputPassword.password || !inputPassword.reEnterPassword) return;
+
     if (inputPassword.password === inputPassword.reEnterPassword) {
       setIsCorrectFormData((prev) => {
         return { ...prev, reEnterPassword: true };
@@ -125,6 +132,9 @@ export default function ChangePassword() {
     }
   }, [inputPassword.password, inputPassword.reEnterPassword]);
 
+  // TODO: shake 애니메이션 추가하기
+
+  // 경고 메시지 출력
   useEffect(() => {
     if (inputPassword.password !== inputPassword.reEnterPassword) {
       setWarningMessage((prev) => {
@@ -138,6 +148,8 @@ export default function ChangePassword() {
         };
       });
     } else {
+      if (!inputPassword.password || !inputPassword.reEnterPassword) return;
+
       setWarningMessage((prev) => {
         return { ...prev, reEnterPassword: '' };
       });
