@@ -250,12 +250,15 @@ export default function PetProfileEditor() {
   useEffect(() => {
     setIsMounted(true);
 
+    if (!petProfile?.name) return;
+
     const nameRef = inputRefs.current.name.current;
     if (nameRef) {
-      nameRef.value = petProfile?.name;
+      nameRef.selectionStart = petProfile.name.length;
+      nameRef.selectionEnd = petProfile.name.length;
       nameRef.focus();
     }
-  }, []);
+  }, [isMounted, petProfile.name]);
 
   const focusInput = (inputName: RequiredValues) => {
     if (inputsToShake.includes(inputName)) return;

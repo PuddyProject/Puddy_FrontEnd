@@ -64,6 +64,15 @@ export const KAKAO_AUTH_PATH = '/oauth/authorize';
 /* 회원가입 페이지 */
 export const JOIN_PATH = '/auth/Signup';
 
+/* 아이디/비밀번호 찾기 */
+export const FIND_ID_PW_PATH = '/account/recovery';
+
+/* 아이디 찾기 */
+export const FIND_ID_PATH = '/account/recovery/id';
+
+/* 비밀번호 찾기 */
+export const FIND_PW_PATH = '/account/recovery/password';
+
 /* =========================================================== */
 
 /* 마이페이지 */
@@ -71,6 +80,9 @@ export const MY_PAGE_PATH = '/mypage';
 
 /* 마이페이지 내가 쓴 게시글/댓글 */
 export const MY_POSTS_PATH = 'mypage/posts';
+
+/* 마이페이지 즐겨찾기 */
+export const BOOKMARK = 'mypage/bookmarks';
 
 /* 마이페이지 내 프로필 수정 */
 export const MY_PAGE_PROFILE_PATH = '/mypage/profile';
@@ -92,8 +104,16 @@ export const MY_PAGE_AUTH_EXPERT_PATH = '/mypage/experts';
 /* 마이페이지 전문가 프로필 작성 */
 export const EXPERTS_PROFILE_PATH = '/profile/experts';
 
+/* 전문가 프로필 수정 */
+export const getPathModificationExpertProfile = (userId: string = ':id') => {
+  return `/profile/experts/${userId}`;
+};
+
 /* 마이페이지 설정 - 계정 */
 export const MY_PAGE_ACCOUNT_PATH = '/mypage/account';
+
+/* 마이페이지 설정 - 비밀번호 변경 */
+export const MY_PAGE_CHANGE_PW = '/users/password';
 
 /* 마이페이지 설정 - 회원탈퇴 */
 export const MY_PAGE_WITHDRAWAL_PATH = '/mypage/withdrawal';

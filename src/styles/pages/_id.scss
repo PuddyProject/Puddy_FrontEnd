@@ -1,0 +1,40 @@
+@use '../abstracts' as *;
+
+.find-id-container {
+  @include header-gap;
+  @include center;
+  flex-direction: column;
+  gap: 2rem;
+  min-width: 70%;
+  max-width: 300px;
+
+  .input-title {
+    margin-bottom: 1rem;
+  }
+
+  .message-result {
+    margin-top: 5rem;
+    text-align: center;
+    font-size: 1.3rem;
+
+    p {
+      margin-top: 1rem;
+    }
+
+    p:first-child {
+      font-weight: 600;
+    }
+
+    p:last-child {
+      color: $primary-color;
+    }
+  }
+
+  div {
+    width: 100%;
+  }
+
+  input {
+    width: 100%;
+  }
+}

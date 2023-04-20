@@ -7,7 +7,7 @@ import ButtonModal from 'components/common/ButtonModal';
 import { del } from 'utils';
 
 import { myPageApi } from 'constants/apiEndpoint';
-import { HOME_PATH, MY_PAGE_WITHDRAWAL_PATH } from 'constants/routes';
+import { HOME_PATH, MY_PAGE_CHANGE_PW, MY_PAGE_WITHDRAWAL_PATH } from 'constants/routes';
 
 const initLogoutModalText = {
   cancleText: '취소하기',
@@ -26,7 +26,11 @@ export default function Account() {
   const [showModal, setShowModal] = useState(false);
   const [logoutModalText, setLogoutModalText] = useState(initLogoutModalText);
 
-  const onClickMenuItem = (target: string) => () => {
+  const onClickMenuItem = (nav: string) => () => {
+    navigate(nav);
+  };
+
+  const onClickShowModal = (target: string) => () => {
     if (target) setShowModal(() => true);
   };
 
@@ -66,8 +70,10 @@ export default function Account() {
       <CustomHeader title='계정' />
       <div className='setting-menus'>
         <ul className='account-menus'>
-          <li role='button'>비밀번호 변경</li>
-          <li onClick={onClickMenuItem(modalTargets.logout)} role='button'>
+          <li role='button' onClick={onClickMenuItem(`${MY_PAGE_CHANGE_PW}`)}>
+            비밀번호 변경
+          </li>
+          <li onClick={onClickShowModal(modalTargets.logout)} role='button'>
             로그아웃
           </li>
           <li role='button' onClick={onClickWithdrawal}>
