@@ -181,6 +181,7 @@ export const loginApi = Object.freeze({
 */
 const SOCIAL_LOGIN_API = 'oauth';
 export const socialLoginApi = Object.freeze({
+  POST_SOCIAL_JOIN_KAKAO: `${SOCIAL_LOGIN_API}/join`,
   POST_SOCIAL_LOGIN_KAKAO: `${SOCIAL_LOGIN_API}/kakao`,
 });
 
