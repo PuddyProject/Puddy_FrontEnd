@@ -92,6 +92,7 @@ export default function ExpertProfileEditor() {
           imagePath: data.imagePath,
           introduce: data.introduce,
           username: data.username,
+          location: data.location,
         }));
         setCareerInputs(() => {
           return Array(data.careerList.length)
@@ -125,7 +126,6 @@ export default function ExpertProfileEditor() {
       // * 수정하기 * //
       try {
         profile.careerList = profile.careerList?.filter((value) => !!value); // 빈 값 제거
-
         const res = await put({
           endpoint: `${expertApi.GET_PUT_EXPERT}`,
           isFormData: false,
@@ -152,6 +152,7 @@ export default function ExpertProfileEditor() {
 
   const onChangeInput =
     (target: string) => (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      console.log(target, e.target.value);
       setProfile((prev) => {
         return { ...prev, [target]: e.target.value };
       });
@@ -193,8 +194,12 @@ export default function ExpertProfileEditor() {
   // TODO: 체크해야할 부분 location이 안 넘어 옴
   // TODO: 이름하고 학력 외에 다른 값 모두 required 인 것 같으니 확인 필요
   useEffect(() => {
-    if (inputRef.current) inputRef.current.focus();
-  }, [inputRef]);
+    if (inputRef.current) {
+      inputRef.current.selectionStart = profile.username.length;
+      inputRef.current.selectionEnd = profile.username.length;
+      inputRef.current.focus();
+    }
+  }, [isMounted, profile.username]);
 
   return (
     <>
