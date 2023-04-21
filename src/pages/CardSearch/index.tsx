@@ -62,7 +62,7 @@ export default function CardSearch() {
         <div className='search-title-section'>
           <p className='search-title'>
             검색어 <span>"{SEARCH_WORD}"</span> 가 포함된
-            {SEARCH_CARD === 'community' ? '커뮤니티' : 'Q&A'}
+            {SEARCH_CARD === 'community' ? ' 커뮤니티' : ' Q&A'}
           </p>
           {/* 
           TODO: 상준님이랑 의논을 해보아야함. 몇 개의 글이 있는지 프론트에서 알 수가 없음.
