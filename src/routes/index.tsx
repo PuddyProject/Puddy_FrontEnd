@@ -26,6 +26,7 @@ import {
   QNA_WRITE_POST_PATH,
   QNA_PATH,
   QNA_SEARCH_PATH,
+  getPathWriteReview,
   getPathWriteAnswer,
   getPathPetProfile,
   COMMUNITY_WRTIE_POST_PATH,
@@ -131,7 +132,7 @@ export default function Router() {
           <Route path={QNA_WRITE_POST_PATH} element={<pages.NewPost />} />
           <Route path={getPathModificationQna()} element={<pages.NewPost />} />
           <Route path={QNA_SEARCH_PATH} element={<pages.CardSearch />} />
-
+          <Route path={getPathWriteReview()} element={<pages.CommentAnswer />} />
           {/* //? 커뮤니티 작성/상세 보기 */}
 
           <Route path={COMMUNITY_WRTIE_POST_PATH} element={<pages.NewPost />} />
