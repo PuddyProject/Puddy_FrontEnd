@@ -93,7 +93,7 @@ export default function CardList() {
 
   const onSearchBoxKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      nav('search', { state: searchWord });
+      nav('search', { state: { searchWord, search_card: CURRENT_PAGE } });
     }
   };
 
@@ -171,6 +171,11 @@ export default function CardList() {
               nav('newpost');
             }}
           />
+          {!hasNextPage && (
+            <div className={`list-end-data ${isCommunityPage ? 'community' : ''}`}>
+              더 이상 데이터가 없습니다.
+            </div>
+          )}
         </div>
       )}
     </>

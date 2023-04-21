@@ -19,7 +19,8 @@ export default function CardSearch() {
   }).filter((v) => v !== undefined)[0]! as keyof typeof END_POINT;
 
   const isCommunityPage = location.pathname.includes('/community');
-  const SEARCH_WORD = location.state;
+  const SEARCH_WORD = location.state.searchWord;
+  const SEARCH_CARD = location.state.search_card;
 
   const getData = async (isChangePage: boolean) => {
     const res = await get({
@@ -60,11 +61,14 @@ export default function CardSearch() {
       <div className='search-container'>
         <div className='search-title-section'>
           <p className='search-title'>
-            검색어 <span>"{location.state}"</span> 가 포함된 Q&A
+            검색어 <span>"{SEARCH_WORD}"</span> 가 포함된
+            {SEARCH_CARD === 'community' ? '커뮤니티' : 'Q&A'}
           </p>
+          {/* 
+          TODO: 상준님이랑 의논을 해보아야함. 몇 개의 글이 있는지 프론트에서 알 수가 없음.
           <p className='search-sub-title'>
             총 <span>10건</span>의 게시글이 존재해요
-          </p>
+          </p> */}
         </div>
 
         {listData?.length === 0 ? (
