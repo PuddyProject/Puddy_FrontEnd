@@ -11,18 +11,22 @@ export default function CommentAnswer() {
   const nav = useNavigate();
   const { comment } = location.state;
 
+  console.log(location.state);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const [answer, setAnaswer] = useState<string>(comment?.content || '');
 
   const isEditPage = location.pathname.includes('edit');
   const isCommunityPage = location.pathname.includes('community');
+  const isReviewPage = location.pathname.includes('reviews');
 
   useEffect(() => {
     textAreaRef.current?.focus({});
   }, []);
 
   const choieApi = () => {
-    if (isCommunityPage) {
+    if (isReviewPage) {
+      return `reviews/${location.state}`;
+    } else if (isCommunityPage) {
       if (isEditPage) {
         return articlesApi.requestPutDeletePatchArticleId(
           location.state.postId,
@@ -40,6 +44,7 @@ export default function CommentAnswer() {
       return answersApi.requestPostAnswer(location.state);
     }
   };
+
   async function sendData() {
     let postAnswer = trimBody(answer);
 
@@ -68,7 +73,10 @@ export default function CommentAnswer() {
 
   return (
     <>
-      <CustomHeader title={`${isCommunityPage ? '커뮤니티 댓글' : 'Q&A 답변'}  작성`} hideIcon />
+      <CustomHeader
+        title={`${isReviewPage ? '리뷰' : isCommunityPage ? '커뮤니티 댓글' : 'Q&A 답변'}  작성`}
+        hideIcon
+      />
       <div>
         <InputTitle isRequire={true} margin='50px 0px 10px 0px'>
           답변 내용
@@ -86,7 +94,7 @@ export default function CommentAnswer() {
         />
       </div>
       <FooterButton onClick={sendData}>
-        {isEditPage ? '답변 수정하기' : '답변 작성하기'}
+        {isReviewPage ? '리뷰 작성하기' : isEditPage ? '답변 수정하기' : '답변 작성하기'}
       </FooterButton>
     </>
   );

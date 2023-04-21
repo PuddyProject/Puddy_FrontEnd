@@ -121,3 +121,13 @@
     color: $primary-color;
   }
 }
+
+.list-end-data {
+  margin-top: 30px;
+  @include font-styles(17px, 700, $primary-color);
+  text-align: center;
+
+  &.community {
+    margin-top: 50px;
+  }
+}
