@@ -1,6 +1,8 @@
 {
   "short_name": "PUDDY",
-  "name": "PUDDY",
+  "name": "PUDDY : 반려견 질의/응답 커뮤니티",
+  "description": "반려견을 키우는 주인이 서로 정보를 교환하고,\n경험을 공유하며 도움을 주고받을 수 있는 플랫폼입니다.",
+
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +22,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#2a60ff",
   "background_color": "#ffffff"
 }
