@@ -120,7 +120,7 @@ export default function CardDetail() {
       case 'age':
         return value + ' 살';
       case 'gender':
-        return value ? '수컷' : '암컷';
+        return value ? '암컷' : '수컷';
       case 'neutered':
         return value ? '중성화 O' : '중성화 X';
       case 'weight':
