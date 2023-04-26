@@ -14,6 +14,10 @@ export const getPathWriteAnswer = (id: string = ':id') => {
   return `/qna/detail/${id}/write/answer`;
 };
 
+export const getPathWriteReview = (id: string = ':id') => {
+  return `/qna/detail/${id}/reviews`;
+};
+
 /* Q&A 게시글 답변 수정 */
 export const getPathModificationAnswer = (id: string = ':id') => {
   return `/qna/detail/${id}/write/answer/edit`;

@@ -64,7 +64,7 @@ export const answersApi = Object.freeze({
 
   /* 답변 글 작성 */
   requestPostAnswer: (questionId: string) => {
-    return `questions/${questionId}/answers/write`;
+    return `questions/${questionId}/answers`;
   },
 
   /* 답변 글 목록 조회 */

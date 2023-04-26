@@ -6,7 +6,6 @@ import { QnaCard, CommunityCard, CustomHeader } from 'components';
 import { get } from 'utils';
 import { PostDataInfo } from 'types/commentTypes';
 import { PAGE_LIST, NO_POST, CARD_ID, LIST_NAME, END_POINT } from 'constants/cardList';
-import { SEARCH_PARAM } from 'constants/cardSearch';
 
 export default function CardSearch() {
   const [listData, setListData] = useState<Array<PostDataInfo>>([]);
@@ -20,12 +19,13 @@ export default function CardSearch() {
   }).filter((v) => v !== undefined)[0]! as keyof typeof END_POINT;
 
   const isCommunityPage = location.pathname.includes('/community');
-  const SEARCH_WORD = location.state;
+  const SEARCH_WORD = location.state.searchWord;
+  const SEARCH_CARD = location.state.search_card;
 
   const getData = async (isChangePage: boolean) => {
     const res = await get({
       endpoint: END_POINT[CURRENT_PAGE],
-      params: `?page=${pageNumber}&${SEARCH_PARAM[CURRENT_PAGE]}=${SEARCH_WORD}`,
+      params: `?page=${pageNumber}&keyword=${SEARCH_WORD}`,
     });
 
     isChangePage
@@ -33,7 +33,11 @@ export default function CardSearch() {
       : setListData((prev) => [...prev, ...res.data.data[LIST_NAME[CURRENT_PAGE]]]);
 
     setHasNextPage(res.data.data.hasNextPage);
-    res.data.data.hasNextPage && setPageNumber((prev) => prev + 1);
+    if (res.data.data.hasNextPage && isChangePage) {
+      setPageNumber(() => 2);
+    } else {
+      setPageNumber((prev) => prev + 1);
+    }
   };
 
   const choieCardComponent = (id: number, data: PostDataInfo) => {
@@ -57,11 +61,14 @@ export default function CardSearch() {
       <div className='search-container'>
         <div className='search-title-section'>
           <p className='search-title'>
-            검색어 <span>"{location.state}"</span> 가 포함된 Q&A
+            검색어 <span>"{SEARCH_WORD}"</span> 가 포함된
+            {SEARCH_CARD === 'community' ? ' 커뮤니티' : ' Q&A'}
           </p>
+          {/* 
+          TODO: 상준님이랑 의논을 해보아야함. 몇 개의 글이 있는지 프론트에서 알 수가 없음.
           <p className='search-sub-title'>
             총 <span>10건</span>의 게시글이 존재해요
-          </p>
+          </p> */}
         </div>
 
         {listData?.length === 0 ? (

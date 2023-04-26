@@ -27,7 +27,8 @@ export default function QnaComment({
   setPostDataInfo,
   setAnswerList,
 }: CommentProps) {
-  const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showReviewModal, setShowReviewModal] = useState(false);
 
   const location = useLocation();
   const nav = useNavigate();
@@ -41,7 +42,7 @@ export default function QnaComment({
     });
 
     if (res.status === 200) {
-      alert('답변이 채택 되었습니다.');
+      !isExport && alert('답변이 채택되었습니다.');
       setAnswerList((answerList: AnswerInfo[]) => {
         return answerList.map((answer: AnswerInfo) => {
           if (answer.id === answerData.id) {
@@ -76,17 +77,31 @@ export default function QnaComment({
 
   return (
     <>
-      {showModal && (
+      {showReviewModal && (
+        <ButtonModal
+          cancleText={'아니요'}
+          confirmText={'리뷰달기'}
+          text={'전문가 답변을 선택하셨습니다.'}
+          subText={'리뷰를 남기시겠습니까?'}
+          closeModal={selectAnswer}
+          onCancle={selectAnswer}
+          onConfirm={() => {
+            selectAnswer();
+            nav('reviews', { state: answerData.userId });
+          }}
+        />
+      )}
+      {showDeleteModal && (
         <ButtonModal
           cancleText={'취소'}
           confirmText={'삭제'}
           text={'답변을 삭제하시겠습니까?'}
           subText={'한번만 더 생각을....'}
           closeModal={() => {
-            setShowModal(false);
+            setShowDeleteModal(false);
           }}
           onCancle={() => {
-            setShowModal(false);
+            setShowDeleteModal(false);
           }}
           onConfirm={deleteComment}
         />
@@ -112,7 +127,7 @@ export default function QnaComment({
                 >
                   수정하기
                 </span>{' '}
-                | <span onClick={() => setShowModal(true)}>삭제하기</span>
+                | <span onClick={() => setShowDeleteModal(true)}>삭제하기</span>
               </div>
             )}
           </div>
@@ -126,7 +141,7 @@ export default function QnaComment({
               fontWeight='600'
               fontSize='12px'
               margin='15px 0px 0px 0px'
-              onClick={selectAnswer}
+              onClick={() => setShowReviewModal(true)}
             >
               이 답변 채택하기
             </Button>

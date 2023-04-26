@@ -3,7 +3,7 @@ import { FormEvent, useEffect, useState, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { InputBox, QnaCard, CommunityCard, WriteButton } from 'components';
-import { FILTER_ITEM } from 'constants/cardList';
+import { FILTER_ITEM, FILTER_SEND_DATA } from 'constants/cardList';
 import { get } from 'utils';
 import { PostDataInfo } from 'types/commentTypes';
 import { NO_POST, CARD_ID, LIST_NAME, TITLE, END_POINT } from 'constants/cardList';
@@ -15,7 +15,7 @@ export default function CardList() {
   const [listData, setListData] = useState<Array<PostDataInfo>>([]);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [pageNumber, setPageNumber] = useState(1);
-  const [currentFilter, setCurrentFilter] = useState('최신순');
+  const [currentFilter, setCurrentFilter] = useState<string>('최신순');
   const [isFirst, setIsFirst] = useState(true);
   const [lastCardRef, inView] = useInView();
   const [searchWord, setSearchWord] = useState('');
@@ -52,7 +52,9 @@ export default function CardList() {
     try {
       const res = await get({
         endpoint: END_POINT[CURRENT_PAGE],
-        params: `?page=${isChangePage ? 1 : pageNumber}`,
+        params: `?page=${isChangePage ? 1 : pageNumber}&sort=${
+          FILTER_SEND_DATA[currentFilter as '최신순' | '오래된순' | '인기순']
+        }`,
       });
 
       if (isChangePage) {
@@ -63,7 +65,11 @@ export default function CardList() {
 
       isChangePage && setIsFirst(false);
       setHasNextPage(res.data.data.hasNextPage);
-      res.data.data.hasNextPage && setPageNumber((prev) => prev + 1);
+      if (res.data.data.hasNextPage && isChangePage) {
+        setPageNumber(() => 2);
+      } else {
+        setPageNumber((prev) => prev + 1);
+      }
     } catch (err) {
       console.log(err);
     } finally {
@@ -87,7 +93,7 @@ export default function CardList() {
 
   const onSearchBoxKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      nav('search', { state: searchWord });
+      nav('search', { state: { searchWord, search_card: CURRENT_PAGE } });
     }
   };
 
@@ -101,8 +107,11 @@ export default function CardList() {
     getData(true);
     setPageNumber(1);
     searchRef.current!.value = '';
-  }, [location.pathname]);
+  }, [location.pathname, currentFilter]);
 
+  useEffect(() => {
+    setCurrentFilter(() => '최신순');
+  }, [location.pathname]);
   if (isLoading) {
     return <Loading />;
   }
@@ -162,6 +171,11 @@ export default function CardList() {
               nav('newpost');
             }}
           />
+          {!hasNextPage && (
+            <div className={`list-end-data ${isCommunityPage ? 'community' : ''}`}>
+              더 이상 데이터가 없습니다.
+            </div>
+          )}
         </div>
       )}
     </>

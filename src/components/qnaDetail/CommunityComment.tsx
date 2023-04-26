@@ -49,7 +49,7 @@ export default function CommunityComment({
         <ButtonModal
           cancleText={'취소'}
           confirmText={'삭제'}
-          text={'답변을 삭제하시겠습니까?'}
+          text={'댓글을 삭제하시겠습니까?'}
           subText={'한번만 더 생각을....'}
           closeModal={() => {
             setShowModal(false);

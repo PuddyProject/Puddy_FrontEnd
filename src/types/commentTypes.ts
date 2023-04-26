@@ -4,6 +4,7 @@ export interface AnswerInfo {
   nickname: string;
   selected: boolean;
   userRole: string;
+  userId: number;
   createdDate?: string;
 }
 

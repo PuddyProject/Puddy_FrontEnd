@@ -85,6 +85,16 @@
     border-radius: 50px;
     background-color: $color-gray03;
     margin: 15px;
+
+    &.img {
+      background-color: white;
+    }
+
+    .img-tag {
+      width: 105%;
+      height: 105%;
+      border-radius: 50px;
+    }
   }
 
   .main-expert-card-description {

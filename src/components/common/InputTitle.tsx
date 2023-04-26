@@ -1,5 +1,5 @@
 interface InputBoxProps {
-  children: string;
+  children: string | string[];
   id?: string;
   width?: string;
   margin?: string;

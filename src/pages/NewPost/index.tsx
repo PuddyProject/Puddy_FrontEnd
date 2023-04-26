@@ -307,7 +307,7 @@ export default function NewPost() {
           <>
             <InputTitle margin='15px 0px'>태그</InputTitle>
             <InputBox
-              width='100%'
+              width='300px'
               placeholder='태그를 등록해보세요.'
               margin='0px 0px 15px 0px'
               onKeyPress={onTagBoxKeyDown}

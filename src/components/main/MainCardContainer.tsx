@@ -38,7 +38,7 @@ export default function MainCardContainer({ title, cardDataList, cardType }: Qna
         cardData = cardData as MainExpertCardType;
         return (
           <Link key={cardData.expertId} to={`experts/${cardData.expertId}`}>
-            <MainExpertCard key={cardData.expertId} />
+            <MainExpertCard key={cardData.expertId} cardData={cardData} />
           </Link>
         );
     }
