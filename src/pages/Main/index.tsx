@@ -10,8 +10,12 @@ import useLoading from 'hooks/useLoading';
 import { homeApi } from 'constants/apiEndpoint';
 import { PROFILE_PET_PATH, QNA_WRITE_POST_PATH } from 'constants/routes';
 
-const COLOR = Array(5).fill('lightGray');
-const MAX_INDEX = COLOR.length - 1;
+import banner from 'assets/banner.png';
+import banner2 from 'assets/banner2.png';
+
+// const COLOR = Array(5).fill('lightGray');
+const BANNER_IMGS = [banner, banner2];
+const MAX_INDEX = BANNER_IMGS.length - 1;
 
 interface MainQnaList {
   popularQuestions: MainQnaCardType[];
@@ -62,7 +66,7 @@ export default function Main() {
             <div
               className='carousel-container'
               style={{
-                transform: `translateX(${-currentIndex * 308 + transX}px)`,
+                transform: `translateX(${-currentIndex * 335 + transX}px)`,
                 transition: `transform ${transX ? 0 : 300}ms ease-in-out 0s`,
               }}
               {...dragEvent({
@@ -77,8 +81,10 @@ export default function Main() {
                 },
               })}
             >
-              {COLOR.map((color, i) => (
-                <div key={i} style={{ backgroundColor: color }} className='carousel-item'></div>
+              {BANNER_IMGS.map((banner, i) => (
+                <div key={i} className='carousel-item'>
+                  <img src={banner} alt={`banner ${i}`} />
+                </div>
               ))}
             </div>
           </div>
