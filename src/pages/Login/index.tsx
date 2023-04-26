@@ -19,6 +19,12 @@ import { encryptRefreshToken } from 'utils/cryptoRefreshToken';
 import { useUser } from 'context/UserContext';
 import { useAuth } from 'hooks/useAuth';
 
+const snsLoginItems = [
+  { name: '카카오 로그인', imgSrc: Kakao, className: 'kakao', link: KAKAO_LOGIN_URI },
+  { name: '네이버 로그인', imgSrc: Naver, className: 'naver' },
+  { name: '구글 로그인', imgSrc: Google, className: 'google' },
+];
+
 export default function Login() {
   const navigate = useNavigate();
 
@@ -132,20 +138,21 @@ export default function Login() {
         <hr className='dividing-line' />
         <h3>SNS 계정으로 간편하게 시작하기</h3>
         <ul className='sns-logins'>
-          <Link to={KAKAO_LOGIN_URI}>
-            <li className='social-login kakao' role='button' tabIndex={0}>
-              <span>카카오 로그인</span>
-              <img src={Kakao} alt='카카오' />
-            </li>
-          </Link>
-          <li className='social-login naver' role='button' tabIndex={0}>
-            <span>네이버 로그인</span>
-            <img src={Naver} alt='네이버' />
-          </li>
-          <li className='social-login google' role='button' tabIndex={0}>
-            <span>구글 로그인</span>
-            <img src={Google} alt='구글' />
-          </li>
+          {snsLoginItems.map((sns) =>
+            sns.link ? (
+              <Link to={sns.link}>
+                <li className={sns.className} role='button' tabIndex={0}>
+                  <span>{sns.name}</span>
+                  <img src={sns.imgSrc} alt={sns.name} />
+                </li>
+              </Link>
+            ) : (
+              <li className={sns.className} role='button' tabIndex={0}>
+                <span>{sns.name}</span>
+                <img src={sns.imgSrc} alt={sns.name} />
+              </li>
+            )
+          )}
         </ul>
       </div>
     </>
