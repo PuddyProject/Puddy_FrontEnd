@@ -87,8 +87,6 @@ instance.interceptors.request.use(async (config) => {
   if (userToken) {
     // * 액세스 토큰 만료 확인 후 응답코드 400인 경우 서버로부터 새 토큰 발급 * //
     if (!isTokenExpired(userToken)) {
-      window.alert('액세스 토큰이 만료되었습니다. test 콘솔');
-      // TODO: 정상동작하는지 확인 필요
       try {
         const newToken = await getNewToken();
         config.headers.Authorization = newToken;
