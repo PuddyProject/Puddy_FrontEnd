@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 import { UserToken } from 'types/userTokenTypes';
+import { TOKEN_KEY } from 'constants/token';
+
 import decodeJWT from 'utils/decodeJWT';
 
 interface UserContextProps {
@@ -16,8 +18,6 @@ export const UserContext = createContext<UserContextProps>({
   setToken: () => {},
   setDecodedToken: () => {},
 });
-
-const TOKEN_KEY = 'userToken';
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [token, setToken] = useState<string | null>(null);

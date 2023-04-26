@@ -1,23 +1,36 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { HiOutlineStar as OutlineStar, HiStar as Star } from 'react-icons/hi';
 
-import { Button, CustomHeader } from 'components';
+import { Button, CustomHeader, FooterButton } from 'components';
 
 import { get } from 'utils/axiosHelper';
 
 import { Profile } from 'types/expertProfileTypes';
-import { expertApi } from 'constants/apiEndpoint';
 import { ApiError } from 'types/errorsTypes';
-import { NOT_FOUND_PATH } from 'constants/routes';
+
+import { expertApi } from 'constants/apiEndpoint';
+import { NOT_FOUND_PATH, getPathModificationExpertProfile } from 'constants/routes';
+
+import { useUser } from 'context/UserContext';
 
 const TEMP_IMAGE_URL =
   'https://blog.kakaocdn.net/dn/GHYFr/btrsSwcSDQV/UQZxkayGyAXrPACyf0MaV1/img.jpg';
 
 export default function ExpertProfile() {
   const location = useLocation();
+  const navigate = useNavigate();
   const expertId = location.pathname.split('/').pop();
+
   const [profile, setProfile] = useState<Profile>();
+  const { decodedToken } = useUser();
+
+  /* 현재 전문가 유저가 프로필 작성 여부를 알 수 없으므로 아래 코드 임시 사용중 */
+  const isMyProfile = profile?.expertId === decodedToken?.id;
+
+  const onClickModificationExpertProfile = () => {
+    navigate(`${getPathModificationExpertProfile(decodedToken?.id.toString())}`);
+  };
 
   useEffect(() => {
     if (!expertId) return;
@@ -43,7 +56,11 @@ export default function ExpertProfile() {
       <CustomHeader title={`${profile?.username ? profile.username : ''} 전문가 프로필`} />
       <div className='expert-profile-container'>
         <section className='profile expert'>
-          <img className='profile-image' src={TEMP_IMAGE_URL} alt='프로필 이미지' />
+          <img
+            className='profile-image'
+            src={profile?.imagePath || TEMP_IMAGE_URL}
+            alt='프로필 이미지'
+          />
           <div className='profile-expert_header'>
             <h3 className='profile-expert_name'>{profile?.username}</h3>
             <OutlineStar className='outline-star' />
@@ -82,6 +99,9 @@ export default function ExpertProfile() {
           리뷰 보기
         </Button>
       </div>
+      {isMyProfile && (
+        <FooterButton onClick={onClickModificationExpertProfile}>수정하기</FooterButton>
+      )}
     </>
   );
 }

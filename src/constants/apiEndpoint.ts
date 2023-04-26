@@ -81,8 +81,14 @@ export const answersApi = Object.freeze({
 */
 const EXPERT_API = 'experts';
 export const expertApi = Object.freeze({
+  /* 전문가 프로필 GET, PUT */
   GET_PUT_EXPERT: `${EXPERT_API}`,
+
+  /* 전문가 프로필 POST */
   POST_EXPERT: `users/${EXPERT_API}`,
+
+  /* 전문가 서류 제출 */
+  POST_EXPERT_DOCS: `${EXPERT_API}/send-docs`,
 
   /* 전문가 프로필 조회 시 */
   requestExpertId: (userId: string) => {
@@ -178,6 +184,7 @@ export const loginApi = Object.freeze({
 */
 const SOCIAL_LOGIN_API = 'oauth';
 export const socialLoginApi = Object.freeze({
+  POST_SOCIAL_JOIN_KAKAO: `${SOCIAL_LOGIN_API}/join`,
   POST_SOCIAL_LOGIN_KAKAO: `${SOCIAL_LOGIN_API}/kakao`,
 });
 
@@ -206,9 +213,13 @@ export const myPageApi = Object.freeze({
 
   /* 유저 권한 변경 */
   PATCH_USER_AUTH: `${MY_PAGE_API}/update-auth`,
+
   GET_MY_POSTS: `${MY_PAGE_API}/posts`,
   GET_MY_PAGE_INFO: `${MY_PAGE_API}/me`,
   DELETE_LOGOUT: `${MY_PAGE_API}/logout`,
+
+  /* 비밀번호 변경 */
+  PATCH_MY_PASSWORD: `${MY_PAGE_API}/change-password`,
 });
 
 /* ------------------------------------- */
