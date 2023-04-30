@@ -6,10 +6,51 @@ header {
   height: 48px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   border-bottom: 1px solid $color-gray04;
   background-color: $bg-color;
   position: fixed;
   top: 0;
   z-index: 100;
+  font-size: 1.8rem;
+  text-align: center;
+
+  .prev {
+    cursor: pointer;
+  }
+
+  .custom-header-left,
+  .custom-header-right {
+    flex: 1;
+  }
+
+  .custom-header-right {
+    margin-right: 7px;
+  }
+
+  .logo-img {
+    flex: 1.5;
+    margin-left: 5px;
+  }
+
+  .custom-header-center {
+    flex: 4;
+    font-size: 1.4rem;
+  }
+}
+
+.bell-icon {
+  color: $icon-color;
+  margin-right: 5vw;
+  font-size: 2rem;
+}
+
+.custom-header-right.bell {
+  color: $icon-color;
+}
+
+.submit-btn {
+  border: none;
+  background: none;
+  color: $primary-color;
+  font-weight: 600;
 }
