@@ -1,5 +1,6 @@
 import { useState, FormEvent, useEffect, useRef } from 'react';
-import { IoMdRemoveCircleOutline } from 'react-icons/io';
+import { BsPlus as PlusIcon } from 'react-icons/bs';
+import { MdClose as CloseIcon } from 'react-icons/md';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { InputBox, InputTitle, FooterButton, CustomHeader } from 'components';
@@ -18,6 +19,8 @@ interface PostInfo {
   postCategory: number;
 }
 
+const IMG_BOX_COUNT = 3;
+
 export default function NewPost() {
   const location = useLocation();
   const editData: PostDataInfo = location.state;
@@ -30,7 +33,7 @@ export default function NewPost() {
 
   const [tagList, setTagList] = useState<string[]>([]);
   const [filePreview, setFilePreview] = useState<string[]>(editData?.images || []);
-  const [imgFile, setImgFile] = useState<File[]>([]);
+  const [imgFiles, setImgFiles] = useState<File[]>([]);
   const firstInputBox = useRef<HTMLInputElement>(null);
   const isVaildForm =
     postInfo.content.length >= 1 && postInfo.content !== '' && postInfo.title.length >= 1;
@@ -53,7 +56,7 @@ export default function NewPost() {
         return prevFileList;
       };
       const prevFile = covertFile();
-      prevFile.then((res) => setImgFile(() => [...res]));
+      prevFile.then((res) => setImgFiles(() => [...res]));
     }
 
     if (isEditPage && isCommunityPage) {
@@ -68,9 +71,6 @@ export default function NewPost() {
     firstInputBox.current?.focus();
   }, []);
 
-  useEffect(() => {
-    console.log(imgFile);
-  }, [imgFile]);
   const sendData = async (formData: FormData) => {
     let res: AxiosResponse;
 
@@ -138,23 +138,22 @@ export default function NewPost() {
       return;
     }
 
-    // eslint-disable-next-line semi-spacing
-    for (let i = 0; i < files.length; i++) {
-      setImgFile((prev) => [...prev, files[i]]);
-      setFilePreview((prev) => [...prev, URL.createObjectURL(files[i])]);
+    for (const file of files) {
+      setImgFiles((prev) => [...prev, file]);
+      setFilePreview((prev) => [...prev, URL.createObjectURL(file)]);
     }
   };
 
   const onClickRemoveHandler = (index: number) => {
-    setImgFile((prev) => [...prev.filter((_, i) => i !== index)]);
+    setImgFiles((prev) => [...prev.filter((_, i) => i !== index)]);
     setFilePreview((prev) => [...prev.filter((_, i) => i !== index)]);
   };
 
   const onTagBoxKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    let target = e.target as HTMLInputElement;
+    const target = e.target as HTMLInputElement;
 
     if (e.key === 'Enter') {
-      let currentHashTag = target.value;
+      const currentHashTag = target.value;
 
       if (currentHashTag.trim() === '') return;
       setTagList((prev) => Array.from(new Set([...prev, currentHashTag])));
@@ -164,7 +163,7 @@ export default function NewPost() {
   };
 
   const onTagBoxChange = (e: FormEvent<HTMLElement>) => {
-    let target = e.target as HTMLInputElement;
+    const target = e.target as HTMLInputElement;
 
     if (target.value.length > 10) {
       alert('해쉬태그 최대 글자수는 10자 입니다');
@@ -217,36 +216,87 @@ export default function NewPost() {
       );
     }
 
-    // eslint-disable-next-line semi-spacing
-    for (let i = 0; i < imgFile.length; i++) {
-      formData.append('images', imgFile[i]);
+    for (const imgFile of imgFiles) {
+      formData.append('images', imgFile);
     }
 
     sendData(formData);
   };
 
   return (
-    <div>
-      <CustomHeader title={isCommunityPage ? '커뮤니티 등록' : 'Q&A 등록'} hideIcon />
+    <div className='qna-newpost-layout-container'>
+      <CustomHeader
+        title={isCommunityPage ? '글 작성' : 'Q&A 작성'}
+        submitText={isEditPage ? '수정' : '등록'}
+        onClickRight={onSendData}
+        hideIcon
+      />
+
       <div className='qna-newpost-container' onChange={onChangeHandler}>
-        <InputTitle isRequire={true}> 제목 </InputTitle>
-        <InputBox
-          id='title'
-          margin='10px 0px 20px 0px'
-          padding='0px 0px 0px 15px'
-          width='300px'
-          placeholder='제목을 입력해주세요.(50자 이내)'
-          value={postInfo.title}
-          inputRef={firstInputBox}
-          onFocus={onFocus}
-        />
+        <section>
+          <div className='image-container'>
+            <input
+              id='imgFile'
+              className='image-add-item'
+              type='file'
+              accept='image/*'
+              onChange={onFileChangeHandler}
+            />
+            <div className='add-image-button' role='button'>
+              <label htmlFor='imgFile'>
+                <i className='image-add-item-plus'>
+                  <PlusIcon />
+                </i>
+                <p className='image-add-item-text'>
+                  이미지 등록
+                  <br />
+                  (최대 3장)
+                </p>
+              </label>
+            </div>
+          </div>
+
+          {filePreview.length ? (
+            <div className='image-container upload-images'>
+              {Array(IMG_BOX_COUNT)
+                .fill(0)
+                .map((_, i) => {
+                  return filePreview[i] !== undefined ? (
+                    <div key={i} className='image-item-box'>
+                      <img key={i} className='image-item' src={filePreview[i]} alt='upload-img' />
+                      <CloseIcon
+                        size='25px'
+                        className='remove-image'
+                        onClick={() => onClickRemoveHandler(i)}
+                      />
+                    </div>
+                  ) : (
+                    <></>
+                  );
+                })}
+            </div>
+          ) : (
+            <></>
+          )}
+        </section>
+
+        <section>
+          <InputTitle isRequire={true}>제목</InputTitle>
+          <InputBox
+            id='title'
+            placeholder='제목을 입력해주세요. (50자 이내)'
+            value={postInfo.title}
+            inputRef={firstInputBox}
+            onFocus={onFocus}
+          />
+        </section>
+
         {!isCommunityPage && (
-          <>
-            <InputTitle isRequire={true}>카테고리 </InputTitle>
+          <section>
+            <InputTitle isRequire={true}>카테고리</InputTitle>
             <div className='category-container'>
               {CATEGORY_ITEM.map((category, i) => {
                 const isSelected = category === postInfo.category;
-
                 return (
                   <div
                     key={i}
@@ -259,72 +309,46 @@ export default function NewPost() {
                 );
               })}
             </div>
-          </>
+          </section>
         )}
 
-        <div className='image-container'>
-          <input
-            id='imgFile'
-            className='image-add-item'
-            style={{ display: 'none' }}
-            type='file'
-            accept='image/*'
-            onChange={onFileChangeHandler}
-          />
-          <div className='image-item-add-button'>
-            <label htmlFor='imgFile'>
-              <p className='image-add-item-plus'>+</p>
-              <p className='image-add-item-text'>이미지 등록</p>
-            </label>
-          </div>
-          {Array(3)
-            .fill(0)
-            .map((_, i) => {
-              return filePreview[i] !== undefined ? (
-                <div key={i} className='image-item'>
-                  <img key={i} className='image-item' src={filePreview[i]} alt='' />
-                  <IoMdRemoveCircleOutline
-                    size='25px'
-                    className='remove-image'
-                    onClick={() => onClickRemoveHandler(i)}
-                  />
-                </div>
-              ) : (
-                <img key={i} className='image-item' alt='' />
-              );
-            })}
-        </div>
-        <InputTitle isRequire={true}> 내용 </InputTitle>
-        <textarea
-          id='content'
-          maxLength={500}
-          className='text-body'
-          placeholder='내용을 입력해주세요.(500자 이내)'
-          defaultValue={postInfo.content}
-          onFocus={onFocus}
-        ></textarea>
-        {isCommunityPage && (
-          <>
-            <InputTitle margin='15px 0px'>태그</InputTitle>
-            <InputBox
-              width='300px'
-              placeholder='태그를 등록해보세요.'
-              margin='0px 0px 15px 0px'
-              onKeyPress={onTagBoxKeyDown}
-              onChange={onTagBoxChange}
-            />
-            <div className='new-post-tag-container'>
-              {tagList.map((tag, index) => {
-                return (
-                  <span key={index} className='tag-item-new-post' onClick={() => deleteTag(index)}>
-                    {tag}
-                  </span>
-                );
-              })}
-            </div>
-          </>
-        )}
+        <section>
+          <InputTitle isRequire={true}>내용</InputTitle>
+          <textarea
+            id='content'
+            maxLength={500}
+            className='text-body'
+            placeholder='내용을 입력해주세요. (500자 이내)'
+            defaultValue={postInfo.content}
+            onFocus={onFocus}
+          ></textarea>
+          {isCommunityPage && (
+            <>
+              <InputTitle margin='15px 0px'>태그</InputTitle>
+              <InputBox
+                placeholder='태그를 등록해보세요.'
+                margin='0px 0px 15px 0px'
+                onKeyPress={onTagBoxKeyDown}
+                onChange={onTagBoxChange}
+              />
+              <div className='new-post-tag-container'>
+                {tagList.map((tag, index) => {
+                  return (
+                    <span
+                      key={index}
+                      className='tag-item-new-post'
+                      onClick={() => deleteTag(index)}
+                    >
+                      {tag}
+                    </span>
+                  );
+                })}
+              </div>
+            </>
+          )}
+        </section>
       </div>
+
       <FooterButton
         onClick={onSendData}
         disabled={isCommunityPage ? !isVaildForm : !isQnaVaildForm}
