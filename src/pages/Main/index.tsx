@@ -58,8 +58,6 @@ export default function Main() {
     return <Loading />;
   }
 
-  console.log(mainQnaList);
-
   return (
     <>
       <div className='main-container'>

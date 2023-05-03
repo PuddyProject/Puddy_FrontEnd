@@ -212,7 +212,6 @@ export default function PetProfileEditor() {
 
         console.log(res);
         if (res.status === 200) {
-          console.log('수정 완료, 전송 데이터 : ', petProfile);
           window.alert('수정을 완료했어요.'); // *임시 메시지
           navigate(`${MY_PAGE_PET_PATH}`);
         }

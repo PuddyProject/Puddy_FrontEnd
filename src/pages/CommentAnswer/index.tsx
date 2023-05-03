@@ -11,7 +11,6 @@ export default function CommentAnswer() {
   const nav = useNavigate();
   const { comment } = location.state;
 
-  console.log(location.state);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const [answer, setAnaswer] = useState<string>(comment?.content || '');
 
