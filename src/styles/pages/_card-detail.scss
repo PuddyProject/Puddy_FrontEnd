@@ -149,3 +149,20 @@
     margin: 0px 2px;
   }
 }
+
+/* 반응형 */
+@media screen and (min-width: 480px) {
+  #community {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  #community {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .commuinty-card {
+    max-width: 100%;
+  }
+}
