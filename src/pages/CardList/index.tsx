@@ -154,7 +154,7 @@ export default function CardList() {
           {listData?.length === 0 ? (
             <div className='list-zero-data'>{NO_POST[CURRENT_PAGE]}게시글이 없습니다</div>
           ) : (
-            <div className={`card-list ${isCommunityPage ? 'community' : ''}`}>
+            <div id='community' className={`card-list ${isCommunityPage ? 'community' : ''}`}>
               {listData?.map((data, i) => {
                 const id = data[CARD_ID[CURRENT_PAGE] as 'articleId' | 'questionId'];
                 return (
