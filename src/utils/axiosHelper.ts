@@ -6,7 +6,7 @@ import { decryptRefreshToken, encryptRefreshToken } from './cryptoRefreshToken';
 import { loginApi } from 'constants/apiEndpoint';
 import { LOGIN_PATH, NOT_FOUND_PATH } from 'constants/routes';
 
-const SERVER_URL = `${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/`;
+const SERVER_URL = `${process.env.REACT_APP_API_URL}`;
 
 interface GET {
   endpoint: string;
