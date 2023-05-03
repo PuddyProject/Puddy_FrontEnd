@@ -1,13 +1,15 @@
 @use '../abstracts' as *;
 
 .commuinty-card {
-  width: 150px;
+  display: flex;
+  flex-direction: column;
+  width: 180px;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0px 0px 5px $shadow-color;
 
   .card-img-container {
-    height: 125px;
+    height: 120px;
 
     .card-img {
       width: 100%;
@@ -19,8 +21,8 @@
       }
 
       &.no-img {
-        width: 50%;
-        height: 50%;
+        width: 100%;
+        object-fit: none;
       }
     }
 
@@ -33,23 +35,29 @@
   }
 
   .card-text-container {
+    display: flex;
+    flex-direction: column;
     padding: 1rem;
+    height: 100%;
+    flex: 1;
 
     .card-title {
       @include ellipsis-text();
-      @include font-styles(15px, 700, $color-gray01);
+      @include font-styles(16px, 600, $color-gray01);
       line-height: 17px;
     }
 
     .card-sub-title {
       @include ellipsis-text();
-      @include font-styles(1.2rem, 400, $color-gray01);
+      @include font-styles(14px, 400, $color-gray02);
       line-height: 14px;
       padding-top: 7px;
+      margin-bottom: 10px;
+      flex: 1;
     }
 
     .card-info {
-      @include font-styles(1.1rem, 500, $icon-color);
+      @include font-styles(13px, 500, $icon-color);
       margin-top: 8px;
       display: flex;
       justify-content: space-between;
