@@ -22,6 +22,7 @@
     "react-intersection-observer": "^9.4.3",
     "react-router-dom": "^6.9.0",
     "react-scripts": "5.0.1",
+    "react-slick": "^0.29.0",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4",
     "workbox-background-sync": "^6.5.4",
@@ -130,8 +131,10 @@
   },
   "devDependencies": {
     "@types/crypto-js": "^4.1.1",
+    "@types/react-slick": "^0.23.10",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "sass": "^1.59.3",
-    "sass-loader": "^13.2.1"
+    "sass-loader": "^13.2.1",
+    "slick-carousel": "^1.8.1"
   }
 }
