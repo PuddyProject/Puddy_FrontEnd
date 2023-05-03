@@ -17,42 +17,43 @@
   }
 
   .list-title {
-    @include font-styles(18px, 700, $color-gray01);
+    @include font-styles(20px, 700, $color-gray01);
     padding-left: 10px;
     margin-top: 30px;
+    margin-bottom: 12px;
+    letter-spacing: -1px;
   }
 
   .list-sub-title {
-    @include font-styles(13px, 300, $color-gray01);
+    @include font-styles(14px, 400, $color-gray02);
     padding-left: 10px;
-    margin-top: 8px;
     margin-bottom: 10px;
+    letter-spacing: -0.2px;
 
     .communinty-title {
-      @include font-styles(13px, 400, $color-gray01);
+      @include font-styles(14px, 400, $color-gray02);
 
       span {
-        @include font-styles(13px, 700, $color-gray01);
+        @include font-styles(14px, 600, $color-gray02);
+        margin-top: 2rem;
       }
     }
 
     p {
-      @include font-styles(10px, 400, $icon-color);
-      margin-top: 5px;
+      @include font-styles(12px, 400, $icon-color);
+      margin-top: 8px;
     }
 
     span {
-      @include font-styles(13px, 700, $color-gray01);
+      @include font-styles(14px, 600, $color-gray02);
     }
   }
 
   .card-list {
     &.community {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      row-gap: 20px;
-      padding: 0px 5px;
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 3rem;
     }
   }
 }
@@ -85,19 +86,19 @@
   padding: 15px;
   filter: drop-shadow(0px 0px 5px $shadow-color);
 
-  .title {
+  .card-title {
     @include ellipsis-text;
-    @include font-styles(14px, 700, $color-gray01);
+    @include font-styles(16px, 700, $color-gray01);
     line-height: 2rem;
     width: auto;
   }
 
-  .body {
-    @include font-styles(14px, 300, $color-gray01);
+  .card-content {
+    @include font-styles(15px, 300, $color-gray02);
     @include multiline-ellipsis-text;
     margin-top: 10px;
     margin-bottom: 15px;
-    line-height: 1.8rem;
+    line-height: 2rem;
   }
 
   .bottom-section {
@@ -106,15 +107,15 @@
   }
 
   .answer-text {
-    @include font-styles(12px, 800, $color-gray01);
+    @include font-styles(13px, 600, $color-gray01);
 
     &.solved {
-      @include font-styles(12px, 800, $primary-color);
+      @include font-styles(14px, 600, $primary-color);
     }
   }
 
   .writer-text {
-    @include font-styles(12px, 300, $color-gray01);
+    @include font-styles(13px, 400, $color-gray01);
   }
 
   .title-category {

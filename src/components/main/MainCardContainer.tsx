@@ -2,18 +2,25 @@
 import MainQnaCard from 'components/main/MainQnaCard';
 import PlusButton from 'components/common/PlusButton';
 import { useNavigate } from 'react-router-dom';
-import { MainCommunityCardType, MainQnaCardType, MainExpertCardType } from 'types/mainCardTyeps';
+import { MainCommunityCardType, MainQnaCardType, MainExpertCardType } from 'types/mainCardTypes';
 import { Link } from 'react-router-dom';
 import CommunityCard from 'components/common/CommunityCard';
 import MainExpertCard from './MainExpertCard';
 
 interface QnaContainerProps {
   title: string;
+  subTitle?: string;
   cardType: string;
   cardDataList: MainCommunityCardType[] | MainQnaCardType[] | MainExpertCardType[];
+  createdDate?: string;
 }
 
-export default function MainCardContainer({ title, cardDataList, cardType }: QnaContainerProps) {
+export default function MainCardContainer({
+  title,
+  subTitle,
+  cardDataList,
+  cardType,
+}: QnaContainerProps) {
   const nav = useNavigate();
 
   const choiceCard = (cardData: MainCommunityCardType | MainQnaCardType | MainExpertCardType) => {
@@ -21,8 +28,8 @@ export default function MainCardContainer({ title, cardDataList, cardType }: Qna
       case 'community':
         cardData = cardData as MainCommunityCardType;
         return (
-          <div className='main-community-card'>
-            <Link key={cardData.articleId} to={`community/detail/${cardData.articleId}`}>
+          <div key={cardData.articleId} className='main-community-card'>
+            <Link to={`community/detail/${cardData.articleId}`}>
               <CommunityCard key={cardData.articleId} articleData={cardData} />
             </Link>
           </div>
@@ -45,10 +52,11 @@ export default function MainCardContainer({ title, cardDataList, cardType }: Qna
   };
 
   return (
-    <>
-      <div className='qna-title'>{title}</div>
+    <section className='main-contents'>
+      <div className='main-content-title'>{title}</div>
+      {subTitle ? <p className='main-content-sub-title'>{subTitle}</p> : <></>}
       <div
-        className={`main-qna-container ${cardDataList.length === 0 ? 'zero-data' : ''} ${
+        className={`main-contents-container ${cardDataList.length === 0 ? 'zero-data' : ''} ${
           cardType === 'community' ? 'community-card' : ''
         }`}
       >
@@ -68,6 +76,6 @@ export default function MainCardContainer({ title, cardDataList, cardType }: Qna
           </>
         )}
       </div>
-    </>
+    </section>
   );
 }

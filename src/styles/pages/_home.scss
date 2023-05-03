@@ -1,30 +1,100 @@
 @use '../abstracts' as *;
 
+.slider {
+  width: 1000px;
+  max-width: 100%;
+  margin: 0 auto;
+  margin-top: 70px;
+
+  .slick-list {
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .slick-slide {
+    width: 360px;
+    height: 100%;
+  }
+
+  img {
+    width: 100%;
+    margin: 0;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+}
+
+.slick-slide {
+  width: 100%;
+}
+
+.slick-dots {
+  height: 20px;
+  position: absolute;
+  bottom: 0;
+  z-index: 100;
+
+  li {
+    width: 10px;
+    height: 10px;
+  }
+
+  li button {
+    background-color: $color-gray03;
+    bottom: -4px;
+
+    &::before {
+      font-size: 40px;
+      content: '.';
+    }
+  }
+}
+
 .main-container {
-  padding: 10px;
-  @include header-gap;
+  margin: 0 auto;
   @include footer-gap;
+
+  position: relative;
+  width: 90vw;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  overflow: hidden;
 }
 
 .button-container {
   display: flex;
-  justify-content: space-around;
+  gap: 1.5rem;
+
+  .button {
+    width: 100%;
+  }
 }
 
-.qna-title {
-  @include font-styles(16px, 700, $color-gray01);
+.main-contents {
+  margin-top: 1rem;
+}
+
+.main-content-title {
+  @include font-styles(2rem, 700, $color-gray01);
+  letter-spacing: -1px;
   padding-left: 10px;
-  margin-top: 30px;
+  margin-bottom: 1rem;
 }
 
-.main-qna-container {
+.main-content-sub-title {
+  color: $color-gray02;
+  padding-left: 10px;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.main-contents-container {
   display: flex;
+  gap: 15px;
   overflow: scroll;
   align-items: center;
-
-  .main-community-card {
-    margin-right: 15px;
-  }
+  padding: 5px;
 
   &.zero-data {
     display: block;
@@ -46,10 +116,11 @@
   font-size: 10px;
 
   .plus-button-circle {
-    background-color: #efefef;
-    width: 20px;
-    height: 20px;
+    background-color: $color-gray05;
+    width: 25px;
+    height: 25px;
     border-radius: 20px;
+    font-size: 1.7rem;
     text-decoration-line: none;
   }
 
@@ -61,54 +132,211 @@
   }
 
   div {
-    @include font-styles(10px, 400, $color-gray01);
-    padding-top: 5px;
+    @include font-styles(13px, 400, $color-gray02);
+    padding-top: 4px;
     text-align: center;
     text-decoration: underline;
-    width: 40px;
+    width: 50px;
+  }
+
+  svg polyline {
+    stroke: $color-gray02;
+  }
+
+  .more {
+    margin-top: 10px;
+  }
+}
+
+.main-qna-card {
+  min-width: 180px;
+  max-width: 180px;
+
+  .card-date {
+    font-size: 12px;
+    color: $color-gray03;
+    margin-top: -2px;
   }
 }
 
 .main-expert-card {
-  min-width: 220px;
-  height: 80px;
+  min-width: 300px;
+  max-width: 300px;
+  height: 120px;
   display: flex;
-  border: 1px solid $color-gray03;
+  border: 1px solid $color-gray04;
   border-radius: 10px;
   align-items: center;
-  margin-top: 15px;
-  margin-right: 10px;
 
   .main-expert-card-img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50px;
-    background-color: $color-gray03;
+    min-width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+    background-color: $color-gray05;
     margin: 15px;
 
     &.img {
-      background-color: white;
+      width: 80px;
+      height: 80px;
+      background-color: #eee;
     }
 
     .img-tag {
-      width: 105%;
-      height: 105%;
-      border-radius: 50px;
+      object-fit: cover;
+      width: 80px;
+      height: 80px;
+      border-radius: 100%;
     }
   }
 
   .main-expert-card-description {
     display: flex;
     flex-direction: column;
+    width: 100%;
+    padding-left: 15px;
 
     .description-title {
-      @include font-styles(12px, 800, $color-gray01);
-      line-height: 20px;
+      @include font-styles(16px, 600, $color-gray01);
+      margin-bottom: 0.4rem;
     }
 
     .description-sub {
-      @include font-styles(10px, 400, $color-gray01);
-      line-height: 15px;
+      @include font-styles(13px, 400, $color-gray01);
+      line-height: 1.6rem;
+      margin-top: 5px;
     }
+  }
+}
+
+/* 반응형 */
+@media (min-width: 768px) {
+  .slider {
+    max-width: 90vw;
+  }
+
+  .main-qna-card {
+    min-width: 200px;
+    max-width: 200px;
+  }
+
+  /* 카드 타이틀 */
+  .qna-title {
+    font-size: 2rem;
+  }
+
+  /* 캐러셀 */
+  .carousel-container {
+    height: auto;
+    margin: 0 auto;
+
+    .carousel-item {
+      justify-content: center;
+      align-items: center;
+      background-color: #eee;
+      height: 100%;
+      width: 100%;
+    }
+
+    .carousel-item:first-child {
+      margin-left: 0;
+    }
+  }
+
+  .circle-container {
+    .circle-item {
+      width: 8px;
+      height: 8px;
+    }
+  }
+
+  /* 버튼 */
+  .button-container {
+    justify-content: center;
+    gap: 1.2rem;
+  }
+
+  .button-container .button {
+    width: 100% !important;
+    height: 45px;
+  }
+
+  .main-container {
+    position: relative;
+  }
+
+  /* 메인 Q&A 카드*/
+  .main-qna-container {
+    display: grid;
+
+    .main-qna-card {
+      display: flex;
+      flex-direction: column;
+      min-width: 100%;
+      min-height: 120px;
+
+      .card-title {
+        font-size: 1.5rem;
+      }
+
+      .card-content {
+        height: 50%;
+        flex-grow: 2;
+      }
+
+      .bottom-section {
+        width: 100%;
+        max-width: 100%;
+        margin-top: 1rem;
+        position: relative;
+        bottom: auto;
+        justify-content: space-between;
+      }
+    }
+
+    .plus-button {
+      display: none;
+    }
+  }
+
+  /*메인 커뮤니티 카드 */
+  .community-card {
+    grid-template-rows: repeat(1, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .main-community-card .commuinty-card {
+    .card-img-container .no-img {
+      width: auto;
+      height: auto;
+    }
+  }
+}
+
+/* 반응형 PC */
+@media (min-width: 1024px) {
+  .main-contents {
+    display: flex;
+    flex-direction: column;
+
+    .main-content-title {
+      font-size: 2.4rem;
+    }
+  }
+
+  .main-qna-card {
+    min-width: 240px;
+    max-width: 240px;
+    min-height: 180px;
+    max-height: 180px;
+  }
+
+  .commuinty-card {
+    min-width: 240px;
+    max-width: 240px;
+    min-height: 220px;
+    max-height: 220px;
   }
 }

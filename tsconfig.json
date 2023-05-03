@@ -17,7 +17,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "types": ["node", "@types/crypto-js"]
+    "types": ["node", "@types/crypto-js", "@types/react-slick"]
   },
   "include": ["src"]
 }

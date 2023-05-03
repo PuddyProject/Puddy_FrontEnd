@@ -1,85 +1,131 @@
 @use '../abstracts' as *;
 
-@mixin qna-image-box($background-color) {
-  background-color: $background-color;
-  width: 65px;
-  height: 68px;
-  border-radius: 10px;
-}
-
-.qna-newpost-container {
-  padding: 15px 30px 30px 30px;
-  position: relative;
+/* 페이지 내 공통 스타일 정의 */
+.qna-newpost-layout-container {
   width: 100vw;
-}
 
-.category-container {
-  margin-top: 15px;
-  display: flex;
-  flex-wrap: wrap;
-  row-gap: 9px;
-  column-gap: 9px;
-  margin-bottom: 30px;
-}
+  .custom-header {
+    width: 100%;
+  }
 
-.category-item {
-  @include center();
-  width: 94px;
-  height: 30px;
-  border: 1px solid $color-gray04;
-  color: $icon-color;
-  border-radius: 10px;
+  input,
+  textarea,
+  button {
+    width: 100%;
+  }
 
-  &.select {
-    color: $primary-color;
-    border: 1px solid $primary-color;
+  .input-title {
+    margin-bottom: 1rem;
+  }
+
+  .footer-button {
+    display: none;
   }
 }
 
+.qna-newpost-container {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 2.5rem;
+  padding: 20px;
+  position: relative;
+}
+
+/* 이미지 등록 */
+
 .image-container {
   display: flex;
-  gap: 15px;
-  margin-bottom: 30px;
+  gap: 10px;
+
+  .image-item {
+    width: 100%;
+    height: 100px;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+
+  .add-image-button {
+    width: 100%;
+    height: 100px;
+
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+
+    background-color: #fff;
+    border: 2px dashed $color-gray03;
+    @include center;
+  }
+
+  .image-add-item {
+    display: none;
+  }
+
+  .image-add-item-plus {
+    @include font-styles(2rem, 600, $color-gray02);
+    display: block;
+    margin-bottom: 3px;
+    text-align: center;
+  }
+
+  .image-add-item-text {
+    @include font-styles(1.2rem, 600, $color-gray03);
+    text-align: center;
+    line-height: 1.5rem;
+  }
 }
 
-.image-item {
-  @include qna-image-box($color-gray04);
-  object-fit: cover;
-  min-width: 65px;
-  height: 68px;
+.upload-images {
+  margin-top: 20px;
+
+  .image-item-box {
+    width: 100%;
+    min-width: 70px;
+    height: 100px;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      background-color: #00000045;
+      content: '';
+    }
+  }
 }
 
-.image-item-add-button {
-  border: 1px solid #e5e5e5;
-  min-width: 65px;
-  height: 68px;
-}
+.category-container {
+  font-size: 1.2rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 9px;
+  column-gap: 9px;
 
-.image-item-add-button {
-  @include qna-image-box($bg-color);
-  @include center();
-}
+  .category-item {
+    @include center;
+    min-width: 94px;
+    height: 40px;
+    border: 1px solid $color-gray04;
+    color: $icon-color;
+    border-radius: 10px;
 
-.image-add-item {
-  display: none;
-}
-
-.image-add-item-plus {
-  @include font-styles(25px, 600, $color-gray02);
-  margin-bottom: 3px;
-  text-align: center;
-}
-
-.image-add-item-text {
-  @include font-styles(8px, 700, $color-gray02);
+    &.select {
+      color: $primary-color;
+      border: 1px solid $primary-color;
+    }
+  }
 }
 
 .text-body {
-  margin-top: 10px;
-  padding: 15px 0px 0px 15px;
+  padding: 15px;
   resize: none;
   width: 300px;
-  height: 248px;
+  height: 40vh;
   border-radius: 10px;
   border-color: $color-gray04;
   transition: all 0.3s;
@@ -111,9 +157,33 @@
 }
 
 .remove-image {
-  position: relative;
-  z-index: 10000;
-  top: -70px;
-  left: 40px;
+  position: absolute;
+  top: 0.3rem;
+  right: 0.5rem;
   color: white;
+  text-shadow: 0 2px 10px #000;
+  z-index: 100;
+}
+
+/* 반응형 */
+@media screen and (max-width: 359px) {
+  .category-container {
+    grid-template-columns: auto;
+    width: 100%;
+  }
+
+  .image-container {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .image-container .image-item {
+    height: 100%;
+  }
+
+  .upload-images .image-item-box {
+    height: 200px;
+  }
 }

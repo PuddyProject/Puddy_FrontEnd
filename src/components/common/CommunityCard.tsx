@@ -27,11 +27,11 @@ export default function CommunityCard({ articleData }: CommunityCardProps) {
           <div className='card-info-right'>
             <span className='view-count'>
               <GrView className='info-icon' />
-              {articleData.viewCount}
+              <span>{articleData.viewCount}</span>
             </span>
             <span className='like-count'>
               <AiOutlineHeart className='info-icon' />
-              {articleData.likeCount}
+              <span>{articleData.likeCount}</span>
             </span>
           </div>
         </div>

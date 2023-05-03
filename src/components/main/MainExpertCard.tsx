@@ -1,4 +1,4 @@
-import { MainExpertCardType } from 'types/mainCardTyeps';
+import { MainExpertCardType } from 'types/mainCardTypes';
 import Community_no_img from 'assets/Community_no_img.svg';
 
 interface ExpertCardProps {

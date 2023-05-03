@@ -29,11 +29,11 @@
     margin-top: 30px;
 
     .view-count {
-      @include font-styles(10px, 400, $icon-color);
+      @include font-styles(12px, 400, $icon-color);
     }
 
     .user-role {
-      @include font-styles(10px, 400, $icon-color);
+      @include font-styles(12px, 400, $icon-color);
     }
 
     &.post-user {

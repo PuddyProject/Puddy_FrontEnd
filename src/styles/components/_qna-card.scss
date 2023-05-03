@@ -1,52 +1,52 @@
 @use '../abstracts' as *;
 
 .main-qna-card {
+  display: flex;
+  flex-direction: column;
   border-radius: 10px;
-  min-width: 130px;
-  min-height: 120px;
-  max-width: 130px;
-  max-height: 120px;
-  margin: 15px 0px;
+  min-width: 200px;
+  max-width: 200px;
+  min-height: 150px;
+  max-height: 150px;
   background-color: $bg-color;
-  padding: 10px 10px 0px 10px;
-  margin-right: 15px;
+  padding: 1.4rem;
+  gap: 0.8rem;
 
-  filter: drop-shadow(0px 0px 10px rgba(169, 169, 169, 0.2));
+  filter: drop-shadow(0px 0px 5px rgba(169, 169, 169, 0.2));
 
-  .title {
+  .card-title {
     @include ellipsis-text;
-    @include font-styles(16px, 800, $color-gray01);
-    margin-bottom: 5px;
+    @include font-styles(16px, 700, $color-gray01);
+    padding-top: 3px;
+    letter-spacing: -0.5px;
   }
 
-  .body {
-    @include font-styles(14px, 400, $color-gray01);
+  .card-content {
+    @include font-styles(13px, 400, $color-gray02);
     @include multiline-ellipsis-text;
-    margin-top: 10px;
+    line-height: 2rem;
+    flex: 2;
+    letter-spacing: -0.3px;
   }
 
   .bottom-section {
-    position: fixed;
-    bottom: 0px;
-    width: 110px;
-    max-width: 120px;
-    margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
     @include ellipsis-text();
 
     .answer-text {
-      @include font-styles(10px, 800, $color-gray01);
+      @include font-styles(12px, 600, $color-gray01);
 
       &.solved {
-        @include font-styles(10px, 800, $primary-color);
+        @include font-styles(12px, 600, $primary-color);
       }
     }
 
     .writer-text {
       @include ellipsis-text();
-      @include font-styles(10px, 300, $color-gray02);
+      @include font-styles(12px, 400, $color-gray03);
       max-width: 60px;
+      margin-left: 8px;
     }
   }
 }

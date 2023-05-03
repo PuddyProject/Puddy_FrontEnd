@@ -5,6 +5,7 @@ export interface MainQnaCardType {
   isSolved: boolean;
   nickname: string;
   questionId: number;
+  createdDate: string;
 }
 
 export interface MainCommunityCardType {

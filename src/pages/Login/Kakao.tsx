@@ -12,17 +12,23 @@ interface ErrorResponse {
   data: null | object;
 }
 
-const SERVER_URL = `${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/`;
+const SERVER_URL = `${process.env.REACT_APP_API_URL}`;
 
 export default function Kakao() {
   const location = useLocation();
   const KAKAO_CODE = location.search.split('=').pop();
 
+  // TODO: 로그인 중 이전 버튼 눌렀을 때 처리 해야 함
   const [kakaoAccessToken, setKakaoAccessToken] = useState('');
 
   const navigate = useNavigate();
 
   const getToken = async () => {
+    if (!KAKAO_CODE) {
+      navigate(`${HOME_PATH}`);
+      return;
+    }
+
     const body = {
       grant_type: 'authorization_code',
       client_id: process.env.REACT_APP_REST_API_KEY,

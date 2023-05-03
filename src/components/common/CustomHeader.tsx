@@ -7,6 +7,7 @@ import Logo from 'assets/Logo.svg';
 
 interface CustomHeaderProps {
   title?: string;
+  submitText?: string;
   hideIcon?: boolean;
   isLogoHeader?: boolean;
   onClickLeft?: () => void;
@@ -16,6 +17,7 @@ interface CustomHeaderProps {
 
 export default function CustomHeader({
   title,
+  submitText,
   hideIcon = false,
   isLogoHeader = false,
   onClickLeft,
@@ -30,7 +32,7 @@ export default function CustomHeader({
 
   return (
     <header className='custom-header'>
-      <div className='custom-header-left'>
+      <div className={`custom-header-left ${isLogoHeader ? 'logo-img' : ''}`}>
         {isLogoHeader ? (
           <Link to='/'>
             <img className='logo-img' src={Logo} alt='logo' />
@@ -42,9 +44,12 @@ export default function CustomHeader({
       <div className='custom-header-center' onClick={onClickCenter}>
         {title}
       </div>
-      <div className='custom-header-right' onClick={onClickRight}>
-        {hideIcon ? <></> : <BellIcon size={25} />}
-      </div>
+      {
+        <div className='custom-header-right bell' onClick={onClickRight}>
+          {submitText ? <button className='submit-btn'>{submitText}</button> : <></>}
+          {hideIcon ? <></> : <BellIcon size={25} />}
+        </div>
+      }
     </header>
   );
 }

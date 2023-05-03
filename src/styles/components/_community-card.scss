@@ -1,14 +1,15 @@
 @use '../abstracts' as *;
 
 .commuinty-card {
-  width: 150px;
-  height: 200px;
+  display: flex;
+  flex-direction: column;
+  width: 180px;
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0px 0px 10px $shadow-color;
+  box-shadow: 0px 0px 5px $shadow-color;
 
   .card-img-container {
-    height: 130px;
+    height: 120px;
 
     .card-img {
       width: 100%;
@@ -20,8 +21,8 @@
       }
 
       &.no-img {
-        width: 50%;
-        height: 50%;
+        width: 100%;
+        object-fit: none;
       }
     }
 
@@ -29,51 +30,63 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background: linear-gradient(180deg, #ffffff 0%, #efefef 96%, rgba(255, 255, 255, 0) 100%);
+      background: linear-gradient(180deg, #ffffff 0%, #f7f7f7 70%);
     }
   }
 
   .card-text-container {
-    height: 70px;
-    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    height: 100%;
+    flex: 1;
 
     .card-title {
       @include ellipsis-text();
-      @include font-styles(15px, 700, $color-gray01);
+      @include font-styles(16px, 600, $color-gray01);
       line-height: 17px;
     }
 
     .card-sub-title {
       @include ellipsis-text();
-      @include font-styles(12px, 400, $color-gray01);
+      @include font-styles(14px, 400, $color-gray02);
       line-height: 14px;
-      padding-top: 8px;
+      padding-top: 7px;
+      margin-bottom: 10px;
+      flex: 1;
     }
 
     .card-info {
-      @include font-styles(8px, 700, $icon-color);
-      margin-top: 7px;
+      @include font-styles(13px, 500, $icon-color);
+      margin-top: 8px;
       display: flex;
       justify-content: space-between;
       align-items: center;
 
       .info-icon {
         margin-right: 3px;
-        font-size: 8px;
+        font-size: 1.2rem;
 
         path {
           stroke: $icon-color;
         }
       }
 
+      .like-count {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
       .card-info-right {
         display: flex;
-        justify-content: center;
-        align-items: center;
       }
 
       .view-count {
         margin-right: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
     }
   }
