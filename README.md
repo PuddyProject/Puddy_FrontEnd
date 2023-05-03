@@ -7,7 +7,7 @@
 
 ![puddy_readme_02](https://user-images.githubusercontent.com/48672106/232711387-cacdfc70-685b-466c-bebf-9621912881e4.png)
 
-[PUDDY 서비스 바로가기](http://puddy.shop.s3-website.ap-northeast-2.amazonaws.com/) <br/>
+[PUDDY 서비스 바로가기](https://www.puddy.world/) <br/>
 > 현재 360*740에 최적화되어있습니다. (갤럭시S8+)
 
 <br/>
@@ -96,7 +96,9 @@
 회원가입한 사용자의 경우 <br/>
 로그인이 성공하면 메인페이지로 이동됩니다. <br/>
 
+
 ![Honeycam 2023-04-20 21-18-36](https://user-images.githubusercontent.com/48672106/233363678-d9fd75bd-7889-451c-b248-ae6939923ce9.gif)
+
 
 <br/>
 
@@ -107,7 +109,9 @@
 정규식을 통해 유효한 아이디, 비밀번호, 이름, 이메일을 확인하며, <br/>
 아이디와 이메일은 중복검사를 하도록 구현하였습니다. <br/>
 
+
 ![Honeycam 2023-04-20 21-08-31](https://user-images.githubusercontent.com/48672106/233361555-c7bf109c-6260-42e1-9b78-7637ae8303a3.gif)
+
 
 <br/>
 
@@ -116,8 +120,8 @@
 상단 캐러셀을 통해 광고와 같은 배너를 삽입할 수 있도록 구현하였습니다.<br/>
 인기 Q&A, 최신 Q&A, 퍼디 신규 전문가, 커뮤니티 HOT, 커뮤니티 NEW 정보를 확인 할 수 있습니다.<br/>
 
+![Honeycam 2023-05-04 04-46-59](https://user-images.githubusercontent.com/48672106/236031445-c1a2e3e7-28cf-44dd-8bdc-19f9cbf73efb.gif)
 
-https://user-images.githubusercontent.com/62174495/233632125-c1fd1796-4b3c-4706-9bee-25eaad3b7cde.mp4
 
 <br/>
 
@@ -129,7 +133,8 @@ Q&A 질문 글을 무한 스크롤로 구현했습니다.<br/>
 정렬 기능을 통해 최신순, 오래된 순, 인기 순으로 게시글을 확인할 수 있습니다.<br/>
 
 
-https://user-images.githubusercontent.com/62174495/233632187-772fd249-f792-49ab-91a1-06558b79318c.mp4
+![Honeycam 2023-05-04 04-49-55](https://user-images.githubusercontent.com/48672106/236031178-0dafb83f-d7ec-45fc-9899-3680474f50da.gif)
+
 
 <br/>
 
@@ -137,7 +142,12 @@ https://user-images.githubusercontent.com/62174495/233632187-772fd249-f792-49ab-
 
 Q&A와 커뮤니티 글 CRUD를 구현하였습니다.<br/>
 
-https://user-images.githubusercontent.com/62174495/233632362-0fc15ae3-cc4b-4d40-a186-7865f3882be0.mp4
+
+![Honeycam 2023-05-04 04-42-35](https://user-images.githubusercontent.com/48672106/236030860-5289f89d-87a4-405b-98b0-b9008763788a.gif)
+
+
+![Honeycam 2023-05-04 04-48-05](https://user-images.githubusercontent.com/48672106/236030821-bab24b37-dd4f-4781-950e-2d0b6fd8b024.gif)
+
 
 <br/>
 
@@ -148,7 +158,6 @@ https://user-images.githubusercontent.com/62174495/233632362-0fc15ae3-cc4b-4d40-
 채택된 답변은 가장 최상단에 노출됩니다.<br/>
 일반 사용자가 아닌, 전문가 사용자의 리뷰를 채택할 경우 리뷰 작성이 가능합니다.<br/>
 채택된 답변은 삭제 및 수정이 불가능합니다. <br/>
-
 
 https://user-images.githubusercontent.com/62174495/233632513-4b2c330d-e15f-4576-a8d6-beb261868ff3.mp4
 
@@ -246,37 +255,34 @@ https://user-images.githubusercontent.com/62174495/233632861-bc20d42f-7aea-4773-
 [인풋 인터랙션 적용시켜보기](https://reasonz.tistory.com/47) <br/>
 [웹 접근성에 대해 고민해보고 적용해보기 - tabindex](https://reasonz.tistory.com/42) <br/>
 [사이드 프로젝트 개발 마무리 회고](https://reasonz.tistory.com/62)<br/>
-[UX/UI 개선 및 반응형 작업하기](https://reasonz.tistory.com/68)<br/>
-
+[UX/UI 개선 및 반응형 작업하기1](https://reasonz.tistory.com/68)<br/>
+[UX/UI 개선 및 반응형 작업하기2](https://reasonz.tistory.com/70)<br/>
 <br/>
 
 ## 미해결 이슈&개선 가능 사항
 
 **1. 소셜 로그인(카카오) 오류**<br/> 
-사용자가 소셜 로그인(카카오) 진행 시 카카오 로그인 전 페이지를 이탈할 경우 에러가 발생합니다.
+카카오 로그인 진행 시 오류가 발생합니다. <br/>
 
-**2. PWA** <br/>
-PWA로 환경을 구성했으나, 백엔드 서버가 현재 https로 구성되어있지 않아 반영하지 못했습니다. <br/>
-
-**3. 코드의 중복과 매직 넘버가 존재합니다.** <br/>
+**2. 코드의 중복과 매직 넘버가 존재합니다.** <br/>
 재사용이 가능한 코드와 클린코드를 위한 리팩토링 과정이 필요합니다. <br/>
 
-**4. 어드민 페이지와 관련 API의 부재로 현재는 전문가 서류 제출 시 자동으로 사용자의 권한을 변경하고 있습니다.**<br/>
+**3. 어드민 페이지와 관련 API의 부재로 현재는 전문가 서류 제출 시 자동으로 사용자의 권한을 변경하고 있습니다.**<br/>
 어드민 페이지를 통해 제출한 서류를 검토 후 사용자의 권한을 변경하는 로직이 필요합니다. <br/>
 
-**5. 반응형 작업** <br/>
-현재는 모바일(갤럭시 S8+)에 최적화되어있습니다. </br>
+**4. 반응형 작업** <br/>
+현재는 모바일(갤럭시 S8+)에 최적화되어있으며, 작업 진행중입니다. </br>
 
-**6. form 인터랙션 통일** <br/>
+**5. form 인터랙션 통일** <br/>
 일부 페이지는 shake 애니메이션 인터랙션으로 required 인풋 값이 비어져있는 것을 확인할 수 있도록 하는 반면, <br/>
 일부 페이지는 버튼의 활성화, 비활성화 형식으로 form이 구성되어있습니다. <br/>
 따라서 form 제출의 인터랙션이 통일되도록 수정해야합니다.
 
-**7. 리프레시 토큰** <br/>
+**6. 리프레시 토큰** <br/>
 서버로부터 리프레시 토큰을 받고 있으나, <br/>
 기술적인 이슈로 액세스 토큰이 만료되었을 때 리프레시 토큰을 사용하는 로직이 구현되어있지 않습니다. <br/>
 
-**8. UX/UI 개선** <br/>
+**7. UX/UI 개선** <br/>
 모바일 환경을 고려하지 못한 UX/UI 개선이 필요합니다. <br/>
 
 <br/>
