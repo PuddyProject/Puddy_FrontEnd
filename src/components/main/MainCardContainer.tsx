@@ -2,7 +2,7 @@
 import MainQnaCard from 'components/main/MainQnaCard';
 import PlusButton from 'components/common/PlusButton';
 import { useNavigate } from 'react-router-dom';
-import { MainCommunityCardType, MainQnaCardType, MainExpertCardType } from 'types/mainCardTyeps';
+import { MainCommunityCardType, MainQnaCardType, MainExpertCardType } from 'types/mainCardTypes';
 import { Link } from 'react-router-dom';
 import CommunityCard from 'components/common/CommunityCard';
 import MainExpertCard from './MainExpertCard';

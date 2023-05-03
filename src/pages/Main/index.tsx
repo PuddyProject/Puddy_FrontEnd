@@ -4,7 +4,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-import { MainQnaCardType, MainCommunityCardType, MainExpertCardType } from 'types/mainCardTyeps';
+import { MainQnaCardType, MainCommunityCardType, MainExpertCardType } from 'types/mainCardTypes';
 import { MainCardContainer, Button, Loading } from 'components';
 
 import { get } from 'utils';
