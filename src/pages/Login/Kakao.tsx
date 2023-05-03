@@ -41,7 +41,7 @@ export default function Kakao() {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' },
       });
 
-      console.log(res.data.access_token);
+      // console.log(res.data.access_token);
       await tryLogin(res.data.access_token);
     } catch (err) {
       console.error(err, '카카오 에러');

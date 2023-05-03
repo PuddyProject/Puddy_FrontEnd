@@ -48,9 +48,6 @@ export default function MyActivityInfo() {
     getMyPost();
   }, []);
 
-  console.log(currentTab);
-  console.log(myQnaList, myAnswerList);
-
   return (
     <>
       <CustomHeader title='내 게시글/댓글' />
