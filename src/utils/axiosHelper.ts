@@ -122,14 +122,14 @@ instance.interceptors.response.use(
 
 export async function get({ endpoint, params = '' }: GET) {
   const URL = `${endpoint}${params}`;
-  console.log(`%cGET 요청 ${SERVER_URL}${URL}`, 'color: #2a60ff;');
+  // console.log(`%cGET 요청 ${SERVER_URL}${URL}`, 'color: #2a60ff;');
 
   return instance.get(URL);
 }
 
 export async function del({ endpoint, params = '' }: DELETE) {
   const URL = `${endpoint}${params}`;
-  console.log(`%cDELETE 요청 ${SERVER_URL}${URL}`, 'color: #2a60ff;');
+  // console.log(`%cDELETE 요청 ${SERVER_URL}${URL}`, 'color: #2a60ff;');
 
   return instance.delete(URL);
 }
@@ -138,8 +138,8 @@ export async function post({ endpoint, body, isImage = false, isPost = true }: P
   const URL = endpoint;
   const bodyData = isImage ? body : JSON.stringify(body);
 
-  console.log(`%c${isPost ? 'POST' : 'PUT'} 요청:${SERVER_URL}${endpoint}`, 'color: #2a60ff;');
-  console.log(`%c${isPost ? 'POST' : 'PUT'} 요청 데이터: ${bodyData}`, 'color: #2a60ff;');
+  // console.log(`%c${isPost ? 'POST' : 'PUT'} 요청:${SERVER_URL}${endpoint}`, 'color: #2a60ff;');
+  // console.log(`%c${isPost ? 'POST' : 'PUT'} 요청 데이터: ${bodyData}`, 'color: #2a60ff;');
 
   const headers = {
     'Content-Type': isImage ? ContentTypes.formData : ContentTypes.json,
