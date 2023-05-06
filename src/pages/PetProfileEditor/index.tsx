@@ -14,7 +14,7 @@ import {
 } from 'components';
 
 import checkExtensions from 'utils/checkExtensions';
-import { get, post, put } from 'utils/axiosHelper';
+import { get, post, put } from 'utils/axios/axiosHelper';
 import { convertImgToFile } from 'utils/convertImageToFile';
 
 import { MyPetFormRefs, PetInfo, RequiredValues } from 'types/petProfileTypes';

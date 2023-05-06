@@ -6,7 +6,7 @@ import InputTilte from 'components/common/InputTitle';
 
 import { useUser } from 'context/UserContext';
 import { get, post } from 'utils';
-import { put } from 'utils/axiosHelper';
+import { put } from 'utils/axios/axiosHelper';
 
 import { Profile } from 'types/expertProfileTypes';
 

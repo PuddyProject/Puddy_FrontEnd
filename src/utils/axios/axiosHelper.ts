@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-import decodeJWT from './decodeJWT';
-import { decryptRefreshToken, encryptRefreshToken } from './cryptoRefreshToken';
+import decodeJWT from '../decodeJWT';
+import { decryptRefreshToken, encryptRefreshToken } from '../cryptoRefreshToken';
 
 import { loginApi } from 'constants/apiEndpoint';
 import { LOGIN_PATH, NOT_FOUND_PATH } from 'constants/routes';
