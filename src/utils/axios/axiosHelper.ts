@@ -5,38 +5,9 @@ import { decryptRefreshToken, encryptRefreshToken } from '../cryptoRefreshToken'
 
 import { loginApi } from 'constants/apiEndpoint';
 import { LOGIN_PATH, NOT_FOUND_PATH } from 'constants/routes';
+import { DELETE, GET, PATCH, POST, PUT } from './axiosTypes';
 
 const SERVER_URL = `${process.env.REACT_APP_API_URL}`;
-
-interface GET {
-  endpoint: string;
-  params?: string;
-  queryString?: string;
-}
-interface DELETE {
-  endpoint: string;
-  params?: string;
-  queryString?: string;
-}
-
-interface POST {
-  endpoint: string;
-  body?: object;
-  isImage?: boolean;
-  isPost?: boolean;
-}
-
-interface PATCH {
-  endpoint: string;
-  body?: object | File;
-  isFormData: boolean;
-}
-
-interface PUT {
-  endpoint: string;
-  body?: object | File;
-  isFormData: boolean;
-}
 
 const ContentTypes = {
   json: 'application/json',
