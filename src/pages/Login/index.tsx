@@ -4,8 +4,6 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { Button, InputBox, Message } from 'components/index';
 
-import { ApiError } from 'types/errorsTypes';
-
 import { KAKAO_LOGIN_URI } from 'constants/kakaoLogin';
 import { loginApi } from 'constants/apiEndpoint';
 import { FIND_ID_PW_PATH, HOME_PATH } from 'constants/routes';
@@ -18,6 +16,11 @@ import { encryptRefreshToken } from 'utils/cryptoRefreshToken';
 
 import { useUser } from 'context/UserContext';
 import { useAuth } from 'hooks/useAuth';
+
+interface Tokens {
+  accessToken: string;
+  refreshToken: string;
+}
 
 const snsLoginItems = [
   { name: '카카오 로그인', imgSrc: Kakao, className: 'kakao', link: KAKAO_LOGIN_URI },
@@ -51,20 +54,6 @@ export default function Login() {
       });
     };
 
-  interface LoginTypes {
-    endpoint: string;
-    body: typeof loginInputValues;
-  }
-
-  /*
-    1. 사용자가 폼 전송을 하면 
-    2. 서버에서 로그인 성공, 실패 유무를 반환한다.
-    3. 로그인 성공 시 상태코드 200을 받는다.
-      -> 상태코드가 200이면 로그인에 성공한 것이므로 라우트 
-    4. 실패 시 에러가 발생한다. 
-      -> 로그인 실패 시 존재하지 않거나, 아이디/비밀번호가 틀린 것이므로 경고 메시지
-  */
-
   /* 로그인 정보를 보낸 후, Promise를 반환합니다. */
   const loginRequest = () => {
     const payload = {
@@ -75,19 +64,19 @@ export default function Login() {
     return post(payload);
   };
 
-  const isLoginSuccessful = (status: number) => {
-    if (status === 200) return true;
-    return false;
-  };
+  const isLoginSuccessful = (status: number) => status === 200;
 
-  const initUserTokens = (tokens: { accessToken: string; refreshToken: string }) => {
-    const accessToken = tokens.accessToken;
-    const refreshToken = encryptRefreshToken(tokens.refreshToken);
+  const initUserTokens = ({ accessToken, refreshToken }: Tokens) => {
+    const encryptedRefreshToken = encryptRefreshToken(refreshToken);
 
     initSessionStorageUserToken(accessToken);
-    initSessionStorageRefeshToken(refreshToken);
+    initSessionStorageRefeshToken(encryptedRefreshToken);
 
     setToken(accessToken); // TODO: 이 코드가 모호하니 contextAPI 코드 리팩토링 시 검토하기
+  };
+
+  const showLoginErrorMessage = () => {
+    setShowWarningMessage(true);
   };
 
   const onSubmitForm = async (e: FormEvent<HTMLFormElement>) => {
@@ -103,15 +92,9 @@ export default function Login() {
         navigate(`${HOME_PATH}`);
       }
     } catch (err: unknown) {
-      if (err instanceof Error) {
-        console.error(err.message);
-      }
-
-      const error = err as ApiError;
-      console.log(error);
-      if (error.response && error.response?.status >= 400) {
-        setShowWarningMessage(true);
-      }
+      console.error(err);
+      showLoginErrorMessage();
+      // TODO: 500에러 발생 시 다른 에러 메시지를 보여주는 게 좋을 듯 함.
     }
   };
 
@@ -170,14 +153,14 @@ export default function Login() {
         <ul className='sns-logins'>
           {snsLoginItems.map((sns) =>
             sns.link ? (
-              <Link to={sns.link}>
+              <Link to={sns.link} key={sns.name}>
                 <li className={sns.className} role='button' tabIndex={0}>
                   <span>{sns.name}</span>
                   <img src={sns.imgSrc} alt={sns.name} />
                 </li>
               </Link>
             ) : (
-              <li className={sns.className} role='button' tabIndex={0}>
+              <li className={sns.className} role='button' tabIndex={0} key={sns.name}>
                 <span>{sns.name}</span>
                 <img src={sns.imgSrc} alt={sns.name} />
               </li>
