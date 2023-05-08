@@ -51,25 +51,55 @@ export default function Login() {
       });
     };
 
+  interface LoginTypes {
+    endpoint: string;
+    body: typeof loginInputValues;
+  }
+
+  /*
+    1. 사용자가 폼 전송을 하면 
+    2. 서버에서 로그인 성공, 실패 유무를 반환한다.
+    3. 로그인 성공 시 상태코드 200을 받는다.
+      -> 상태코드가 200이면 로그인에 성공한 것이므로 라우트 
+    4. 실패 시 에러가 발생한다. 
+      -> 로그인 실패 시 존재하지 않거나, 아이디/비밀번호가 틀린 것이므로 경고 메시지
+  */
+
+  /* 로그인 정보를 보낸 후, Promise를 반환합니다. */
+  const loginRequest = () => {
+    const payload = {
+      endpoint: `${loginApi.POST_LOGIN}`,
+      body: loginInputValues,
+    };
+
+    return post(payload);
+  };
+
+  const isLoginSuccessful = (status: number) => {
+    if (status === 200) return true;
+    return false;
+  };
+
+  const initUserTokens = (tokens: { accessToken: string; refreshToken: string }) => {
+    const accessToken = tokens.accessToken;
+    const refreshToken = encryptRefreshToken(tokens.refreshToken);
+
+    initSessionStorageUserToken(accessToken);
+    initSessionStorageRefeshToken(refreshToken);
+
+    setToken(accessToken); // TODO: 이 코드가 모호하니 contextAPI 코드 리팩토링 시 검토하기
+  };
+
   const onSubmitForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      const payload = {
-        endpoint: `${loginApi.POST_LOGIN}`,
-        body: loginInputValues,
-      };
-      const res = await post(payload);
+      const res = await loginRequest();
+      const isPassedLogin = isLoginSuccessful(res.status);
 
-      if (res.status === 200) {
-        const resData = res.data.data;
-        const accessToken = resData.accessToken;
-        const refreshToken = encryptRefreshToken(resData.refreshToken);
-
-        initSessionStorageUserToken(accessToken);
-        initSessionStorageRefeshToken(refreshToken);
-
-        setToken(accessToken);
+      if (isPassedLogin) {
+        const { accessToken, refreshToken } = res.data.data;
+        initUserTokens({ accessToken, refreshToken });
         navigate(`${HOME_PATH}`);
       }
     } catch (err: unknown) {
