@@ -1,25 +1,29 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 
 import { REDIRECT_URI, KAKAO_AUTH_URI } from 'constants/kakaoLogin';
 import { socialLoginApi } from 'constants/apiEndpoint';
 import { HOME_PATH } from 'constants/routes';
 import { encryptRefreshToken } from 'utils/cryptoRefreshToken';
+import { useAuth } from 'hooks/useAuth';
 
 interface ErrorResponse {
-  resultCode: string;
-  data: null | object;
+  response: {
+    data: {
+      resultCode: string;
+      data: null | object;
+    };
+  };
 }
 
 const SERVER_URL = `${process.env.REACT_APP_API_URL}`;
 
 export default function Kakao() {
+  const { initSessionStorageUserToken, initSessionStorageRefeshToken } = useAuth();
+
   const location = useLocation();
   const KAKAO_CODE = location.search.split('=').pop();
-
-  // TODO: 로그인 중 이전 버튼 눌렀을 때 처리 해야 함
-  const [kakaoAccessToken, setKakaoAccessToken] = useState('');
 
   const navigate = useNavigate();
 
@@ -41,66 +45,85 @@ export default function Kakao() {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' },
       });
 
-      // console.log(res.data.access_token);
-      await tryLogin(res.data.access_token);
+      tryLogin(res.data.access_token);
     } catch (err) {
-      console.error(err, '카카오 에러');
+      console.error(err, '카카오 인가코드 발급 에러');
+      return navigate(`${HOME_PATH}`);
     }
   };
 
-  const tryLogin = async (token: string) => {
+  // * 카카오 인가 코드로 액세스 토큰 획득 후
+  // * 백엔드 서버로 카카오 토큰 전달
+  const tryLogin = async (kakaoAccessToken: string) => {
+    const socialLoginUrl = socialLoginApi.POST_SOCIAL_LOGIN_KAKAO;
+
     try {
-      const socialLoginUrl = socialLoginApi.POST_SOCIAL_LOGIN_KAKAO;
       const res = await axios.post(
-        `${SERVER_URL}${socialLoginUrl}`,
+        `${SERVER_URL}/${socialLoginUrl}`,
         {},
         {
-          headers: { Authorization: `${token}` },
+          headers: {
+            Authorization: `${kakaoAccessToken}`,
+          },
         }
       );
 
-      // 상태코드 200 반환 시 세션 스토리지 저장
-      // TODO: 마이페이지에서 닉네임 변경 시 리프레시 토큰이 없으므로 에러 발생할듯
       if (res.status === 200) {
         const accessToken = res.data.data.accessToken;
         const refreshToken = res.data.data.refreshToken;
 
-        console.log(res);
+        const encryptedRefreshToken = encryptRefreshToken(refreshToken);
 
-        if (accessToken) {
-          sessionStorage.setItem('userToken', accessToken);
-          // 리프레시 토큰 암호화
-          const encryptRefreshUserToken = encryptRefreshToken(refreshToken);
-          sessionStorage.setItem('refreshToken', encryptRefreshUserToken);
+        initSessionStorageUserToken(accessToken);
+        initSessionStorageRefeshToken(encryptedRefreshToken);
 
-          navigate(`${HOME_PATH}`);
-        }
+        navigate(`${HOME_PATH}`);
+        return;
       }
     } catch (err) {
-      const error = err as AxiosError;
-      const errorData = error.response?.data as ErrorResponse;
-      console.error(errorData.resultCode, 'error');
-      if (errorData.resultCode === 'NEED_MORE_INFO') {
-        await getUser(token);
+      console.error(err, '카카오 로그인 시도 실패');
+      const error = err as ErrorResponse;
+      const resultCode = error.response.data.resultCode;
+      if (resultCode === 'NEED_MORE_INFO') {
+        await joinKakao(kakaoAccessToken);
       }
     }
   };
 
-  const getUser = async (kakaoToken: string) => {
+  // * 서버로부터 400 응답을 받은 경우 비회원 유저이므로
+  // * /auth/join 경로로 회원가입 요청
+  /**
+   * * {
+   * *   "isNotificated" : true,
+   * *   "provider" : "KAKAO"
+   * * }
+   *
+   * * 위 정보를 body에 담아 실어보내야 함.
+   */
+
+  const joinKakao = async (kakaoAccessToken: string) => {
     const body = {
       isNotificated: true,
       provider: 'KAKAO',
     };
 
     try {
-      const socialJoinUrl = socialLoginApi.POST_SOCIAL_JOIN_KAKAO;
-      const res = await axios.post(`${SERVER_URL}${socialJoinUrl}`, body, {
-        headers: { Authorization: `${kakaoToken}` },
+      const res = await axios.post(`${SERVER_URL}/${socialLoginApi.POST_SOCIAL_JOIN_KAKAO}`, body, {
+        headers: {
+          Authorization: kakaoAccessToken,
+        },
       });
 
-      console.log(res);
+      if (res.data.resultCode === 'SUCCESS') {
+        const accessToken = res.data.data.accessToken;
+        const refreshToken = res.data.data.refreshToken;
+        const encryptedRefreshToken = encryptRefreshToken(refreshToken);
+
+        initSessionStorageUserToken(accessToken);
+        initSessionStorageRefeshToken(encryptedRefreshToken);
+      }
     } catch (err) {
-      console.error(err);
+      console.error('카카오 회원가입 에러', err);
     }
   };
 
@@ -113,10 +136,6 @@ export default function Kakao() {
 
     authKakao();
   }, [location]);
-
-  useEffect(() => {
-    if (!kakaoAccessToken) return;
-  }, []);
 
   return <></>;
 }
