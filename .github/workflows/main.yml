@@ -34,11 +34,13 @@ jobs:
           REACT_APP_API_PORT: ${{ secrets.REACT_APP_API_PORT }}
           TOKEN_SECRET_KEY: ${{ secrets.TOKEN_SECRET_KEY }}
           REACT_APP_REST_API_KEY: ${{ secrets.REACT_APP_REST_API_KEY }}
+          
         run: |
           echo "REACT_APP_API_URL=${REACT_APP_API_URL}" >> .env
           echo "REACT_APP_API_PORT=${REACT_APP_API_PORT}" >> .env
           echo "TOKEN_SECRET_KEY=${TOKEN_SECRET_KEY}" >> .env
           echo "REACT_APP_REST_API_KEY=${REACT_APP_REST_API_KEY}" >> .env
+          echo "GENERATE_SOURCEMAP=false" >> .env
           cat .env
 
       - name: Build
