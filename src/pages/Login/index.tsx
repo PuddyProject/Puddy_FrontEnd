@@ -4,8 +4,6 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { Button, InputBox, Message } from 'components/index';
 
-import { ApiError } from 'types/errorsTypes';
-
 import { KAKAO_LOGIN_URI } from 'constants/kakaoLogin';
 import { loginApi } from 'constants/apiEndpoint';
 import { FIND_ID_PW_PATH, HOME_PATH } from 'constants/routes';
@@ -18,6 +16,11 @@ import { encryptRefreshToken } from 'utils/cryptoRefreshToken';
 
 import { useUser } from 'context/UserContext';
 import { useAuth } from 'hooks/useAuth';
+
+interface Tokens {
+  accessToken: string;
+  refreshToken: string;
+}
 
 const snsLoginItems = [
   { name: '카카오 로그인', imgSrc: Kakao, className: 'kakao', link: KAKAO_LOGIN_URI },
@@ -51,37 +54,47 @@ export default function Login() {
       });
     };
 
+  /* 로그인 정보를 보낸 후, Promise를 반환합니다. */
+  const loginRequest = () => {
+    const payload = {
+      endpoint: `${loginApi.POST_LOGIN}`,
+      body: loginInputValues,
+    };
+
+    return post(payload);
+  };
+
+  const isLoginSuccessful = (status: number) => status === 200;
+
+  const initUserTokens = ({ accessToken, refreshToken }: Tokens) => {
+    const encryptedRefreshToken = encryptRefreshToken(refreshToken);
+
+    initSessionStorageUserToken(accessToken);
+    initSessionStorageRefeshToken(encryptedRefreshToken);
+
+    setToken(accessToken); // TODO: 이 코드가 모호하니 contextAPI 코드 리팩토링 시 검토하기
+  };
+
+  const showLoginErrorMessage = () => {
+    setShowWarningMessage(true);
+  };
+
   const onSubmitForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      const payload = {
-        endpoint: `${loginApi.POST_LOGIN}`,
-        body: loginInputValues,
-      };
-      const res = await post(payload);
+      const res = await loginRequest();
+      const isPassedLogin = isLoginSuccessful(res.status);
 
-      if (res.status === 200) {
-        const resData = res.data.data;
-        const accessToken = resData.accessToken;
-        const refreshToken = encryptRefreshToken(resData.refreshToken);
-
-        initSessionStorageUserToken(accessToken);
-        initSessionStorageRefeshToken(refreshToken);
-
-        setToken(accessToken);
+      if (isPassedLogin) {
+        const { accessToken, refreshToken } = res.data.data;
+        initUserTokens({ accessToken, refreshToken });
         navigate(`${HOME_PATH}`);
       }
     } catch (err: unknown) {
-      if (err instanceof Error) {
-        console.error(err.message);
-      }
-
-      const error = err as ApiError;
-      console.log(error);
-      if (error.response && error.response?.status >= 400) {
-        setShowWarningMessage(true);
-      }
+      console.error(err);
+      showLoginErrorMessage();
+      // TODO: 500에러 발생 시 다른 에러 메시지를 보여주는 게 좋을 듯 함.
     }
   };
 
@@ -140,14 +153,14 @@ export default function Login() {
         <ul className='sns-logins'>
           {snsLoginItems.map((sns) =>
             sns.link ? (
-              <Link to={sns.link}>
+              <Link to={sns.link} key={sns.name}>
                 <li className={sns.className} role='button' tabIndex={0}>
                   <span>{sns.name}</span>
                   <img src={sns.imgSrc} alt={sns.name} />
                 </li>
               </Link>
             ) : (
-              <li className={sns.className} role='button' tabIndex={0}>
+              <li className={sns.className} role='button' tabIndex={0} key={sns.name}>
                 <span>{sns.name}</span>
                 <img src={sns.imgSrc} alt={sns.name} />
               </li>

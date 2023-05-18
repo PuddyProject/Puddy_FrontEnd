@@ -14,7 +14,7 @@ import {
 
 import { isValidNickname } from 'utils';
 import checkExtensions from 'utils/checkExtensions';
-import { patch, post, get } from 'utils/axiosHelper';
+import { patch, post, get } from 'utils/axios/axiosHelper';
 import { warningMessage } from 'utils/initialValues/myProfileEditor';
 import { convertImgToFile } from 'utils/convertImageToFile';
 import { decryptRefreshToken, encryptRefreshToken } from 'utils/cryptoRefreshToken';

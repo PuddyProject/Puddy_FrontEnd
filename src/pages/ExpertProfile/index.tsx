@@ -4,7 +4,7 @@ import { HiOutlineStar as OutlineStar, HiStar as Star } from 'react-icons/hi';
 
 import { Button, CustomHeader, FooterButton } from 'components';
 
-import { get } from 'utils/axiosHelper';
+import { get } from 'utils/axios/axiosHelper';
 
 import { Profile } from 'types/expertProfileTypes';
 import { ApiError } from 'types/errorsTypes';
