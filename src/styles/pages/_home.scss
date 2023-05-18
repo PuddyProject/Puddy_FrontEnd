@@ -317,13 +317,40 @@
 
 /* 반응형 PC */
 @media (min-width: 1024px) {
+  .carousel-container {
+  }
+
+  .button-container {
+    min-width: 1335px;
+    margin: 0 auto;
+  }
+
+  .main-container {
+    gap: 60px;
+  }
+
   .main-contents {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    min-width: 1335px;
 
     .main-content-title {
       font-size: 2.4rem;
+      align-self: flex-start;
     }
+
+    .main-content-sub-title {
+      align-self: flex-start;
+    }
+  }
+
+  .main-contents-container {
+    margin: 0 auto;
+    min-width: 1335px;
+    max-width: 1335px;
   }
 
   .main-qna-card {
