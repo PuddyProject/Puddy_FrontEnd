@@ -11,8 +11,9 @@ export default function ExpertCard({ expertData }: CommunityCardProps) {
     <div className='commuinty-card'>
       <div className={`card-img-container  ${isImg ? 'img' : 'no-img'}`}>
         <img
+          loading='lazy'
           className={`card-img  ${isImg ? 'expert-img' : 'no-img'}`}
-          alt=''
+          alt='커뮤니티 카드'
           src={isImg ? expertData.imagePath : Community_no_img}
         />
       </div>

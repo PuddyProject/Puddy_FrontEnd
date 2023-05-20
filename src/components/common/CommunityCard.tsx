@@ -13,8 +13,9 @@ export default function CommunityCard({ articleData }: CommunityCardProps) {
     <div className='commuinty-card'>
       <div className={`card-img-container  ${isImg ? 'img' : 'no-img'}`}>
         <img
+          loading='lazy'
           className={`card-img  ${isImg ? 'img' : 'no-img'}`}
-          alt=''
+          alt='카드 이미지'
           src={isImg ? articleData.imagePath : Community_no_img}
         />
       </div>

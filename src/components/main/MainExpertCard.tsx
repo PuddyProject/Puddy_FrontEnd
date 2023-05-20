@@ -11,7 +11,7 @@ export default function MainExpertCard({ cardData }: ExpertCardProps) {
   return (
     <div className='main-expert-card'>
       <div className={`main-expert-card-img ${isImg ? 'img' : ''}`}>
-        {isImg && <img className='img-tag' src={isImg} />}
+        {isImg && <img loading='lazy' className='img-tag' src={isImg} alt='전문가 프로필 사진' />}
       </div>
 
       <div className='main-expert-card-description'>
